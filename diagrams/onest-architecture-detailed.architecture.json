@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "ONEST Web Analytics Platform — Detallado",
+    "output": "onest-architecture-detailed.html",
+    "quality_profile": "showcase",
+    "views": [
+      { "id": "ingestion-path", "label": "Ruta de ingesta", "focus": ["portal-user", "sdk", "collector", "pseudonymizer", "exchange", "queue-raw", "consumer", "events-table"], "note": "Un evento crudo se pseudonimiza en el borde (HMAC-SHA256), se publica en RabbitMQ y se persiste en ClickHouse en lotes." },
+      { "id": "dashboard-path", "label": "Ruta del dashboard", "focus": ["admin", "aggregation-api", "kpi-service", "events-table"], "note": "El dashboard consulta KPIs vía la Aggregation API, que delega el cálculo a kpi_service sobre la tabla de eventos." },
+      { "id": "privacy-governance", "label": "Gobernanza de privacidad", "focus": ["pseudonymizer", "rbac", "privacy-guard", "events-table"], "note": "Pseudonimización irreversible en el borde + control de roles + supresión k-anonymity antes de exponer cualquier dato." }
+    ]
+  },
+  "components": [
+    { "id": "portal-user", "type": "external", "label": "Usuario Final", "sublabel": "20+ portales internos", "pos": [40, 345], "size": [140, 60] },
+    { "id": "sdk", "type": "frontend", "label": "SDK de Telemetría", "sublabel": "auto-tracker.ts", "pos": [250, 345], "size": [140, 60] },
+    { "id": "collector", "type": "backend", "label": "Collector", "sublabel": "FastAPI :8000", "pos": [460, 345], "size": [140, 60] },
+    { "id": "pseudonymizer", "type": "security", "label": "Pseudonymizer", "sublabel": "HMAC-SHA256 + salt", "pos": [460, 265], "size": [140, 56] },
+    { "id": "exchange", "type": "messagebus", "label": "telemetry.events", "sublabel": "exchange direct", "pos": [670, 345], "size": [140, 56] },
+    { "id": "queue-raw", "type": "messagebus", "label": "events.raw", "sublabel": "queue durable", "pos": [670, 428], "size": [140, 56] },
+    { "id": "consumer", "type": "backend", "label": "Consumer", "sublabel": "batch 100 / 1.5s", "pos": [880, 345], "size": [140, 60] },
+    { "id": "events-table", "type": "database", "label": "analytics.events", "sublabel": "ClickHouse MergeTree", "pos": [1090, 345], "size": [150, 64], "tag": "TTL 90 días" },
+    { "id": "admin", "type": "external", "label": "Administrador", "sublabel": "6 perfiles TI ONEST", "pos": [40, 40], "size": [140, 60] },
+    { "id": "auth-router", "type": "security", "label": "Auth Router", "sublabel": "/api/v1/auth/login", "pos": [250, 40], "size": [140, 60] },
+    { "id": "aggregation-api", "type": "backend", "label": "Aggregation API", "sublabel": "FastAPI :8001", "pos": [460, 40], "size": [150, 64] },
+    { "id": "rbac", "type": "security", "label": "RBAC", "sublabel": "require_role()", "pos": [670, 40], "size": [130, 60] },
+    { "id": "kpi-service", "type": "backend", "label": "kpi_service", "sublabel": "12 endpoints REST", "pos": [880, 40], "size": [140, 60] },
+    { "id": "privacy-guard", "type": "security", "label": "Privacy Guard", "sublabel": "k-anonymity >= 5", "pos": [1090, 40], "size": [150, 60] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "Edge — Ingesta (Docker Compose)", "wraps": ["collector", "pseudonymizer", "exchange", "queue-raw", "consumer", "events-table"] },
+    { "kind": "security-group", "label": "Gobernanza de acceso y privacidad", "wraps": ["rbac", "privacy-guard"] }
+  ],
+  "connections": [
+    { "id": "user-loads-portal", "from": "portal-user", "to": "sdk", "label": "carga portal", "variant": "emphasis", "labelDy": -22 },
+    { "id": "sdk-sends-events", "from": "sdk", "to": "collector", "label": "POST /api/v1/events", "variant": "emphasis", "labelDy": -22 },
+    { "id": "collector-hashes", "from": "collector", "to": "pseudonymizer", "label": "hashea user_id", "variant": "security", "fromSide": "top", "toSide": "bottom" },
+    { "id": "collector-publishes", "from": "collector", "to": "exchange", "label": "basic_publish", "labelDy": -22 },
+    { "id": "exchange-binds-queue", "from": "exchange", "to": "queue-raw", "label": "routing_key: events.web", "fromSide": "bottom", "toSide": "top", "labelDy": 24 },
+    { "id": "queue-to-consumer", "from": "queue-raw", "to": "consumer", "label": "consume", "fromSide": "right", "toSide": "bottom" },
+    { "id": "consumer-writes", "from": "consumer", "to": "events-table", "label": "INSERT batch", "labelDy": -22 },
+    { "id": "admin-logs-in", "from": "admin", "to": "auth-router", "label": "POST /login", "variant": "emphasis", "labelDy": -22 },
+    { "id": "auth-issues-token", "from": "auth-router", "to": "aggregation-api", "label": "Bearer token", "labelDy": -22 },
+    { "id": "api-checks-role", "from": "aggregation-api", "to": "rbac", "label": "valida rol", "variant": "security", "labelDy": 24 },
+    { "id": "api-delegates-kpi", "from": "rbac", "to": "kpi-service", "label": "consulta autorizada", "labelAt": [840, 134] },
+    { "id": "kpi-enforces-privacy", "from": "kpi-service", "to": "privacy-guard", "label": "aplica umbral k>=5", "variant": "security", "labelDy": -22 },
+    { "id": "kpi-reads-db", "from": "kpi-service", "to": "events-table", "label": "SQL agregado", "variant": "dashed", "fromSide": "bottom", "toSide": "top" }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "Ingesta (edge)", "items": ["SDK instrumenta 20+ portales internos", "Collector pseudonimiza con HMAC-SHA256 antes de publicar — el user_id real nunca sale del borde", "RabbitMQ (exchange 'telemetry.events' → queue 'events.raw') desacopla ingesta de escritura", "Consumer inserta en lotes de 100 eventos / 1.5s en ClickHouse"] },
+    { "dot": "emerald", "title": "Consulta (dashboard)", "items": ["Auth Router emite tokens Bearer de sesión (24h) para 6 administradores de TI registrados", "kpi_service centraliza 12 endpoints: KPIs, ranking, salud, funnels, performance, actividad de usuario"] },
+    { "dot": "rose", "title": "Gobernanza", "items": ["RBAC exige rol 'ejecutivo' o 'administrador' en cada endpoint (algunos solo 'administrador')", "Privacy Guard suprime cualquier grupo con menos de 5 usuarios únicos antes de responder", "analytics.events tiene TTL de 90 días — minimización de datos por diseño"] }
+  ]
+}

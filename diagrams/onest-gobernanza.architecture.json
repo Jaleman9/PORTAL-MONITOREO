@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "ONEST — Gobernanza y Privacidad por Diseño",
+    "output": "onest-gobernanza.html",
+    "quality_profile": "showcase",
+    "views": [
+      { "id": "edge-controls", "label": "Controles en el borde", "focus": ["portal", "sdk-filter", "validator", "pseudonymizer"], "note": "La minimización de datos y la pseudonimización ocurren antes de que el evento salga del Collector." },
+      { "id": "storage-control", "label": "Control de retención", "focus": ["events-table"], "note": "ClickHouse purga automáticamente datos con más de 90 días (TTL)." },
+      { "id": "access-controls", "label": "Controles de acceso y agregación", "focus": ["aggregation-api", "rbac", "privacy-guard", "admin"], "note": "Ningún dato agregado llega al administrador sin pasar por RBAC y el umbral k >= 5." }
+    ]
+  },
+  "components": [
+    { "id": "portal", "type": "external", "label": "Portal interno", "sublabel": "20+ apps corporativas", "pos": [40, 340], "size": [140, 60] },
+    { "id": "sdk-filter", "type": "frontend", "label": "SDK: sin PII", "sublabel": "no captura inputs/passwords", "pos": [230, 340], "size": [150, 60] },
+    { "id": "validator", "type": "security", "label": "Validador Pydantic", "sublabel": "extra=forbid + filtro de claves", "pos": [430, 340], "size": [160, 60] },
+    { "id": "pseudonymizer", "type": "security", "label": "Pseudonymizer", "sublabel": "HMAC-SHA256 + salt", "pos": [640, 340], "size": [150, 60] },
+    { "id": "events-table", "type": "database", "label": "analytics.events", "sublabel": "ClickHouse MergeTree", "pos": [840, 340], "size": [150, 64], "tag": "TTL 90 días" },
+    { "id": "aggregation-api", "type": "backend", "label": "Aggregation API", "sublabel": "FastAPI :8001", "pos": [850, 90], "size": [160, 64] },
+    { "id": "rbac", "type": "security", "label": "RBAC", "sublabel": "ejecutivo / administrador", "pos": [640, 90], "size": [150, 60] },
+    { "id": "privacy-guard", "type": "security", "label": "Privacy Guard", "sublabel": "k-anonymity >= 5", "pos": [430, 90], "size": [150, 60] },
+    { "id": "admin", "type": "external", "label": "Administrador", "sublabel": "6 perfiles TI ONEST", "pos": [230, 90], "size": [150, 60] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "Zona de minimización (edge)", "wraps": ["sdk-filter", "validator", "pseudonymizer"] },
+    { "kind": "security-group", "label": "Zona de control de acceso y agregación", "wraps": ["rbac", "privacy-guard"] }
+  ],
+  "connections": [
+    { "id": "portal-to-sdk", "from": "portal", "to": "sdk-filter", "label": "genera evento", "labelAt": [205, 414] },
+    { "id": "sdk-to-validator", "from": "sdk-filter", "to": "validator", "label": "envía batch", "variant": "emphasis", "labelDy": -22 },
+    { "id": "validator-drops", "from": "validator", "to": "pseudonymizer", "label": "descarta PII y campos prohibidos", "variant": "security", "labelDy": -22 },
+    { "id": "pseudo-to-db", "from": "pseudonymizer", "to": "events-table", "label": "user_id_hash irreversible", "variant": "emphasis", "labelDy": -22 },
+    { "id": "api-reads", "from": "aggregation-api", "to": "events-table", "label": "SQL agregado", "variant": "dashed", "fromSide": "bottom", "toSide": "top" },
+    { "id": "api-to-rbac", "from": "aggregation-api", "to": "rbac", "label": "valida rol", "variant": "security", "fromSide": "top", "toSide": "top", "via": [[930, 40], [715, 40]], "labelAt": [826, 35] },
+    { "id": "rbac-to-guard", "from": "rbac", "to": "privacy-guard", "label": "consulta autorizada", "labelAt": [610, 164] },
+    { "id": "guard-to-admin", "from": "privacy-guard", "to": "admin", "label": "datos sanitizados o suprimidos", "variant": "emphasis", "labelAt": [405, 164] }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "1-2. Minimización en el borde", "items": ["El SDK nunca captura contraseñas, inputs de formulario ni texto libre", "El validador (Pydantic, extra=forbid) rechaza campos no contemplados en el contrato del evento", "Emails y números largos en mensajes de error se enmascaran automáticamente"] },
+    { "dot": "rose", "title": "3. Pseudonimización y retención", "items": ["HMAC-SHA256 + salt convierte el user_id en un hash irreversible antes de publicarse", "No existe tabla de mapeo inverso ni endpoint para desencriptar", "ClickHouse purga automáticamente datos con más de 90 días (TTL)"] },
+    { "dot": "emerald", "title": "4-5. Acceso y agregación gobernada", "items": ["RBAC exige rol 'ejecutivo' o 'administrador'; algunos endpoints solo admiten 'administrador'", "Privacy Guard suprime cualquier grupo con menos de 5 usuarios únicos (k-anonymity)", "Auditoría interna (12/12 pruebas automatizadas) confirma el cumplimiento de estos 5 controles"] }
+  ]
+}

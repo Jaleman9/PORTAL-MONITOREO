@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ONEST Digital - Portal Piloto (CRM Ventas)</title>
+  
+  <!-- Google Fonts: Montserrat & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            onest: {
+              blue: {
+                900: "#003E75",
+                700: "#00549E",
+                500: "#1677BD",
+                100: "#EAF3FA",
+              },
+              green: {
+                700: "#2B9138",
+                500: "#39B54A",
+                100: "#EAF7EC",
+              },
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'Arial', 'sans-serif'],
+            heading: ['Montserrat', 'Arial', 'sans-serif'],
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- Inclusión del SDK Web de telemetría -->
+  <script src="/sdk/telemetry.js"></script>
+
+  <style>
+    body {
+      font-family: "Inter", "Arial", sans-serif;
+      background-color: #F5F7F9;
+      color: #20252B;
+    }
+    h1, h2, h3, .font-heading {
+      font-family: "Montserrat", "Arial", sans-serif;
+    }
+    .card {
+      background: #FFFFFF;
+      border: 1px solid #E1E6EB;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+    .input-onest {
+      height: 44px;
+      padding: 0 12px;
+      background: #FFFFFF;
+      border: 1px solid #D0D5DD;
+      border-radius: 8px;
+      font-size: 13px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .input-onest:focus {
+      outline: none;
+      border-color: #00549E;
+      box-shadow: 0 0 0 3px rgba(0, 84, 158, 0.12);
+    }
+    .btn-primary {
+      height: 44px;
+      padding: 0 20px;
+      background: #00549E;
+      color: #FFFFFF;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .btn-primary:hover {
+      background: #003E75;
+    }
+    .btn-secondary {
+      height: 40px;
+      padding: 0 16px;
+      background: #FFFFFF;
+      color: #00549E;
+      border: 1px solid #00549E;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-secondary:hover {
+      background: #EAF3FA;
+    }
+    .btn-success {
+      height: 40px;
+      padding: 0 16px;
+      background: #39B54A;
+      color: #FFFFFF;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .btn-success:hover {
+      background: #2B9138;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Header ONEST (Sección 19) -->
+  <header class="h-16 bg-white border-b border-[#E1E6EB] px-6 flex items-center justify-between sticky top-0 z-30 shadow-sm">
+    <div class="flex items-center gap-4">
+      <div class="flex items-center gap-2">
+        <span class="font-heading font-black text-2xl tracking-tighter text-[#00549E]">ONEST</span>
+        <span class="text-xs font-semibold px-2 py-0.5 rounded bg-[#EAF7EC] text-[#2B9138] border border-[#39B54A]/30">DIGITAL</span>
+      </div>
+      <span class="h-5 w-px bg-[#E1E6EB]"></span>
+      <div>
+        <h1 class="font-heading text-sm font-bold text-[#20252B]">Portal Piloto CRM Ventas (App ID: crm-ventas)</h1>
+        <p class="text-[11px] text-[#667085]">Instrumentación activa con el SDK de telemetría corporativa</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-3">
+      <span id="sdk-status" class="text-xs font-semibold px-3 py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-300">
+        Iniciando SDK...
+      </span>
+      <a href="/" class="btn-secondary flex items-center gap-2 !h-9 text-xs">
+        ← Volver al Dashboard
+      </a>
+    </div>
+  </header>
+
+  <!-- Contenido -->
+  <main class="flex-1 max-w-5xl mx-auto w-full p-6 lg:p-8 space-y-6">
+    
+    <!-- Breadcrumb -->
+    <div class="flex items-center gap-2 text-xs text-[#667085]">
+      <a href="/" class="text-[#00549E] font-medium hover:underline">Inicio</a>
+      <span>/</span>
+      <span class="text-[#00549E] font-medium">Portales Piloto</span>
+      <span>/</span>
+      <span class="font-semibold text-[#20252B]">CRM Ventas</span>
+    </div>
+
+    <!-- Banner Info -->
+    <div class="bg-white border-l-4 border-l-[#00549E] border-y border-r border-[#E1E6EB] rounded-lg p-4 shadow-sm flex items-center justify-between">
+      <div>
+        <div class="text-xs font-bold text-[#20252B]">Entorno de Pruebas en Vivo para Telemetría</div>
+        <div class="text-[12px] text-[#667085] mt-0.5">
+          Interactúa con los controles inferiores para generar tráfico real. Los eventos viajarán automáticamente al Collector (:8000), RabbitMQ (:5672) y ClickHouse (:8123).
+        </div>
+      </div>
+      <span class="text-xs font-bold text-[#00549E] bg-[#EAF3FA] px-2.5 py-1 rounded">SDK v1.0.0</span>
+    </div>
+
+    <!-- 1. Identidad de Usuario (Simulación SSO) -->
+    <div class="card space-y-4">
+      <div class="border-b border-[#E1E6EB] pb-3 flex items-center justify-between">
+        <div>
+          <h2 class="font-heading text-sm font-bold text-[#20252B]">1. Identidad de Usuario (Simulación SSO)</h2>
+          <p class="text-xs text-[#667085]">Simula el inicio de sesión de un colaborador corporativo</p>
+        </div>
+        <span class="text-xs text-[#2B9138] font-semibold bg-[#EAF7EC] px-2 py-0.5 rounded">HMAC-SHA256</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <div>
+          <label class="block text-xs font-semibold text-[#475467] mb-1">Correo Corporativo</label>
+          <input id="userId" type="email" value="carlos.mendoza@corporativo.com" class="input-onest w-full">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-[#475467] mb-1">Rol Operativo</label>
+          <select id="userRole" class="input-onest w-full">
+            <option value="ejecutivo">Rol: Ejecutivo</option>
+            <option value="analista">Rol: Analista</option>
+            <option value="supervisor">Rol: Supervisor</option>
+          </select>
+        </div>
+        <div class="flex items-end">
+          <button onclick="applyIdentity()" class="btn-primary w-full">
+            Actualizar Identidad en SDK
+          </button>
+        </div>
+      </div>
+      <p class="text-[11px] text-[#2B9138] font-medium flex items-center gap-1.5">
+        <span>🔒</span> El Collector pseudonimiza este correo con sal secreta. El correo en texto plano nunca se persiste en la base de datos analítica.
+      </p>
+    </div>
+
+    <!-- 2. Navegación SPA e Interacción -->
+    <div class="card space-y-4">
+      <div class="border-b border-[#E1E6EB] pb-3 flex items-center justify-between">
+        <div>
+          <h2 class="font-heading text-sm font-bold text-[#20252B]">2. Interacción y Navegación SPA</h2>
+          <p class="text-xs text-[#667085]">Dispara eventos automáticos de navegación y captura de tiempos de carga</p>
+        </div>
+        <div class="text-xs text-[#667085]">Ruta actual: <span id="current-path" class="font-bold text-[#00549E] bg-[#EAF3FA] px-2 py-0.5 rounded">/</span></div>
+      </div>
+
+      <div class="flex flex-wrap gap-3">
+        <button onclick="navigate('/clientes', 'Directorio de Clientes')" class="btn-secondary">
+          📄 Ir a /clientes
+        </button>
+        <button onclick="navigate('/oportunidades', 'Pipeline de Ventas')" class="btn-secondary">
+          💼 Ir a /oportunidades
+        </button>
+        <button onclick="navigate('/reportes/roi', 'Reporte Ejecutivo ROI')" class="btn-secondary">
+          📊 Ir a /reportes/roi
+        </button>
+        <button onclick="triggerUncaughtError()" class="h-10 px-4 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-300 rounded-lg text-xs font-semibold transition">
+          ⚠️ Simular Error JS
+        </button>
+        <button onclick="forceFlush()" class="btn-success">
+          🚀 Enviar Lote Inmediato (Flush)
+        </button>
+      </div>
+    </div>
+
+    <!-- 3. Minimización de Datos -->
+    <div class="card space-y-3">
+      <div class="border-b border-[#E1E6EB] pb-3">
+        <h2 class="font-heading text-sm font-bold text-[#20252B]">3. Verificación de Minimización de Datos</h2>
+        <p class="text-xs text-[#667085]">Garantía de que valores de formularios o datos sensibles nunca son capturados</p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div>
+          <label class="block text-xs font-semibold text-[#667085] mb-1">Campo de Contraseña (Protegido)</label>
+          <input type="password" value="MiClaveSecreta123!" class="input-onest w-full bg-[#F8FAFC] text-[#667085]" disabled>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-[#667085] mb-1">Notas Confidenciales (Protegido)</label>
+          <input type="text" value="Información bancaria o sensible" class="input-onest w-full bg-[#F8FAFC] text-[#667085]" disabled>
+        </div>
+      </div>
+      <p class="text-[11px] text-[#667085]">
+        ✓ Verificado: Los campos de entrada no registran eventos y son activamente descartados por el validador canónico del Collector.
+      </p>
+    </div>
+
+    <!-- 4. Consola de Eventos en Tiempo Real -->
+    <div class="card space-y-3">
+      <div class="flex items-center justify-between pb-2 border-b border-[#E1E6EB]">
+        <h2 class="font-heading text-xs font-bold uppercase tracking-wider text-[#475467]">
+          4. Registro de Eventos en Vivo (Buffer del SDK)
+        </h2>
+        <button onclick="clearConsole()" class="text-xs text-[#667085] hover:text-[#20252B] font-medium">
+          Limpiar Consola
+        </button>
+      </div>
+      <div id="event-log" class="font-mono text-xs text-[#475467] h-44 overflow-y-auto space-y-1.5 p-3 bg-[#F8FAFC] rounded-lg border border-[#E1E6EB]">
+        <!-- Entradas dinámicas -->
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer ONEST -->
+  <footer class="bg-[#003E75] text-white/70 py-4 px-6 text-xs flex flex-col sm:flex-row items-center justify-between border-t border-white/10 gap-2 mt-8">
+    <div class="flex items-center gap-2">
+      <span class="font-heading font-black text-sm text-white tracking-wider">ONEST</span>
+      <span>•</span>
+      <span>ONEST Digital Design System v1.0</span>
+    </div>
+    <div class="text-[11px] text-white/50">
+      © 2026 ONEST Logistics. Todos los derechos reservados.
+    </div>
+  </footer>
+
+  <script>
+    const logContainer = document.getElementById('event-log');
+    function logEvent(msg, type = 'info') {
+      const line = document.createElement('div');
+      const time = new Date().toLocaleTimeString();
+      let color = 'text-[#475467]';
+      if (type === 'success') color = 'text-[#2B9138] font-medium';
+      if (type === 'warn') color = 'text-amber-600 font-medium';
+      if (type === 'error') color = 'text-rose-600 font-medium';
+
+      line.className = `${color} text-[11px]`;
+      line.textContent = `[${time}] ${msg}`;
+      logContainer.appendChild(line);
+      logContainer.scrollTop = logContainer.scrollHeight;
+    }
+
+    function clearConsole() {
+      logContainer.innerHTML = '';
+    }
+
+    // Inicializar SDK
+    window.addEventListener('load', () => {
+      try {
+        Telemetry.init({
+          appId: 'crm-ventas',
+          endpoint: 'http://localhost:8000',
+          flushIntervalMs: 3000,
+          batchSize: 5,
+          debug: true
+        });
+        Telemetry.identify('carlos.mendoza@corporativo.com', 'ejecutivo', 'ventas');
+        const badge = document.getElementById('sdk-status');
+        badge.textContent = '● SDK Activo (Buffer 3s)';
+        badge.className = 'text-xs font-semibold px-3 py-1 rounded-full bg-[#EAF7EC] text-[#2B9138] border border-[#39B54A]/30';
+        logEvent('SDK inicializado exitosamente para app_id: crm-ventas', 'success');
+        logEvent('session_start y page_view capturados automáticamente', 'info');
+      } catch (e) {
+        logEvent('Error inicializando SDK: ' + e.message, 'error');
+      }
+    });
+
+    function applyIdentity() {
+      const email = document.getElementById('userId').value;
+      const role = document.getElementById('userRole').value;
+      Telemetry.identify(email, role, 'ventas');
+      logEvent(`Identidad actualizada en SDK: ${email} (Rol: ${role})`, 'success');
+    }
+
+    function navigate(path, title) {
+      document.title = title;
+      history.pushState({}, title, path);
+      document.getElementById('current-path').textContent = path;
+      logEvent(`Navegación SPA a: ${path} - page_view encolado`, 'info');
+    }
+
+    function triggerUncaughtError() {
+      logEvent('Simulando excepción no capturada en interfaz...', 'warn');
+      setTimeout(() => {
+        throw new ReferenceError('Fallo al renderizar componente de Ventas: variable no definida');
+      }, 50);
+    }
+
+    function forceFlush() {
+      Telemetry.flush();
+      logEvent('Envío inmediato (flush) completado hacia el Collector', 'success');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+services:
+  rabbitmq:
+    image: rabbitmq:3.13-management-alpine
+    container_name: analytics_rabbitmq
+    restart: unless-stopped
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER:-guest}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS:-guest}
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - analytics_network
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  clickhouse:
+    image: clickhouse/clickhouse-server:latest
+    container_name: analytics_clickhouse
+    restart: unless-stopped
+    ports:
+      - "8123:8123"
+      - "9009:9000"
+    environment:
+      CLICKHOUSE_DB: ${CLICKHOUSE_DB:-analytics}
+      CLICKHOUSE_USER: ${CLICKHOUSE_USER:-default}
+      CLICKHOUSE_PASSWORD: ${CLICKHOUSE_PASSWORD:-}
+      CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: 1
+    volumes:
+      - clickhouse_data:/var/lib/clickhouse
+    networks:
+      - analytics_network
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8123/ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  collector:
+    build:
+      context: ./collector
+      dockerfile: Dockerfile
+    container_name: analytics_collector
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USER: ${RABBITMQ_DEFAULT_USER:-guest}
+      RABBITMQ_PASS: ${RABBITMQ_DEFAULT_PASS:-guest}
+      ANALYTICS_SALT: ${ANALYTICS_SALT:-corporacion-analytics-secret-salt-latam-2026}
+    networks:
+      - analytics_network
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
+  consumer:
+    build:
+      context: ./consumer
+      dockerfile: Dockerfile
+    container_name: analytics_consumer
+    restart: unless-stopped
+    environment:
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USER: ${RABBITMQ_DEFAULT_USER:-guest}
+      RABBITMQ_PASS: ${RABBITMQ_DEFAULT_PASS:-guest}
+      CLICKHOUSE_HOST: clickhouse
+      CLICKHOUSE_PORT: 8123
+      CLICKHOUSE_DB: ${CLICKHOUSE_DB:-analytics}
+      CLICKHOUSE_USER: ${CLICKHOUSE_USER:-default}
+      CLICKHOUSE_PASSWORD: ${CLICKHOUSE_PASSWORD:-}
+      CONSUMER_BATCH_SIZE: ${CONSUMER_BATCH_SIZE:-100}
+      CONSUMER_BATCH_TIMEOUT: ${CONSUMER_BATCH_TIMEOUT:-1.5}
+    networks:
+      - analytics_network
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      clickhouse:
+        condition: service_healthy
+
+  aggregation-api:
+    build:
+      context: ./aggregation-api
+      dockerfile: Dockerfile
+    container_name: analytics_aggregation_api
+    restart: unless-stopped
+    ports:
+      - "8001:8001"
+    environment:
+      CLICKHOUSE_HOST: clickhouse
+      CLICKHOUSE_PORT: 8123
+      CLICKHOUSE_DB: ${CLICKHOUSE_DB:-analytics}
+      CLICKHOUSE_USER: ${CLICKHOUSE_USER:-default}
+      CLICKHOUSE_PASSWORD: ${CLICKHOUSE_PASSWORD:-}
+      DASHBOARD_PATH: /app/dashboard/index.html
+      DEMO_PATH: /app/demo-portal/index.html
+      SDK_PATH: /app/sdk-web/dist/telemetry.js
+    volumes:
+      - ./dashboard:/app/dashboard:ro
+      - ./demo-portal:/app/demo-portal:ro
+      - ./sdk-web:/app/sdk-web:ro
+    networks:
+      - analytics_network
+    depends_on:
+      clickhouse:
+        condition: service_healthy
+
+networks:
+  analytics_network:
+    driver: bridge
+
+volumes:
+  rabbitmq_data:
+  clickhouse_data:

@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "ONEST Web Analytics Platform",
+    "output": "onest-architecture.html",
+    "quality_profile": "showcase",
+    "views": [
+      { "id": "ingestion-path", "label": "Ruta de ingesta", "focus": ["sdk", "collector", "rabbitmq", "consumer", "clickhouse"], "note": "Ruta de un evento de telemetría desde el navegador del usuario final hasta su almacenamiento durable." },
+      { "id": "dashboard-path", "label": "Ruta del dashboard", "focus": ["clickhouse", "aggregation-api", "admin"], "note": "Cómo el administrador consulta KPIs, ranking y salud técnica a través de la Aggregation API." },
+      { "id": "privacy-governance", "label": "Gobernanza de privacidad", "focus": ["aggregation-api", "rbac", "privacy-guard"], "note": "La Aggregation API aplica k-anonymity y control de roles antes de exponer cualquier dato." }
+    ]
+  },
+  "components": [
+    { "id": "portal-user", "type": "external", "label": "Usuario Final", "sublabel": "Navegador en Portal Web", "pos": [40, 420], "size": [140, 60] },
+    { "id": "sdk", "type": "frontend", "label": "SDK de Telemetría", "sublabel": "TypeScript, auto-tracker", "pos": [250, 420], "size": [140, 60] },
+    { "id": "collector", "type": "backend", "label": "Collector", "sublabel": "FastAPI :8000", "pos": [460, 420], "size": [140, 60] },
+    { "id": "rabbitmq", "type": "messagebus", "label": "RabbitMQ", "sublabel": "queue :5672", "pos": [670, 420], "size": [140, 60] },
+    { "id": "consumer", "type": "backend", "label": "Consumer", "sublabel": "batch :100 / 1.5s", "pos": [880, 420], "size": [140, 60] },
+    { "id": "clickhouse", "type": "database", "label": "ClickHouse", "sublabel": "analytics :8123", "pos": [1090, 420], "size": [140, 60] },
+    { "id": "admin", "type": "external", "label": "Administrador", "sublabel": "Dashboard en navegador", "pos": [40, 60], "size": [150, 60] },
+    { "id": "aggregation-api", "type": "backend", "label": "Aggregation API", "sublabel": "FastAPI :8001", "pos": [330, 60], "size": [160, 64] },
+    { "id": "rbac", "type": "security", "label": "RBAC / Auth", "sublabel": "ejecutivo / administrador", "pos": [630, 60], "size": [150, 60] },
+    { "id": "privacy-guard", "type": "security", "label": "Privacy Guard", "sublabel": "k-anonymity >= 5", "pos": [920, 60], "size": [150, 60] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "Docker Compose Stack", "wraps": ["aggregation-api", "collector", "rabbitmq", "consumer", "clickhouse"] },
+    { "kind": "security-group", "label": "Capa de gobernanza de privacidad", "wraps": ["rbac", "privacy-guard"] }
+  ],
+  "connections": [
+    { "id": "user-loads-portal", "from": "portal-user", "to": "sdk", "label": "carga portal", "variant": "emphasis", "labelDy": -22 },
+    { "id": "sdk-sends-events", "from": "sdk", "to": "collector", "label": "POST eventos", "variant": "emphasis", "labelDy": -22 },
+    { "id": "collector-publishes", "from": "collector", "to": "rabbitmq", "label": "publica", "labelDy": -22 },
+    { "id": "queue-to-consumer", "from": "rabbitmq", "to": "consumer", "label": "consume", "labelDy": -22 },
+    { "id": "consumer-writes", "from": "consumer", "to": "clickhouse", "label": "inserta batch", "labelDy": -22 },
+    { "id": "admin-requests-dashboard", "from": "admin", "to": "aggregation-api", "label": "GET /api/v1/metrics/*", "variant": "emphasis", "labelDy": 22 },
+    { "id": "api-checks-role", "from": "aggregation-api", "to": "rbac", "label": "valida rol", "variant": "security", "labelDy": -22 },
+    { "id": "api-enforces-privacy", "from": "rbac", "to": "privacy-guard", "label": "aplica umbral k>=5", "variant": "security", "labelDy": -22 },
+    { "id": "api-reads-db", "from": "aggregation-api", "to": "clickhouse", "label": "SQL agregado", "variant": "dashed", "fromSide": "bottom", "toSide": "top", "labelDx": 40 }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "Ingesta", "items": ["SDK web instrumenta portales corporativos", "Collector recibe eventos y los publica en RabbitMQ", "Consumer procesa en lotes y persiste en ClickHouse"] },
+    { "dot": "emerald", "title": "Consulta", "items": ["Aggregation API sirve el dashboard y expone KPIs, ranking y salud técnica", "Toda lectura pasa por RBAC y Privacy Guard antes de responder"] },
+    { "dot": "rose", "title": "Gobernanza", "items": ["Privacy Guard suprime grupos con menos de 5 usuarios únicos (k-anonymity)", "RBAC limita el acceso a roles 'ejecutivo' y 'administrador'"] }
+  ]
+}

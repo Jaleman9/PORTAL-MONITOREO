@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "ONEST — Ingesta de un evento",
+    "output": "onest-sequence-ingesta.html",
+    "viewBox": [1080, 580],
+    "quality_profile": "showcase",
+    "views": [
+      { "id": "edge", "label": "Pseudonimización en el borde", "focus": ["user", "sdk", "collector", "pseudo"], "note": "El user_id real nunca sale del Collector: se convierte en hash antes de publicarse." },
+      { "id": "durable", "label": "Persistencia durable", "focus": ["collector", "rabbitmq", "consumer", "clickhouse"], "note": "RabbitMQ desacopla la ingesta rápida de la escritura en lotes hacia ClickHouse." }
+    ]
+  },
+  "participants": [
+    { "id": "user", "type": "external", "label": "Usuario", "sublabel": "portal web" },
+    { "id": "sdk", "type": "frontend", "label": "SDK", "sublabel": "auto-tracker" },
+    { "id": "collector", "type": "backend", "label": "Collector", "sublabel": "FastAPI :8000" },
+    { "id": "pseudo", "type": "security", "label": "Pseudonymizer", "sublabel": "HMAC-SHA256" },
+    { "id": "rabbitmq", "type": "messagebus", "label": "RabbitMQ", "sublabel": "events.raw" },
+    { "id": "consumer", "type": "backend", "label": "Consumer", "sublabel": "batch writer" },
+    { "id": "clickhouse", "type": "database", "label": "ClickHouse", "sublabel": "analytics.events" }
+  ],
+  "segments": [
+    { "from": 160, "to": 330, "label": "Camino síncrono (< 1s)" },
+    { "from": 340, "to": 420, "label": "Camino asíncrono" }
+  ],
+  "messages": [
+    { "id": "click", "from": "user", "to": "sdk", "y": 175, "label": "clic / vista de página", "variant": "default" },
+    { "id": "send-events", "from": "sdk", "to": "collector", "y": 205, "label": "POST /api/v1/events", "variant": "emphasis" },
+    { "id": "hash-user", "from": "collector", "to": "pseudo", "y": 235, "label": "pseudonymize_user()", "variant": "security" },
+    { "id": "hash-return", "from": "pseudo", "to": "collector", "y": 265, "label": "user_id_hash (irreversible)", "variant": "return" },
+    { "id": "publish", "from": "collector", "to": "rabbitmq", "y": 295, "label": "basic_publish (persistente)", "variant": "default" },
+    { "id": "accepted", "from": "collector", "to": "sdk", "y": 325, "label": "202 accepted", "variant": "return" },
+    { "id": "consume", "from": "rabbitmq", "to": "consumer", "y": 355, "label": "consume (prefetch)", "variant": "default" },
+    { "id": "insert", "from": "consumer", "to": "clickhouse", "y": 400, "label": "INSERT batch (100 filas / 1.5s)", "variant": "dashed" }
+  ],
+  "activations": [
+    { "participant": "sdk", "from": 170, "to": 329, "type": "frontend" },
+    { "participant": "collector", "from": 200, "to": 329, "type": "backend" },
+    { "participant": "pseudo", "from": 230, "to": 269, "type": "security" },
+    { "participant": "consumer", "from": 350, "to": 404, "type": "backend" }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "Sin bloqueo para el usuario", "items": ["El SDK recibe 202 de inmediato, sin esperar a que el dato llegue a ClickHouse", "Si RabbitMQ no responde, el Collector guarda en un buffer en memoria (hasta 5000 eventos) y reintenta"] },
+    { "dot": "rose", "title": "Pseudonimización irreversible", "items": ["HMAC-SHA256 con salt de entorno se aplica en el Collector, antes de publicar", "El user_id en texto plano nunca llega a RabbitMQ ni a ClickHouse"] },
+    { "dot": "emerald", "title": "Escritura eficiente", "items": ["El Consumer agrupa en lotes de 100 eventos o cada 1.5 segundos, lo que ocurra primero", "ClickHouse usa MergeTree con TTL de 90 días para minimización de datos"] }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "ONEST — Consulta de KPIs gobernada",
+    "output": "onest-sequence-consulta.html",
+    "viewBox": [1080, 600],
+    "quality_profile": "showcase",
+    "views": [
+      { "id": "auth", "label": "Autenticación", "focus": ["admin", "api"], "note": "El login emite un token Bearer de 24 horas; auth_router está montado en la misma app de la Aggregation API." },
+      { "id": "governed-read", "label": "Lectura gobernada", "focus": ["api", "rbac", "kpi", "privacy", "clickhouse"], "note": "Cada consulta valida rol y aplica k-anonymity antes de responder." }
+    ]
+  },
+  "participants": [
+    { "id": "admin", "type": "external", "label": "Administrador", "sublabel": "navegador" },
+    { "id": "api", "type": "backend", "label": "Agg. API", "sublabel": "FastAPI :8001" },
+    { "id": "rbac", "type": "security", "label": "RBAC", "sublabel": "require_role" },
+    { "id": "kpi", "type": "backend", "label": "kpi_service", "sublabel": "lógica de negocio" },
+    { "id": "privacy", "type": "security", "label": "Privacy Guard", "sublabel": "k-anonymity" },
+    { "id": "clickhouse", "type": "database", "label": "ClickHouse", "sublabel": "analytics.events" }
+  ],
+  "segments": [
+    { "from": 160, "to": 218, "label": "Autenticación" },
+    { "from": 226, "to": 450, "label": "Consulta gobernada" }
+  ],
+  "messages": [
+    { "id": "login", "from": "admin", "to": "api", "y": 175, "label": "POST /api/v1/auth/login", "variant": "emphasis" },
+    { "id": "token", "from": "api", "to": "admin", "y": 203, "label": "token Bearer (24h)", "variant": "return" },
+    { "id": "request-kpi", "from": "admin", "to": "api", "y": 231, "label": "GET /api/v1/metrics/summary", "variant": "emphasis" },
+    { "id": "check-role", "from": "api", "to": "rbac", "y": 273, "label": "require_role([ejecutivo, administrador])", "variant": "security" },
+    { "id": "role-ok", "from": "rbac", "to": "api", "y": 301, "label": "rol autorizado", "variant": "return" },
+    { "id": "call-kpi", "from": "api", "to": "kpi", "y": 329, "label": "get_executive_summary()", "variant": "default" },
+    { "id": "query-db", "from": "kpi", "to": "clickhouse", "y": 357, "label": "SELECT agregado", "variant": "default" },
+    { "id": "rows-back", "from": "clickhouse", "to": "kpi", "y": 385, "label": "filas agregadas", "variant": "return" },
+    { "id": "enforce-k", "from": "kpi", "to": "privacy", "y": 413, "label": "enforce_threshold(k >= 5)", "variant": "security" },
+    { "id": "k-result", "from": "privacy", "to": "kpi", "y": 441, "label": "datos sanitizados o suprimidos", "variant": "return" },
+    { "id": "kpi-back", "from": "kpi", "to": "api", "y": 469, "label": "resumen ejecutivo", "variant": "return" },
+    { "id": "final-response", "from": "api", "to": "admin", "y": 497, "label": "200 JSON (KPIs)", "variant": "return" }
+  ],
+  "activations": [
+    { "participant": "api", "from": 170, "to": 501, "type": "backend" },
+    { "participant": "rbac", "from": 268, "to": 305, "type": "security" },
+    { "participant": "kpi", "from": 324, "to": 473, "type": "backend" },
+    { "participant": "privacy", "from": 408, "to": 445, "type": "security" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "Autenticación", "items": ["auth_router vive en la misma app que los KPIs", "Token Bearer válido por 24 horas"] },
+    { "dot": "rose", "title": "Gobernanza en cada consulta", "items": ["RBAC exige rol autorizado antes de ejecutar lógica de negocio", "Privacy Guard suprime grupos con menos de 5 usuarios únicos"] }
+  ]
+}

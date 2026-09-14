@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>ONEST — Gobernanza y Funcionamiento de la Plataforma</title>
+<style>
+  @page { size: Letter; margin: 20mm 18mm; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', Inter, Arial, sans-serif;
+    color: #1a1a1a;
+    line-height: 1.5;
+    margin: 0;
+    font-size: 11pt;
+  }
+  h1, h2, h3, h4 { font-family: Georgia, 'Segoe UI', serif; font-weight: 700; color: #003E75; }
+
+  .cover {
+    height: 225mm;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    page-break-after: always;
+    text-align: center;
+  }
+  .cover .tag {
+    display: inline-block;
+    margin: 0 auto 24px auto;
+    background: #003E75;
+    color: white;
+    padding: 6px 18px;
+    border-radius: 20px;
+    font-size: 10pt;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .cover h1 { font-size: 30pt; margin: 0 0 10px 0; }
+  .cover .subtitle { font-size: 13pt; color: #5B6472; margin-bottom: 40px; }
+  .cover .meta { font-size: 10pt; color: #8592A6; }
+  .cover .badge-row { display:flex; justify-content:center; gap:12px; margin-top: 30px; }
+  .badge { border: 1px solid #E1E6EB; border-radius: 8px; padding: 10px 16px; font-size: 9.5pt; color:#39B54A; font-weight:600; background:#F5F7F9;}
+
+  section { margin-bottom: 26px; }
+  h2 { font-size: 16pt; border-bottom: 3px solid #39B54A; padding-bottom: 6px; margin-top: 34px; margin-bottom: 14px; }
+  h3 { font-size: 12.5pt; color: #00549E; margin-top: 20px; margin-bottom: 8px; }
+
+  .exec-box {
+    background: #F5F7F9;
+    border-left: 4px solid #00549E;
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin: 14px 0;
+  }
+  .exec-box p { margin: 6px 0; }
+
+  table { width: 100%; border-collapse: collapse; margin: 12px 0 20px 0; font-size: 9.7pt; }
+  th { background: #003E75; color: white; text-align: left; padding: 8px 10px; }
+  td { padding: 7px 10px; border-bottom: 1px solid #E1E6EB; vertical-align: top; }
+  tr:nth-child(even) td { background: #F9FAFB; }
+
+  .status-ok { color: #2B9138; font-weight: 700; }
+  .status-pending { color: #B8860B; font-weight: 700; }
+
+  .pipeline {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 16px 0;
+    flex-wrap: wrap;
+    font-size: 9pt;
+  }
+  .pstep {
+    background: white;
+    border: 1.5px solid #00549E;
+    border-radius: 8px;
+    padding: 8px 10px;
+    text-align: center;
+    flex: 1;
+    min-width: 90px;
+  }
+  .pstep .n { font-weight:700; color:#00549E; }
+  .arrow { color: #8592A6; font-size: 14pt; }
+
+  ul { margin: 6px 0; padding-left: 20px; }
+  li { margin-bottom: 4px; }
+
+  .callout {
+    border: 1px solid #E1E6EB;
+    border-left: 4px solid #39B54A;
+    background: #F5FBF6;
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 10pt;
+  }
+  .callout.warn { border-left-color: #E8A33D; background: #FFF9F0; }
+
+  code {
+    background: #F0F2F5;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-family: Consolas, monospace;
+    font-size: 9.5pt;
+    color: #003E75;
+  }
+
+  footer { margin-top: 40px; font-size: 8.5pt; color: #8592A6; text-align: center; border-top: 1px solid #E1E6EB; padding-top: 10px; }
+
+  .page-break { page-break-before: always; }
+</style>
+</head>
+<body>
+
+<!-- PORTADA -->
+<div class="cover">
+  <div class="tag">ONEST Logistics · Dirección de Sistemas &amp; TI</div>
+  <h1>Gobernanza y Funcionamiento<br>de la Plataforma de Telemetría Web</h1>
+  <div class="subtitle">Cómo funciona el sistema, qué protege, y qué sigue</div>
+  <div class="meta">v1.0.0-MVP · Fase 1 · Documento de presentación</div>
+  <div class="badge-row">
+    <div class="badge">✓ Privacidad por Diseño</div>
+    <div class="badge">✓ 12/12 pruebas automatizadas</div>
+    <div class="badge">✓ RBAC + k-Anonymity ≥ 5</div>
+  </div>
+</div>
+
+<!-- 1. RESUMEN EJECUTIVO -->
+<section>
+<h2>1. Resumen ejecutivo</h2>
+<div class="exec-box">
+<p><strong>¿Qué es esta plataforma?</strong> Un sistema interno que mide cómo el personal de ONEST Logistics usa los más de 20 portales web corporativos (CRM, ERP, portal de clientes, etc.), sin identificar nunca a una persona específica.</p>
+<p><strong>¿Por qué importa?</strong> Permite a Dirección y a Sistemas &amp; TI tomar decisiones (qué portales se usan poco, dónde hay errores, qué licencias están ociosas) basadas en datos reales, cumpliendo principios de protección de datos personales desde el diseño (<em>Privacy by Design</em>).</p>
+<p><strong>Estado actual:</strong> el sistema fue auditado internamente y <strong>aprobado sin reservas</strong> en protección de datos, resiliencia técnica, homologación visual y cobertura de pruebas (12/12 exitosas). Está operativo en Fase 1 (MVP).</p>
+</div>
+</section>
+
+<!-- 2. CÓMO FUNCIONA -->
+<section>
+<h2>2. Cómo funciona el portal, en una imagen</h2>
+<p>Cada clic o vista de página en un portal interno sigue esta ruta antes de convertirse en un número que ve un administrador:</p>
+<div class="pipeline">
+  <div class="pstep"><div class="n">1</div>Usuario hace clic en un portal</div>
+  <span class="arrow">→</span>
+  <div class="pstep"><div class="n">2</div>SDK envía el evento</div>
+  <span class="arrow">→</span>
+  <div class="pstep"><div class="n">3</div>Collector anonimiza el usuario</div>
+  <span class="arrow">→</span>
+  <div class="pstep"><div class="n">4</div>Se encola (RabbitMQ)</div>
+  <span class="arrow">→</span>
+  <div class="pstep"><div class="n">5</div>Se guarda en lote (ClickHouse)</div>
+  <span class="arrow">→</span>
+  <div class="pstep"><div class="n">6</div>Administrador consulta con permiso</div>
+</div>
+
+<h3>2.1 Los componentes técnicos</h3>
+<table>
+<tr><th>Componente</th><th>Qué hace</th><th>Analogía simple</th></tr>
+<tr><td><strong>SDK Web</strong></td><td>Pequeño script instalado en cada portal que registra clics y vistas de página</td><td>Como un contador de visitas discreto</td></tr>
+<tr><td><strong>Collector</strong></td><td>Recibe los eventos y convierte el identificador de usuario en un código irreversible antes de continuar</td><td>Una recepción que quita el nombre y pone un número de folio</td></tr>
+<tr><td><strong>RabbitMQ</strong></td><td>Cola de mensajes que evita que la ingesta se sature o se pierda si algo falla</td><td>Una fila de espera ordenada</td></tr>
+<tr><td><strong>ClickHouse</strong></td><td>Base de datos especializada en guardar y sumar millones de eventos rápidamente</td><td>Un almacén con caducidad automática (90 días)</td></tr>
+<tr><td><strong>Aggregation API</strong></td><td>Calcula los indicadores (KPIs) y sirve el panel visual (dashboard)</td><td>El "contador" que entrega el reporte final</td></tr>
+</table>
+</section>
+
+<div class="page-break"></div>
+
+<!-- 3. GOBERNANZA A DETALLE -->
+<section>
+<h2>3. Gobernanza y privacidad, a detalle</h2>
+<p>El sistema aplica <strong>5 controles concretos</strong>, cada uno verificado en la auditoría interna con evidencia de código:</p>
+
+<h3>3.1 Minimización de datos en el origen</h3>
+<div class="callout">El SDK nunca captura contraseñas, contenido de formularios ni texto libre. Un validador adicional (<code>extra=forbid</code>) rechaza cualquier campo no autorizado, y enmascara automáticamente correos o números largos que aparezcan por accidente en mensajes de error.</div>
+
+<h3>3.2 Pseudonimización irreversible</h3>
+<div class="callout">Antes de que un evento salga del Collector, el identificador del usuario se transforma con <code>HMAC-SHA256</code> (una función criptográfica de un solo sentido) más una clave secreta. <strong>No existe forma de revertir este proceso</strong> — no hay tabla de mapeo inverso ni endpoint para "deshacer" el hash.</div>
+
+<h3>3.3 Umbral de anonimato colectivo (k-anonymity ≥ 5)</h3>
+<div class="callout">Ningún reporte muestra datos de un grupo con menos de 5 usuarios únicos. Si un portal tiene, por ejemplo, solo 3 usuarios activos, el sistema oculta automáticamente esas cifras en vez de exponerlas — así nunca se puede aislar el comportamiento de una sola persona por descarte.</div>
+
+<h3>3.4 Retención limitada de datos</h3>
+<div class="callout">Los eventos crudos se eliminan automáticamente después de <strong>90 días</strong> (configurado directamente en la base de datos, sin depender de que alguien lo haga manualmente).</div>
+
+<h3>3.5 Control de acceso por rol (RBAC)</h3>
+<div class="callout">Cada consulta exige un rol autorizado (<code>ejecutivo</code> o <code>administrador</code>). Algunas vistas — como el reporte de auditoría de gobernanza — son exclusivas para <code>administrador</code>. Intentar acceder sin el rol correcto responde con error 403 (acceso denegado).</div>
+
+<h3>3.6 Diagrama de gobernanza</h3>
+<p>El diagrama interactivo adjunto (<code>onest-gobernanza.html</code>) muestra estos 5 controles ubicados exactamente donde ocurren en el sistema: en el borde (SDK, validador, pseudonimización) y en el punto de consulta (RBAC, Privacy Guard).</p>
+</section>
+
+<div class="page-break"></div>
+
+<!-- 4. EVIDENCIA -->
+<section>
+<h2>4. Evidencia de cumplimiento</h2>
+<table>
+<tr><th>Criterio evaluado</th><th>Resultado</th></tr>
+<tr><td>Protección de datos personales (Privacy by Design)</td><td class="status-ok">✓ Aprobado sin reservas</td></tr>
+<tr><td>Resiliencia del pipeline (FastAPI + RabbitMQ + ClickHouse)</td><td class="status-ok">✓ Aprobado</td></tr>
+<tr><td>Homologación visual (ONEST Digital Design System v1.0)</td><td class="status-ok">✓ Aprobado</td></tr>
+<tr><td>Cobertura de pruebas automatizadas</td><td class="status-ok">✓ 12/12 pruebas exitosas</td></tr>
+</table>
+<p style="font-size:9pt;color:#8592A6;">Fuente: Dossier de Auditoría Técnica y Evaluación de Cumplimiento (documento interno del proyecto).</p>
+</section>
+
+<!-- 5. QUÉ SIGUE -->
+<section>
+<h2>5. Qué tenemos que hacer (próximos pasos)</h2>
+<p>La Fase 1 (MVP) está operativa y aprobada. Lo siguiente identificado para evolucionar la plataforma:</p>
+
+<h3>5.1 Ya resuelto en esta fase</h3>
+<ul>
+  <li>Tipografía corporativa (Montserrat + Inter) cargada correctamente</li>
+  <li>Semáforo de salud técnica y métricas de cuentas inactivas visibles en el dashboard</li>
+  <li>Modo oscuro automático para turnos nocturnos de operación (NOC), activo entre 20:00 y 06:00</li>
+  <li>Sidebar de navegación vertical alineado al Design System</li>
+</ul>
+
+<h3>5.2 Pendiente para Fase 2</h3>
+<div class="callout warn">
+<ul>
+  <li><strong>Selector de rango de fechas real:</strong> hoy son 4 botones fijos (7/14/30/90 días); falta un date-picker con rango arbitrario si se necesita mayor granularidad.</li>
+  <li><strong>Sistema de alertamiento proactivo:</strong> no existe aún notificación en tiempo real cuando la latencia o la tasa de error superan un umbral crítico — hoy hay que entrar al dashboard para verlo.</li>
+  <li><strong>Roles adicionales:</strong> actualmente solo existen "ejecutivo" y "administrador"; si se requiere un rol de auditoría con acceso a identidad real bajo justificación, es un desarrollo de backend nuevo (rol + audit log), no solo de interfaz.</li>
+  <li><strong>Confirmar alcance de responsables:</strong> dos administradores en el equipo de TI tienen su alcance de rol marcado como "por confirmar" (Soporte y Servidores) — pendiente de definición organizacional, no técnica.</li>
+</ul>
+</div>
+
+<h3>5.3 Recomendación</h3>
+<p>Ninguno de los pendientes bloquea el uso actual del sistema. Se recomienda priorizar el <strong>sistema de alertamiento</strong> primero, ya que reduce el tiempo de reacción ante incidentes técnicos, y dejar el rol de auditoría para cuando exista un caso de uso concreto que lo justifique (por su impacto en privacidad).</p>
+</section>
+
+<footer>
+ONEST Logistics · Dirección de Sistemas &amp; TI · Plataforma de Telemetría Web v1.0.0-MVP · Documento generado para presentación interna
+</footer>
+
+</body>
+</html>

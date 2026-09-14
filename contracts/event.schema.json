@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "WebAnalyticsEvent",
+  "description": "Contrato canónico estricto de eventos de telemetría web para Fase 1 (MVP)",
+  "type": "object",
+  "required": [
+    "event_id",
+    "timestamp",
+    "app_id",
+    "session_id",
+    "event_type",
+    "platform"
+  ],
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Identificador único global del evento generado por el SDK"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Marca temporal en formato ISO 8601 UTC en que ocurrió el evento"
+    },
+    "app_id": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9_-]{2,64}$",
+      "description": "Identificador único de la aplicación web emisora"
+    },
+    "user_id": {
+      "type": "string",
+      "maxLength": 128,
+      "description": "Identificador de usuario antes de pseudonimización. Opcional si es usuario no autenticado. Debe ser procesado y eliminado por el Collector."
+    },
+    "user_id_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "Hash consistente SHA-256 generado en el borde por el Collector"
+    },
+    "session_id": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9_-]{8,64}$",
+      "description": "Identificador de la sesión de navegación activa"
+    },
+    "event_type": {
+      "type": "string",
+      "enum": [
+        "session_start",
+        "session_end",
+        "page_view",
+        "error",
+        "custom"
+      ],
+      "description": "Tipo de evento permitido en Fase 1"
+    },
+    "platform": {
+      "type": "string",
+      "const": "web",
+      "description": "Plataforma de origen, restringido a 'web' para Fase 1 pero extensible a futuro"
+    },
+    "role": {
+      "type": "string",
+      "maxLength": 64,
+      "default": "guest",
+      "description": "Rol funcional del usuario obtenido del contexto de autenticación corporativo"
+    },
+    "department": {
+      "type": "string",
+      "maxLength": 64,
+      "default": "unknown",
+      "description": "Departamento o área del usuario"
+    },
+    "properties": {
+      "type": "object",
+      "description": "Metadatos técnicos y de navegación estructurados. Prohibido contenido de inputs y texto libre.",
+      "properties": {
+        "page_path": { "type": "string", "maxLength": 512 },
+        "page_title": { "type": "string", "maxLength": 256 },
+        "referrer": { "type": "string", "maxLength": 512 },
+        "load_time_ms": { "type": "number", "minimum": 0, "maximum": 600000 },
+        "error_message": { "type": "string", "maxLength": 256 },
+        "error_type": { "type": "string", "maxLength": 128 },
+        "user_agent": { "type": "string", "maxLength": 256 },
+        "viewport_width": { "type": "integer", "minimum": 0 },
+        "viewport_height": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": {
+        "type": ["string", "number", "boolean"],
+        "maxLength": 256
+      }
+    }
+  },
+  "additionalProperties": false
+}

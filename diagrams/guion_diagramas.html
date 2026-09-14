@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>ONEST — Guion para presentar los diagramas</title>
+<style>
+  @page { size: Letter; margin: 20mm 18mm; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', Inter, Arial, sans-serif;
+    color: #1a1a1a;
+    line-height: 1.5;
+    margin: 0;
+    font-size: 11pt;
+  }
+  h1, h2, h3, h4 { font-family: Georgia, 'Segoe UI', serif; font-weight: 700; color: #003E75; }
+
+  .cover {
+    height: 225mm;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    page-break-after: always;
+    text-align: center;
+  }
+  .cover .tag {
+    display: inline-block;
+    margin: 0 auto 24px auto;
+    background: #003E75;
+    color: white;
+    padding: 6px 18px;
+    border-radius: 20px;
+    font-size: 10pt;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .cover h1 { font-size: 27pt; margin: 0 0 10px 0; }
+  .cover .subtitle { font-size: 13pt; color: #5B6472; margin-bottom: 30px; }
+  .cover .meta { font-size: 10pt; color: #8592A6; }
+  .cover .filelist { margin-top: 34px; font-size: 10pt; color: #00549E; }
+  .cover .filelist div { margin: 4px 0; font-family: Consolas, monospace; }
+
+  .diagram-page { page-break-before: always; }
+
+  .dheader {
+    background: #003E75;
+    color: white;
+    padding: 16px 20px;
+    border-radius: 8px;
+    margin-bottom: 18px;
+  }
+  .dheader .num { font-size: 9pt; opacity: 0.75; text-transform: uppercase; letter-spacing: 1px; }
+  .dheader h2 { color: white; margin: 4px 0 6px 0; font-size: 17pt; border: none; padding: 0; }
+  .dheader .filename { font-family: Consolas, monospace; font-size: 9.5pt; opacity: 0.9; }
+
+  h3 { font-size: 12.5pt; color: #00549E; margin-top: 20px; margin-bottom: 8px; border-bottom: 2px solid #39B54A; padding-bottom: 4px; }
+
+  .onesent {
+    background: #F5F7F9;
+    border-left: 4px solid #00549E;
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin: 10px 0 16px 0;
+    font-size: 11.5pt;
+  }
+
+  ol.steps { padding-left: 20px; margin: 10px 0; }
+  ol.steps li { margin-bottom: 10px; }
+  ol.steps .actor { font-weight: 700; color: #003E75; }
+
+  .say-box {
+    background: #F5FBF6;
+    border: 1px solid #C8E6CB;
+    border-left: 4px solid #39B54A;
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin: 8px 0 16px 0;
+    font-size: 10.3pt;
+  }
+  .say-box .label { font-size: 8.5pt; text-transform: uppercase; letter-spacing: 0.5px; color: #2B9138; font-weight: 700; margin-bottom: 4px; }
+  .say-box p { margin: 4px 0; font-style: italic; }
+
+  .qa-box {
+    background: #FFF9F0;
+    border: 1px solid #F0D9A8;
+    border-left: 4px solid #E8A33D;
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin: 8px 0 16px 0;
+    font-size: 10.3pt;
+  }
+  .qa-box .label { font-size: 8.5pt; text-transform: uppercase; letter-spacing: 0.5px; color: #B8860B; font-weight: 700; margin-bottom: 6px; }
+  .qa-box p { margin: 6px 0; }
+  .qa-box .q { font-weight: 700; }
+
+  table.glossary { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 9.7pt; }
+  table.glossary th { background: #00549E; color: white; text-align: left; padding: 6px 10px; }
+  table.glossary td { padding: 6px 10px; border-bottom: 1px solid #E1E6EB; }
+  table.glossary tr:nth-child(even) td { background: #F9FAFB; }
+
+  .navigate-tip {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    background: #F0F5FA;
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin: 12px 0;
+    font-size: 9.7pt;
+    color: #003E75;
+  }
+  .navigate-tip .icon { font-size: 14pt; }
+
+  footer { margin-top: 30px; font-size: 8.5pt; color: #8592A6; text-align: center; border-top: 1px solid #E1E6EB; padding-top: 10px; }
+</style>
+</head>
+<body>
+
+<!-- PORTADA -->
+<div class="cover">
+  <div class="tag">ONEST Logistics · Dirección de Sistemas &amp; TI</div>
+  <h1>Guion para presentar<br>los 3 diagramas del sistema</h1>
+  <div class="subtitle">Qué es cada uno, cómo leerlo, y qué decir en voz alta</div>
+  <div class="meta">Plataforma de Telemetría Web · v1.0.0-MVP</div>
+  <div class="filelist">
+    <div>onest-architecture.html</div>
+    <div>onest-sequence-ingesta.html</div>
+    <div>onest-sequence-consulta.html</div>
+  </div>
+</div>
+
+<!-- DIAGRAMA 1: ARQUITECTURA -->
+<div class="diagram-page">
+<div class="dheader">
+  <div class="num">Diagrama 1 de 3</div>
+  <h2>Arquitectura general del sistema</h2>
+  <div class="filename">onest-architecture.html</div>
+</div>
+
+<div class="onesent">Muestra <strong>las piezas del sistema y cómo se conectan entre sí</strong> — es el "mapa" completo, sin entrar en el detalle de cada paso técnico.</div>
+
+<h3>Cómo leerlo</h3>
+<p>El diagrama tiene dos filas. Léelo de izquierda a derecha, una fila a la vez:</p>
+<ol class="steps">
+  <li><span class="actor">Fila de abajo (ingesta):</span> un usuario en un portal → el SDK que registra su actividad → el Collector que recibe el evento → RabbitMQ (la cola) → el Consumer → ClickHouse (donde se guarda todo).</li>
+  <li><span class="actor">Fila de arriba (consulta):</span> un administrador → la Aggregation API → pasa por RBAC (control de acceso) y Privacy Guard (control de privacidad) antes de entregar cualquier dato.</li>
+</ol>
+
+<div class="navigate-tip">
+  <span class="icon">🖱️</span>
+  <div>Al abrir el HTML, usa los botones de <strong>"vistas"</strong> en la parte superior — resaltan solo la ruta de ingesta o solo la de consulta, para no mostrar todo el diagrama de golpe.</div>
+</div>
+
+<h3>Qué decir en voz alta</h3>
+<div class="say-box">
+<div class="label">Frase de apertura</div>
+<p>"Este es el mapa completo del sistema. Tiene dos caminos: uno por donde entran los datos — abajo — y otro por donde los administradores los consultan — arriba. Nunca se cruzan directamente: todo pasa por controles de seguridad."</p>
+<div class="label" style="margin-top:10px;">Al señalar la fila de abajo</div>
+<p>"Cuando alguien usa un portal interno, un pequeño programa (SDK) registra esa actividad, la envía a un recolector, se pone en una fila de espera y finalmente se guarda en una base de datos especializada."</p>
+<div class="label" style="margin-top:10px;">Al señalar la fila de arriba</div>
+<p>"Cuando un administrador quiere ver un reporte, la petición pasa primero por dos filtros: uno que verifica que tiene permiso, y otro que protege la privacidad de los usuarios antes de mostrar cualquier número."</p>
+</div>
+
+<div class="qa-box">
+<div class="label">Si preguntan...</div>
+<p><span class="q">"¿Por qué hay una cola (RabbitMQ) en vez de guardar directo?"</span><br>Para que, si hay muchísimos eventos a la vez o algo falla momentáneamente, no se pierda información — se pone en espera y se procesa en cuanto es posible.</p>
+<p><span class="q">"¿Qué pasa si alguien sin permiso intenta consultar datos?"</span><br>RBAC lo bloquea antes de que la petición llegue a los datos reales.</p>
+</div>
+</div>
+
+<!-- DIAGRAMA 2: SECUENCIA INGESTA -->
+<div class="diagram-page">
+<div class="dheader">
+  <div class="num">Diagrama 2 de 3</div>
+  <h2>Secuencia — Ingesta de un evento</h2>
+  <div class="filename">onest-sequence-ingesta.html</div>
+</div>
+
+<div class="onesent">Muestra <strong>la línea de tiempo exacta</strong> de un solo evento: qué pasa primero, qué pasa después, en qué orden — no las piezas del sistema, sino el paso a paso cronológico.</div>
+
+<h3>Cómo leerlo</h3>
+<p>Cada columna es un componente; el tiempo avanza de arriba hacia abajo. Las flechas son mensajes entre componentes:</p>
+<ol class="steps">
+  <li><span class="actor">Usuario hace clic</span> en el portal → el SDK captura el evento.</li>
+  <li><span class="actor">SDK envía</span> el evento al Collector (<code>POST /api/v1/events</code>).</li>
+  <li><span class="actor">El Collector anonimiza</span> el identificador del usuario (lo convierte en un código irreversible) antes de continuar.</li>
+  <li><span class="actor">El Collector publica</span> el evento en la cola y responde de inmediato "recibido" al usuario — <strong>no espera a que se guarde</strong>.</li>
+  <li><span class="actor">El Consumer</span> toma eventos de la cola y los guarda en la base de datos en lotes (cada 100 eventos o cada 1.5 segundos).</li>
+</ol>
+
+<div class="navigate-tip">
+  <span class="icon">🖱️</span>
+  <div>Este diagrama distingue dos tramos con color de fondo: <strong>"camino síncrono"</strong> (lo que el usuario espera, menos de 1 segundo) y <strong>"camino asíncrono"</strong> (lo que pasa después, sin que nadie espere).</div>
+</div>
+
+<h3>Qué decir en voz alta</h3>
+<div class="say-box">
+<div class="label">Frase de apertura</div>
+<p>"Aquí no vemos las piezas del sistema, sino el orden exacto en que ocurren las cosas cuando un usuario hace un clic. El tiempo corre de arriba hacia abajo."</p>
+<div class="label" style="margin-top:10px;">El punto clave a resaltar</div>
+<p>"Lo importante aquí es que el usuario nunca espera: en cuanto el sistema recibe el evento, responde de inmediato. Todo lo que pasa después — guardar el dato de forma permanente — ocurre en segundo plano, sin afectar la experiencia de quien usa el portal."</p>
+<div class="label" style="margin-top:10px;">Sobre la anonimización</div>
+<p>"Antes de que el dato salga de este primer paso, el identificador de la persona ya se convirtió en un código que no se puede revertir. Es la primera y más importante barrera de privacidad del sistema."</p>
+</div>
+
+<div class="qa-box">
+<div class="label">Si preguntan...</div>
+<p><span class="q">"¿Qué pasa si la cola (RabbitMQ) está caída?"</span><br>El Collector guarda los eventos en un buffer temporal en memoria (hasta 5000) y los reintenta enviar cuando la cola vuelve a estar disponible.</p>
+<p><span class="q">"¿Por qué se guarda en lotes y no uno por uno?"</span><br>Es mucho más eficiente para la base de datos — reduce la carga cuando hay miles de eventos por minuto.</p>
+</div>
+</div>
+
+<!-- DIAGRAMA 3: SECUENCIA CONSULTA -->
+<div class="diagram-page">
+<div class="dheader">
+  <div class="num">Diagrama 3 de 3</div>
+  <h2>Secuencia — Consulta de KPIs gobernada</h2>
+  <div class="filename">onest-sequence-consulta.html</div>
+</div>
+
+<div class="onesent">Muestra <strong>qué pasa exactamente cuando un administrador pide ver un reporte</strong> — el mismo formato de línea de tiempo que el diagrama anterior, pero del lado de la consulta, no de la ingesta.</div>
+
+<h3>Cómo leerlo</h3>
+<ol class="steps">
+  <li><span class="actor">El administrador inicia sesión</span> y recibe un token de acceso válido por 24 horas — no tiene que volver a loguearse en cada consulta.</li>
+  <li><span class="actor">El administrador pide un reporte</span> (por ejemplo, el resumen de KPIs).</li>
+  <li><span class="actor">El sistema valida el rol</span> del administrador antes de hacer cualquier otra cosa.</li>
+  <li><span class="actor">Se consulta la base de datos</span> y se agregan los números (sumas, promedios, conteos).</li>
+  <li><span class="actor">Antes de responder, se aplica el filtro de privacidad:</span> si algún grupo tiene menos de 5 usuarios únicos, esos datos se ocultan.</li>
+  <li><span class="actor">El administrador recibe el reporte</span> ya validado y filtrado.</li>
+</ol>
+
+<div class="navigate-tip">
+  <span class="icon">🖱️</span>
+  <div>Este diagrama tiene dos secciones marcadas: <strong>"Autenticación"</strong> (login) y <strong>"Consulta gobernada"</strong> (todo lo que pasa después, con los controles de seguridad).</div>
+</div>
+
+<h3>Qué decir en voz alta</h3>
+<div class="say-box">
+<div class="label">Frase de apertura</div>
+<p>"Este es el mismo tipo de diagrama que el anterior, pero mostrando el otro extremo del sistema: qué pasa cuando alguien quiere ver los resultados."</p>
+<div class="label" style="margin-top:10px;">El punto clave a resaltar</div>
+<p>"Ningún dato le llega al administrador sin pasar antes por dos filtros: primero se confirma que tiene permiso para verlo, y después se revisa que no se esté exponiendo información de un grupo demasiado pequeño de personas."</p>
+<div class="label" style="margin-top:10px;">Sobre el token de sesión</div>
+<p>"El administrador no tiene que iniciar sesión cada vez — el permiso dura 24 horas, igual que cuando uno se queda conectado en cualquier aplicación."</p>
+</div>
+
+<div class="qa-box">
+<div class="label">Si preguntan...</div>
+<p><span class="q">"¿Qué significa que se 'suprimen' los datos?"</span><br>Si un reporte agruparía a menos de 5 personas, el sistema no muestra ese número — para evitar que se pueda identificar a alguien por descarte.</p>
+<p><span class="q">"¿Todos los administradores ven lo mismo?"</span><br>No todos. Algunos reportes (como el de auditoría de gobernanza) son exclusivos para el rol de administrador más alto, no para todos los perfiles.</p>
+</div>
+</div>
+
+<!-- GLOSARIO -->
+<div class="diagram-page">
+<div class="dheader">
+  <div class="num">Referencia rápida</div>
+  <h2>Glosario de términos que aparecen en los diagramas</h2>
+</div>
+<table class="glossary">
+<tr><th>Término</th><th>Qué significa, en simple</th></tr>
+<tr><td><strong>SDK</strong></td><td>Programa pequeño instalado en cada portal que registra la actividad del usuario</td></tr>
+<tr><td><strong>Collector</strong></td><td>Servicio que recibe los eventos y los anonimiza antes de continuar</td></tr>
+<tr><td><strong>RabbitMQ</strong></td><td>Sistema de "fila de espera" que evita que se pierdan eventos si hay mucho tráfico</td></tr>
+<tr><td><strong>Consumer</strong></td><td>Servicio que toma eventos de la fila y los guarda de forma permanente, en lotes</td></tr>
+<tr><td><strong>ClickHouse</strong></td><td>Base de datos donde se almacenan los eventos (se borran automáticamente tras 90 días)</td></tr>
+<tr><td><strong>Aggregation API</strong></td><td>Servicio que calcula los reportes (KPIs) y los entrega al dashboard</td></tr>
+<tr><td><strong>RBAC</strong></td><td>Control de acceso: verifica que quien pide un dato tenga el permiso (rol) adecuado</td></tr>
+<tr><td><strong>Privacy Guard</strong></td><td>Filtro que oculta datos de grupos con menos de 5 usuarios, para proteger la privacidad</td></tr>
+<tr><td><strong>k-anonymity (k≥5)</strong></td><td>La regla matemática detrás del Privacy Guard: nunca mostrar un grupo de menos de 5 personas</td></tr>
+<tr><td><strong>HMAC-SHA256</strong></td><td>El método técnico usado para convertir el identificador de un usuario en un código irreversible</td></tr>
+<tr><td><strong>Token Bearer</strong></td><td>La "llave" temporal que recibe un administrador al iniciar sesión, válida por 24 horas</td></tr>
+</table>
+</div>
+
+<footer>
+ONEST Logistics · Dirección de Sistemas &amp; TI · Guion de presentación de diagramas técnicos
+</footer>
+
+</body>
+</html>

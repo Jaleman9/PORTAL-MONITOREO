@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "ONEST — Transformación del dato",
+    "output": "onest-dataflow.html",
+    "viewBox": [1080, 620],
+    "quality_profile": "showcase",
+    "views": [
+      { "id": "identity-strip", "label": "Eliminación de identidad", "focus": ["raw-event", "pseudonymizer", "canonical-event"], "note": "El user_id en texto plano se transforma en un hash irreversible antes de salir del Collector." },
+      { "id": "durable-write", "label": "Escritura durable", "focus": ["canonical-event", "exchange", "queue", "consumer-batch", "events-table"], "note": "El evento pseudonimizado se encola y se persiste en lotes en ClickHouse." },
+      { "id": "governed-aggregate", "label": "Agregación gobernada", "focus": ["events-table", "sql-aggregate", "k-check", "kpi-json"], "note": "Toda agregación pasa por la verificación de k-anonymity antes de convertirse en un KPI expuesto." }
+    ]
+  },
+  "stages": [
+    { "label": "Origen" },
+    { "label": "Anonimización" },
+    { "label": "Cola" },
+    { "label": "Persistencia" },
+    { "label": "KPI gobernado" }
+  ],
+  "nodes": [
+    { "id": "raw-event", "type": "frontend", "label": "Evento crudo", "sublabel": "user_id + payload", "stage": 0, "row": 1, "tag": "SDK" },
+    { "id": "pseudonymizer", "type": "security", "label": "HMAC-SHA256", "sublabel": "irreversible", "stage": 1, "row": 0, "tag": "PII guard" },
+    { "id": "canonical-event", "type": "backend", "label": "Evento canónico", "sublabel": "user_id_hash", "stage": 1, "row": 2, "tag": "sin PII" },
+    { "id": "exchange", "type": "messagebus", "label": "telemetry.events", "sublabel": "exchange direct", "stage": 2, "row": 1, "tag": "durable" },
+    { "id": "queue", "type": "messagebus", "label": "events.raw", "sublabel": "queue", "stage": 2, "row": 2, "tag": "ack manual" },
+    { "id": "consumer-batch", "type": "backend", "label": "Batch writer", "sublabel": "100 filas / 1.5s", "stage": 3, "row": 1, "tag": "consumer" },
+    { "id": "events-table", "type": "database", "label": "analytics.events", "sublabel": "MergeTree", "stage": 3, "row": 2, "tag": "TTL 90d" },
+    { "id": "sql-aggregate", "type": "backend", "label": "Agregación SQL", "sublabel": "GROUP BY app_id", "stage": 4, "row": 0, "tag": "kpi_service" },
+    { "id": "k-check", "type": "security", "label": "k >= 5 ?", "sublabel": "PrivacyGuard", "stage": 4, "row": 1, "tag": "gate" },
+    { "id": "kpi-json", "type": "backend", "label": "KPI expuesto", "sublabel": "JSON al dashboard", "stage": 4, "row": 2, "tag": "sin re-identificación" }
+  ],
+  "flows": [
+    { "id": "raw-to-hash", "from": "raw-event", "to": "pseudonymizer", "label": "user_id en texto plano", "classification": "sensible", "variant": "security" },
+    { "id": "hash-to-canonical", "from": "pseudonymizer", "to": "canonical-event", "label": "user_id_hash", "classification": "pseudonimizado", "variant": "emphasis", "route": "straight", "labelAt": [315, 200] },
+    { "id": "canonical-to-exchange", "from": "canonical-event", "to": "exchange", "label": "publica", "classification": "append-only", "variant": "default" },
+    { "id": "exchange-to-queue", "from": "exchange", "to": "queue", "label": "routing_key: events.web", "classification": "enrutado", "variant": "default", "route": "straight", "labelAt": [530, 314] },
+    { "id": "queue-to-batch", "from": "queue", "to": "consumer-batch", "label": "consume", "classification": "en orden", "variant": "default" },
+    { "id": "batch-to-table", "from": "consumer-batch", "to": "events-table", "label": "INSERT batch", "classification": "durable", "variant": "emphasis", "route": "straight", "labelAt": [745, 314] },
+    { "id": "table-to-sql", "from": "events-table", "to": "sql-aggregate", "label": "lectura agregada", "classification": "no fila-a-fila", "variant": "dashed" },
+    { "id": "sql-to-check", "from": "sql-aggregate", "to": "k-check", "label": "conteo de usuarios únicos", "classification": "candidato a KPI", "variant": "security", "route": "straight", "labelAt": [960, 200] },
+    { "id": "check-to-kpi", "from": "k-check", "to": "kpi-json", "label": "aprobado o suprimido", "classification": "gobernado", "variant": "emphasis", "route": "straight", "labelAt": [960, 314] }
+  ],
+  "cards": [
+    { "dot": "rose", "title": "Frontera de identidad", "items": ["El único punto donde existe un user_id en texto plano es el Evento crudo, dentro del propio Collector", "A partir de la Anonimización, todo el pipeline trabaja exclusivamente con un hash irreversible"] },
+    { "dot": "cyan", "title": "Camino durable", "items": ["El exchange 'telemetry.events' desacopla la escritura del Collector de la velocidad de ClickHouse", "El Consumer agrupa en lotes antes de insertar, evitando escrituras fila por fila"] },
+    { "dot": "emerald", "title": "KPI solo si es seguro", "items": ["Cada agregación pasa por el gate k >= 5 antes de convertirse en un JSON expuesto al dashboard", "Si el grupo tiene menos de 5 usuarios únicos, el dato se suprime en vez de exponerse"] }
+  ]
+}
