@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Benchmark Competitivo & Arquitectura de Medición - ONEST Analytics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #0a0f1d;
+      --bg-secondary: #111827;
+      --bg-card: rgba(17, 24, 39, 0.85);
+      --bg-card-hover: rgba(31, 41, 55, 0.9);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-highlight: rgba(16, 185, 129, 0.4);
+      --text-primary: #f9fafb;
+      --text-secondary: #9ca3af;
+      --text-muted: #6b7280;
+      --accent-emerald: #10b981;
+      --accent-emerald-glow: rgba(16, 185, 129, 0.15);
+      --accent-cyan: #06b6d4;
+      --accent-purple: #8b5cf6;
+      --accent-amber: #f59e0b;
+      --accent-rose: #f43f5e;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      padding: 2.5rem 1.5rem;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1240px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    header {
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .badge-top {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--accent-emerald);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      margin-bottom: 0.75rem;
+    }
+
+    h1 {
+      font-size: 2.25rem;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 50%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+
+    p.subtitle {
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+      max-width: 750px;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid var(--border-color);
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-primary {
+      background: var(--accent-emerald);
+      color: #041f17;
+      border-color: var(--accent-emerald);
+    }
+
+    .btn-primary:hover {
+      background: #059669;
+      color: #ffffff;
+    }
+
+    /* Section Styles */
+    section {
+      margin-bottom: 3.5rem;
+    }
+
+    .section-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+      color: #f1f5f9;
+    }
+
+    .section-title span.number {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background: rgba(6, 182, 212, 0.15);
+      color: var(--accent-cyan);
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    /* Table Styles */
+    .table-wrapper {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      overflow: hidden;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    th {
+      background: rgba(17, 24, 39, 0.95);
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    td {
+      padding: 1.15rem 1.25rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      font-size: 0.925rem;
+      color: #e2e8f0;
+      vertical-align: top;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr.competitor:hover {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    /* Highlighted Own Platform Row */
+    tr.our-platform {
+      background: linear-gradient(90deg, rgba(16, 185, 129, 0.08) 0%, rgba(6, 182, 212, 0.05) 100%);
+      border-left: 4px solid var(--accent-emerald);
+    }
+
+    tr.our-platform:hover {
+      background: linear-gradient(90deg, rgba(16, 185, 129, 0.12) 0%, rgba(6, 182, 212, 0.08) 100%);
+    }
+
+    tr.our-platform td {
+      font-weight: 500;
+      color: #ffffff;
+    }
+
+    .badge-tool {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      background: var(--accent-emerald);
+      color: #022c22;
+      margin-left: 0.5rem;
+    }
+
+    .pill-hosting {
+      display: inline-block;
+      padding: 0.25rem 0.65rem;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: #cbd5e1;
+    }
+
+    /* Cards Grid */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.5rem;
+      backdrop-filter: blur(8px);
+      transition: all 0.25s ease;
+      position: relative;
+    }
+
+    .card:hover {
+      border-color: rgba(255, 255, 255, 0.18);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .card-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+    }
+
+    .icon-emerald { background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald); }
+    .icon-cyan { background: rgba(6, 182, 212, 0.15); color: var(--accent-cyan); }
+    .icon-purple { background: rgba(139, 92, 246, 0.15); color: var(--accent-purple); }
+    .icon-amber { background: rgba(245, 158, 11, 0.15); color: var(--accent-amber); }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #f8fafc;
+    }
+
+    .card p {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.75rem;
+    }
+
+    .code-pill {
+      display: block;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 6px;
+      padding: 0.65rem 0.85rem;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: #a5f3fc;
+      margin-top: 0.75rem;
+      overflow-x: auto;
+    }
+
+    /* Stack Flow Architecture */
+    .stack-timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .stack-step {
+      display: grid;
+      grid-template-columns: 140px 1fr 180px;
+      align-items: center;
+      gap: 1.5rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+      transition: border-color 0.2s;
+    }
+
+    .stack-step:hover {
+      border-color: rgba(6, 182, 212, 0.35);
+    }
+
+    .step-badge {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.3rem 0.6rem;
+      border-radius: 6px;
+      text-align: center;
+    }
+
+    .badge-client { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
+    .badge-collector { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .badge-queue { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+    .badge-olap { background: rgba(139, 92, 246, 0.15); color: #c084fc; border: 1px solid rgba(139, 92, 246, 0.3); }
+    .badge-api { background: rgba(6, 182, 212, 0.15); color: #22d3ee; border: 1px solid rgba(6, 182, 212, 0.3); }
+
+    .step-desc h4 {
+      font-size: 0.95rem;
+      color: #f8fafc;
+      margin-bottom: 0.2rem;
+    }
+
+    .step-desc p {
+      font-size: 0.825rem;
+      color: var(--text-secondary);
+    }
+
+    .step-tech {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: #94a3b8;
+      text-align: right;
+    }
+
+    /* Comparison vs Competitors */
+    .vs-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 1.25rem;
+    }
+
+    .vs-card h4 {
+      font-size: 0.95rem;
+      color: #f1f5f9;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
+
+    .vs-tag {
+      font-size: 0.7rem;
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .tag-diff { background: rgba(16, 185, 129, 0.2); color: var(--accent-emerald); }
+
+    .vs-card p {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 4rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+    }
+
+    @media print {
+      body {
+        background: #ffffff !important;
+        color: #0f172a !important;
+        padding: 0;
+      }
+      .table-wrapper, .card, .stack-step, .vs-card {
+        background: #ffffff !important;
+        border: 1px solid #cbd5e1 !important;
+        box-shadow: none !important;
+        color: #0f172a !important;
+      }
+      h1, .card-title, .step-desc h4, .vs-card h4 {
+        color: #0f172a !important;
+        -webkit-text-fill-color: initial !important;
+      }
+      th {
+        background: #f1f5f9 !important;
+        color: #334155 !important;
+      }
+      td, p, .step-desc p, .vs-card p {
+        color: #334155 !important;
+      }
+      .btn {
+        display: none !important;
+      }
+      tr.our-platform {
+        background: #ecfdf5 !important;
+        border-left: 4px solid #059669 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- Header -->
+    <header>
+      <div>
+        <div class="badge-top">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          Documento Ejecutivo de Arquitectura & Benchmark
+        </div>
+        <h1>Benchmark de Analítica Web ONEST vs. Competencia</h1>
+        <p class="subtitle">
+          Respuesta técnica comparativa: Cómo mide el tiempo, comportamiento y gobernanza nuestra plataforma frente a PostHog, OpenReplay, Umami, Plausible y Matomo.
+        </p>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-primary" onclick="window.print()">
+          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+          Imprimir / Guardar PDF
+        </button>
+      </div>
+    </header>
+
+    <!-- 1. TABLA COMPARATIVA DIRECTA -->
+    <section>
+      <div class="section-title">
+        <span class="number">1</span>
+        Matriz Comparativa de Herramientas
+      </div>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 18%;">Herramienta</th>
+              <th style="width: 25%;">Enfoque principal</th>
+              <th style="width: 37%;">Cómo mide el tiempo</th>
+              <th style="width: 20%;">Tipo de hosting</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- PostHog -->
+            <tr class="competitor">
+              <td><strong>PostHog</strong></td>
+              <td>Analítica de producto y comportamiento</td>
+              <td>Tiempo en pantalla, grabaciones de sesión y embudos por duración</td>
+              <td><span class="pill-hosting">Docker / Kube / Cloud</span></td>
+            </tr>
+
+            <!-- OpenReplay -->
+            <tr class="competitor">
+              <td><strong>OpenReplay</strong></td>
+              <td><em>Session replay</em> y observabilidad frontend</td>
+              <td>Tiempo activo/inactivo segundo a segundo y reproducción visual</td>
+              <td><span class="pill-hosting">Docker / Helm / K8s</span></td>
+            </tr>
+
+            <!-- Umami -->
+            <tr class="competitor">
+              <td><strong>Umami</strong></td>
+              <td>Analítica web minimalista y privada</td>
+              <td>Duración media de sesión y tiempo por URL sin <em>cookies</em></td>
+              <td><span class="pill-hosting">Docker / Node / Postgres</span></td>
+            </tr>
+
+            <!-- Plausible -->
+            <tr class="competitor">
+              <td><strong>Plausible</strong></td>
+              <td>Analítica web simple (alternativa a GA)</td>
+              <td>Tiempo promedio de permanencia por visita y página</td>
+              <td><span class="pill-hosting">Docker / ClickHouse</span></td>
+            </tr>
+
+            <!-- Matomo -->
+            <tr class="competitor">
+              <td><strong>Matomo</strong></td>
+              <td>Analítica integral tradicional</td>
+              <td>Duración de visita, tiempo por página y rebote histórico</td>
+              <td><span class="pill-hosting">PHP + MySQL / Cloud</span></td>
+            </tr>
+
+            <!-- NUESTRA PLATAFORMA (ONEST) -->
+            <tr class="our-platform">
+              <td>
+                <strong>ONEST Analytics</strong>
+                <span class="badge-tool">Nuestra Plataforma</span>
+              </td>
+              <td><strong>Gobernanza corporativa, adopción de portales B2B y privacidad estricta (k &ge; 5)</strong></td>
+              <td><strong>Duración de sesión (session_start/end), tiempo de carga real (NavigationTiming API), permanencia en SPAs e inactividad</strong></td>
+              <td><span class="pill-hosting" style="background: rgba(16,185,129,0.15); color: #34d399; border-color: rgba(16,185,129,0.3);">Docker Compose (ClickHouse + RabbitMQ + FastAPI)</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 2. CÓMO LO MIDO -->
+    <section>
+      <div class="section-title">
+        <span class="number">2</span>
+        ¿Cómo lo mido? (Métricas de Tiempo y Comportamiento)
+      </div>
+
+      <div class="grid-2">
+        <!-- Tarjeta 1: Performance -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon icon-cyan">⚡</div>
+            <div>
+              <div class="card-title">Tiempo de Rendimiento y Carga Real</div>
+              <span style="font-size: 0.75rem; color: var(--accent-cyan); font-weight: 600;">Core Web Vitals / Performance</span>
+            </div>
+          </div>
+          <p>
+            Mide el tiempo exacto en milisegundos que tarda la página en responder y procesarse en el dispositivo del usuario real mediante la API nativa de los navegadores.
+          </p>
+          <div class="code-pill">
+            // SDK: PerformanceNavigationTiming<br>
+            load_time_ms = performance.getEntriesByType('navigation')[0].duration;
+          </div>
+        </div>
+
+        <!-- Tarjeta 2: Sesiones e Inactividad -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon icon-emerald">⏱️</div>
+            <div>
+              <div class="card-title">Duración de Sesión e Inactividad</div>
+              <span style="font-size: 0.75rem; color: var(--accent-emerald); font-weight: 600;">Ciclo de Vida de Sesión</span>
+            </div>
+          </div>
+          <p>
+            Controla sesiones activas en <code>sessionStorage</code> con caducidad tras <strong>30 minutos de inactividad</strong>. Detecta el cierre o cambio de pestaña con <code>visibilitychange</code> y <code>beforeunload</code>.
+          </p>
+          <div class="code-pill">
+            Eventos: session_start | session_end | idle_timeout (30m)
+          </div>
+        </div>
+
+        <!-- Tarjeta 3: SPAs -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon icon-purple">🔄</div>
+            <div>
+              <div class="card-title">Permanencia en SPAs (Single Page Apps)</div>
+              <span style="font-size: 0.75rem; color: var(--accent-purple); font-weight: 600;">Navegación Virtual React/Angular/Vue</span>
+            </div>
+          </div>
+          <p>
+            Instrumenta automáticamente el History API (<code>pushState</code>, <code>replaceState</code>, <code>popstate</code>) para registrar transiciones de rutas sin recarga completa de página.
+          </p>
+          <div class="code-pill">
+            History.pushState() &rarr; Dispara page_view con page_path sanitizado
+          </div>
+        </div>
+
+        <!-- Tarjeta 4: Negocio y Adopción -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon icon-amber">📊</div>
+            <div>
+              <div class="card-title">Adopción y Cuentas Ociosas</div>
+              <span style="font-size: 0.75rem; color: var(--accent-amber); font-weight: 600;">KPIs Temporales de Negocio</span>
+            </div>
+          </div>
+          <p>
+            Agregación en ClickHouse de <strong>DAU</strong> (Usuarios Diarios), <strong>MAU</strong> (Usuarios Mensuales), <strong>Ratio de Adopción (DAU/MAU)</strong> y alerta automática de cuentas con &gt;30 días sin ingresar.
+          </p>
+          <div class="code-pill">
+            SELECT uniqExact(user_id_hash) FROM events GROUP BY event_date
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. CON QUÉ LO MIDO -->
+    <section>
+      <div class="section-title">
+        <span class="number">3</span>
+        ¿Con qué lo mido? (Arquitectura y Stack Tecnológico)
+      </div>
+
+      <div class="stack-timeline">
+        <!-- Paso 1 -->
+        <div class="stack-step">
+          <span class="step-badge badge-client">1. CLIENTE</span>
+          <div class="step-desc">
+            <h4>SDK Web TypeScript (telemetry.js)</h4>
+            <p>Script ultra-ligero (&lt;12 KB), no intrusivo, sin cookies invasivas. Captura eventos automáticos y errores JS no controlados.</p>
+          </div>
+          <div class="step-tech">TypeScript / Vite</div>
+        </div>
+
+        <!-- Paso 2 -->
+        <div class="stack-step">
+          <span class="step-badge badge-collector">2. BORDE / INGESTA</span>
+          <div class="step-desc">
+            <h4>Collector Service & Pseudonimización</h4>
+            <p>API asíncrona de alta concurrencia. Valida contratos JSON Schema y aplica hash HMAC-SHA256 con salt secreto antes de encolar.</p>
+          </div>
+          <div class="step-tech">FastAPI / Python 3.11</div>
+        </div>
+
+        <!-- Paso 3 -->
+        <div class="stack-step">
+          <span class="step-badge badge-queue">3. MENSAJERÍA</span>
+          <div class="step-desc">
+            <h4>RabbitMQ Event Buffer</h4>
+            <p>Amortiguador de eventos asíncronos para tolerar picos masivos de telemetría sin pérdida de datos ni bloqueo de clientes.</p>
+          </div>
+          <div class="step-tech">RabbitMQ 3.13 (AMQP)</div>
+        </div>
+
+        <!-- Paso 4 -->
+        <div class="stack-step">
+          <span class="step-badge badge-olap">4. BASE DE DATOS</span>
+          <div class="step-desc">
+            <h4>ClickHouse OLAP Columnar</h4>
+            <p>Motor de almacenamiento analítico optimizado. Particionado mensual con TTL de retención de 90 días (minimización por ley).</p>
+          </div>
+          <div class="step-tech">ClickHouse MergeTree</div>
+        </div>
+
+        <!-- Paso 5 -->
+        <div class="stack-step">
+          <span class="step-badge badge-api">5. GOBERNANZA & UI</span>
+          <div class="step-desc">
+            <h4>Aggregation API & Dashboard Ejecutivo</h4>
+            <p>Control de acceso basado en roles (RBAC) y filtro de privacidad k-anonymity (k &ge; 5) para prevenir reidentificación.</p>
+          </div>
+          <div class="step-tech">FastAPI + HTML5/CSS</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. VENTAJAS COMPETITIVAS -->
+    <section>
+      <div class="section-title">
+        <span class="number">4</span>
+        Diferenciadores Clave frente al Mercado
+      </div>
+
+      <div class="grid-3">
+        <div class="vs-card">
+          <h4>
+            Vs. PostHog / OpenReplay
+            <span class="vs-tag tag-diff">Seguridad PII</span>
+          </h4>
+          <p>
+            No graba la pantalla en video. Evita capturar datos bancarios, contraseñas o datos personales en formularios corporativos. Consume 95% menos ancho de banda.
+          </p>
+        </div>
+
+        <div class="vs-card">
+          <h4>
+            Vs. Matomo / Google Analytics
+            <span class="vs-tag tag-diff">Rendimiento OLAP</span>
+          </h4>
+          <p>
+            No usa bases de datos relacionales lentas (MySQL). ClickHouse procesa millones de eventos analíticos en milisegundos con bajo costo computacional.
+          </p>
+        </div>
+
+        <div class="vs-card">
+          <h4>
+            Vs. Umami / Plausible
+            <span class="vs-tag tag-diff">Gobernanza B2B</span>
+          </h4>
+          <p>
+            Diseñado para entornos corporativos: Soporte multi-portal, matriz RBAC (Ejecutivo vs Analista), k-anonymity (k &ge; 5) y observabilidad de errores frontend.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <span>Plataforma de Analítica Web ONEST &copy; 2026</span>
+      <span>Desplegado mediante Docker Compose &bull; ClickHouse OLAP &bull; FastAPI</span>
+    </footer>
+
+  </div>
+
+</body>
+</html>
