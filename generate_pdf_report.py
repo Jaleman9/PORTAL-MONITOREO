@@ -6,16 +6,15 @@ from reportlab.platypus import (
     SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak, KeepTogether, HRFlowable
 )
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT, TA_JUSTIFY
 
 def build_pdf(filename="COMPARATIVA_COMPETENCIA.pdf"):
     doc = SimpleDocTemplate(
         filename,
         pagesize=letter,
-        leftMargin=36,
-        rightMargin=36,
-        topMargin=36,
-        bottomMargin=36
+        leftMargin=30,
+        rightMargin=30,
+        topMargin=30,
+        bottomMargin=30
     )
 
     styles = getSampleStyleSheet()
@@ -26,61 +25,54 @@ def build_pdf(filename="COMPARATIVA_COMPETENCIA.pdf"):
     accent_dark_emerald = colors.HexColor("#064e3b")
     text_dark = colors.HexColor("#1e293b")
     text_muted = colors.HexColor("#64748b")
-    bg_light_gray = colors.HexColor("#f8fafc")
     border_color = colors.HexColor("#cbd5e1")
     
     title_style = ParagraphStyle(
         'DocTitle',
         parent=styles['Heading1'],
         fontName='Helvetica-Bold',
-        fontSize=20,
-        leading=24,
+        fontSize=18,
+        leading=22,
         textColor=primary_color,
-        spaceAfter=4
+        spaceAfter=3
     )
     
     subtitle_style = ParagraphStyle(
         'DocSubtitle',
         parent=styles['Normal'],
         fontName='Helvetica',
-        fontSize=10,
-        leading=14,
+        fontSize=9,
+        leading=13,
         textColor=text_muted,
-        spaceAfter=15
+        spaceAfter=12
     )
     
     section_title_style = ParagraphStyle(
         'SectionTitle',
         parent=styles['Heading2'],
         fontName='Helvetica-Bold',
-        fontSize=13,
-        leading=17,
+        fontSize=11.5,
+        leading=15,
         textColor=accent_dark_emerald,
-        spaceBefore=12,
-        spaceAfter=8
+        spaceBefore=10,
+        spaceAfter=6
     )
 
     body_style = ParagraphStyle(
         'Body',
         parent=styles['Normal'],
         fontName='Helvetica',
-        fontSize=9,
-        leading=13,
+        fontSize=8,
+        leading=11.5,
         textColor=text_dark
-    )
-    
-    body_bold = ParagraphStyle(
-        'BodyBold',
-        parent=body_style,
-        fontName='Helvetica-Bold'
     )
     
     th_style = ParagraphStyle(
         'TableHeader',
         parent=styles['Normal'],
         fontName='Helvetica-Bold',
-        fontSize=8.5,
-        leading=11,
+        fontSize=7.5,
+        leading=10,
         textColor=colors.white
     )
     
@@ -88,8 +80,8 @@ def build_pdf(filename="COMPARATIVA_COMPETENCIA.pdf"):
         'TableCell',
         parent=styles['Normal'],
         fontName='Helvetica',
-        fontSize=8,
-        leading=11,
+        fontSize=7.5,
+        leading=10,
         textColor=text_dark
     )
     
@@ -106,202 +98,174 @@ def build_pdf(filename="COMPARATIVA_COMPETENCIA.pdf"):
         textColor=accent_dark_emerald
     )
 
-    code_style = ParagraphStyle(
-        'CodeStyle',
-        parent=styles['Normal'],
-        fontName='Courier',
-        fontSize=7.5,
-        leading=10,
-        textColor=colors.HexColor("#0369a1")
-    )
-
     story = []
 
     # Header Badge & Title
-    story.append(Paragraph("<b>ONEST WEB ANALYTICS PLATFORM</b> | DOCUMENTO EJECUTIVO", ParagraphStyle('Badge', fontName='Helvetica-Bold', fontSize=8, textColor=accent_emerald, spaceAfter=4)))
+    story.append(Paragraph("<b>ONEST WEB ANALYTICS PLATFORM</b> | DOCUMENTO EJECUTIVO DE ARQUITECTURA", ParagraphStyle('Badge', fontName='Helvetica-Bold', fontSize=8, textColor=accent_emerald, spaceAfter=2)))
     story.append(Paragraph("Benchmark de Analítica Web vs. Competencia & Métodos de Medición", title_style))
-    story.append(Paragraph("Respuesta técnica y comparativa: Cómo mide el tiempo, comportamiento y gobernanza nuestra plataforma frente a PostHog, OpenReplay, Umami, Plausible y Matomo.", subtitle_style))
-    story.append(HRFlowable(width="100%", thickness=1.5, color=accent_emerald, spaceBefore=0, spaceAfter=14))
+    story.append(Paragraph("Respuesta técnica comparativa: Cómo mide el tiempo, comportamiento y observabilidad nuestra plataforma frente a OpenReplay, PostHog, Umami, Plausible y Matomo.", subtitle_style))
+    story.append(HRFlowable(width="100%", thickness=1.5, color=accent_emerald, spaceBefore=0, spaceAfter=10))
 
-    # SECTION 1: Matriz Comparativa
-    story.append(Paragraph("1. Matriz Comparativa de Herramientas del Mercado", section_title_style))
+    # SECTION 1: Matriz Comparativa (5 Columnas exactas)
+    story.append(Paragraph("1. Matriz Comparativa de Enfoque, Captura y Medición", section_title_style))
     
     table_data = [
         [
             Paragraph("<b>Herramienta</b>", th_style),
             Paragraph("<b>Enfoque Principal</b>", th_style),
-            Paragraph("<b>Cómo Mide el Tiempo / Métricas</b>", th_style),
-            Paragraph("<b>Tipo de Hosting</b>", th_style)
+            Paragraph("<b>Tipo de Captura</b>", th_style),
+            Paragraph("<b>Cómo Mide / Graba</b>", th_style),
+            Paragraph("<b>Hosting</b>", th_style)
         ],
         [
-            Paragraph("<b>PostHog</b>", td_bold),
+            Paragraph("<b>OpenReplay</b><br/><font size=6 color='#64748b'>Session replay</font>", td_bold),
+            Paragraph("Reproducción visual y observabilidad de frontend", td_style),
+            Paragraph("<font color='#e11d48'><b>reproducción íntegra</b></font><br/>Captura 100% de actividad: vistas, clics, red, consola, CPU/memoria.", td_style),
+            Paragraph("<b>Grabación DOM continua</b>: Registra mutaciones del DOM para reconstruir visualmente la sesión.", td_style),
+            Paragraph("Docker / Helm / K8s", td_style)
+        ],
+        [
+            Paragraph("<b>PostHog</b><br/><font size=6 color='#64748b'>Product analytics</font>", td_bold),
             Paragraph("Analítica de producto y comportamiento", td_style),
-            Paragraph("Tiempo en pantalla, grabaciones de sesión y embudos por duración", td_style),
-            Paragraph("Docker / Kubernetes / Cloud", td_style)
+            Paragraph("Tiempo en pantalla, grabaciones de sesión y embudos por duración.", td_style),
+            Paragraph("<b>Eventos + Replay opcional</b>: Telemetría de eventos con grabación visual de navegación.", td_style),
+            Paragraph("Docker / K8s / Cloud", td_style)
         ],
         [
-            Paragraph("<b>OpenReplay</b>", td_bold),
-            Paragraph("<i>Session replay</i> y observabilidad frontend", td_style),
-            Paragraph("Tiempo activo/inactivo segundo a segundo y reproducción visual en video", td_style),
-            Paragraph("Docker / Helm / Kubernetes", td_style)
-        ],
-        [
-            Paragraph("<b>Umami</b>", td_bold),
+            Paragraph("<b>Umami</b><br/><font size=6 color='#64748b'>Web analytics</font>", td_bold),
             Paragraph("Analítica web minimalista y privada", td_style),
-            Paragraph("Duración media de sesión y tiempo por URL sin <i>cookies</i>", td_style),
-            Paragraph("Docker / Node.js / PostgreSQL", td_style)
+            Paragraph("Duración media de sesión y tiempo por URL sin <i>cookies</i>.", td_style),
+            Paragraph("<b>Ping periódico</b>: Heartbeat mientras la pestaña está activa.", td_style),
+            Paragraph("Docker / Node / Postgres", td_style)
         ],
         [
-            Paragraph("<b>Plausible</b>", td_bold),
+            Paragraph("<b>Plausible</b><br/><font size=6 color='#64748b'>Web analytics</font>", td_bold),
             Paragraph("Analítica web simple (alternativa a GA)", td_style),
-            Paragraph("Tiempo promedio de permanencia por visita y página", td_style),
+            Paragraph("Tiempo promedio de permanencia por visita y página.", td_style),
+            Paragraph("<b>Duración estimada</b>: Timestamps entre páginas sucesivas.", td_style),
             Paragraph("Docker / ClickHouse", td_style)
         ],
         [
-            Paragraph("<b>Matomo</b>", td_bold),
+            Paragraph("<b>Matomo</b><br/><font size=6 color='#64748b'>Full analytics</font>", td_bold),
             Paragraph("Analítica integral tradicional", td_style),
-            Paragraph("Duración de visita, tiempo por página y rebote histórico", td_style),
+            Paragraph("Duración de visita, tiempo por página y rebote histórico.", td_style),
+            Paragraph("<b>Heartbeat tracker</b>: Ping regular de presencia en MySQL.", td_style),
             Paragraph("PHP + MySQL / Cloud", td_style)
         ],
         [
             Paragraph("<b>ONEST Analytics</b><br/><font color='#059669'><b>(Nuestra Plataforma)</b></font>", td_highlight),
-            Paragraph("<b>Gobernanza corporativa, adopción de portales B2B e internos, observabilidad y privacidad estricta (k &ge; 5)</b>", td_highlight),
-            Paragraph("<b>Duración de sesión (session_start/end), tiempo de carga real (NavigationTiming API), permanencia en SPAs e inactividad</b>", td_highlight),
+            Paragraph("<b>Gobernanza de adopción, salud técnica frontend y privacidad corporativa</b>", td_highlight),
+            Paragraph("<font color='#059669'><b>telemetría canónica segura</b></font><br/><b>Captura semántica estructurada</b>: páginas, SPAs, clics en botones, errores JS y tiempos reales (Core Web Vitals).", td_highlight),
+            Paragraph("<b>Instrumentación reactiva por eventos</b>: Sin mutaciones DOM ni video. Registra ciclo de vida con NavigationTiming y protege PII (ahorro 95% de red).", td_highlight),
             Paragraph("<b>Docker Compose (ClickHouse + RabbitMQ + FastAPI)</b>", td_highlight)
         ]
     ]
 
-    t = Table(table_data, colWidths=[105, 135, 185, 115])
+    t = Table(table_data, colWidths=[95, 120, 150, 135, 52])
     t.setStyle(TableStyle([
         ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor("#0f172a")),
         ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
-        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+        ('VALIGN', (0, 0), (-1, -1), 'TOP'),
         ('GRID', (0, 0), (-1, -1), 0.5, border_color),
-        ('TOPPADDING', (0, 0), (-1, -1), 5),
-        ('BOTTOMPADDING', (0, 0), (-1, -1), 5),
-        ('LEFTPADDING', (0, 0), (-1, -1), 6),
-        ('RIGHTPADDING', (0, 0), (-1, -1), 6),
-        # Highlight our platform row
+        ('TOPPADDING', (0, 0), (-1, -1), 4),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 4),
+        ('LEFTPADDING', (0, 0), (-1, -1), 4),
+        ('RIGHTPADDING', (0, 0), (-1, -1), 4),
         ('BACKGROUND', (0, 6), (-1, 6), colors.HexColor("#ecfdf5")),
-        ('BOX', (0, 6), (-1, 6), 1.5, accent_emerald),
+        ('BOX', (0, 6), (-1, 6), 1.2, accent_emerald),
     ]))
     story.append(t)
-    story.append(Spacer(1, 14))
+    story.append(Spacer(1, 10))
 
     # SECTION 2: ¿Cómo lo mido?
-    story.append(Paragraph("2. ¿Cómo lo Mido? (Métricas y Mecanismos de Captura)", section_title_style))
-    story.append(Paragraph("El SDK Web (<font name='Courier'>telemetry.js</font>) y la API analítica operan con 4 mecanismos no invasivos:", body_style))
-    story.append(Spacer(1, 6))
+    story.append(Paragraph("2. ¿Cómo lo Mido? (Métricas de Tiempo, Salud y Comportamiento)", section_title_style))
 
     how_data = [
         [
-            Paragraph("<b>1. Tiempo de Rendimiento y Carga Real (load_time_ms)</b>", td_bold),
-            Paragraph("Mide los milisegundos exactos de carga en el navegador real del usuario mediante la API nativa <font name='Courier'>PerformanceNavigationTiming</font> (<font name='Courier'>performance.getEntriesByType('navigation')[0].duration</font>).", td_style)
+            Paragraph("<b>1. Carga Real (load_time_ms)</b>", td_bold),
+            Paragraph("Mide milisegundos reales mediante la API nativa <font name='Courier'>PerformanceNavigationTiming</font> (<font name='Courier'>performance.getEntriesByType('navigation')</font>).", td_style),
+            Paragraph("<b>3. SPAs (React/Vue/Angular)</b>", td_bold),
+            Paragraph("Instrumenta <font name='Courier'>pushState</font> y <font name='Courier'>popstate</font> para medir navegación virtual sin recarga de página.", td_style)
         ],
         [
-            Paragraph("<b>2. Duración de Sesión e Inactividad</b>", td_bold),
-            Paragraph("Mantiene una sesión activa en <font name='Courier'>sessionStorage</font> con caducidad tras <b>30 minutos de inactividad</b>. Captura automáticamente <font name='Courier'>session_start</font> al ingresar y <font name='Courier'>session_end</font> al cerrar pestaña vía <font name='Courier'>beforeunload</font> / <font name='Courier'>visibilitychange</font>.", td_style)
-        ],
-        [
-            Paragraph("<b>3. Tiempo en SPAs (Single Page Applications)</b>", td_bold),
-            Paragraph("Instrumenta el History API (<font name='Courier'>pushState</font>, <font name='Courier'>replaceState</font>, <font name='Courier'>popstate</font>) para medir tiempos entre rutas virtuales en frameworks como React, Angular o Vue sin requerir recarga.", td_style)
-        ],
-        [
-            Paragraph("<b>4. Métricas de Negocio, Adopción y Cuentas Ociosas</b>", td_bold),
-            Paragraph("ClickHouse computa <font name='Courier'>DAU</font> (usuarios diarios), <font name='Courier'>MAU</font> (mensuales), ratio de adopción (<font name='Courier'>DAU/MAU</font>) y alerta automáticamente cuentas con más de 30 días sin actividad corporativa.", td_style)
+            Paragraph("<b>2. Sesión e Inactividad</b>", td_bold),
+            Paragraph("Mantiene sesión en <font name='Courier'>sessionStorage</font> con caducidad a los <b>30 min de inactividad</b>. Captura <font name='Courier'>session_start</font> y <font name='Courier'>session_end</font>.", td_style),
+            Paragraph("<b>4. Clics Semánticos (Custom)</b>", td_bold),
+            Paragraph("Captura clics en <font name='Courier'>button</font> y <font name='Courier'>a</font> (tag, id, texto max 50 caracteres) sin leer inputs ni datos de formularios.", td_style)
         ]
     ]
 
-    t_how = Table(how_data, colWidths=[180, 360])
+    t_how = Table(how_data, colWidths=[120, 156, 120, 156])
     t_how.setStyle(TableStyle([
         ('BACKGROUND', (0, 0), (0, -1), colors.HexColor("#f1f5f9")),
+        ('BACKGROUND', (2, 0), (2, -1), colors.HexColor("#f1f5f9")),
         ('GRID', (0, 0), (-1, -1), 0.5, border_color),
         ('VALIGN', (0, 0), (-1, -1), 'TOP'),
-        ('TOPPADDING', (0, 0), (-1, -1), 6),
-        ('BOTTOMPADDING', (0, 0), (-1, -1), 6),
-        ('LEFTPADDING', (0, 0), (-1, -1), 8),
-        ('RIGHTPADDING', (0, 0), (-1, -1), 8),
+        ('TOPPADDING', (0, 0), (-1, -1), 4),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 4),
+        ('LEFTPADDING', (0, 0), (-1, -1), 5),
+        ('RIGHTPADDING', (0, 0), (-1, -1), 5),
     ]))
     story.append(t_how)
-    story.append(Spacer(1, 14))
+    story.append(Spacer(1, 10))
 
     # SECTION 3: ¿Con qué lo mido?
     story.append(Paragraph("3. ¿Con Qué lo Mido? (Arquitectura y Stack Tecnológico)", section_title_style))
 
     stack_data = [
         [
-            Paragraph("<b>Capa</b>", th_style),
-            Paragraph("<b>Componente</b>", th_style),
-            Paragraph("<b>Función Técnica en la Medición</b>", th_style)
+            Paragraph("<b>1. SDK Web</b> (<font name='Courier'>telemetry.js</font>)", td_bold),
+            Paragraph("Librería cliente en TypeScript (<12 KB), no bloqueante, sin cookies de rastreo invasivas.", td_style),
+            Paragraph("<b>4. Consumer</b> (Worker)", td_bold),
+            Paragraph("Micro-lotes (<i>micro-batching</i> de 100 ev / 1.5s) e inserción masiva.", td_style)
         ],
         [
-            Paragraph("<b>1. Captura Cliente</b>", td_bold),
-            Paragraph("<b>SDK Web TypeScript</b> (<font name='Courier'>telemetry.js</font>)", td_style),
-            Paragraph("Librería ultra-ligera (<12 KB), no bloqueante, sin cookies de rastreo invasivas. Captura eventos y errores JS no controlados.", td_style)
+            Paragraph("<b>2. Collector</b> (FastAPI)", td_bold),
+            Paragraph("Ingesta asíncrona de alta concurrencia con <b>hash HMAC-SHA256</b> del usuario antes de encolar.", td_style),
+            Paragraph("<b>5. ClickHouse</b> (OLAP)", td_bold),
+            Paragraph("Base columnar. Particionado mensual con <b>TTL de retención de 90 días</b>.", td_style)
         ],
         [
-            Paragraph("<b>2. Borde / Ingesta</b>", td_bold),
-            Paragraph("<b>Collector Service</b> (FastAPI)", td_style),
-            Paragraph("Recepción asíncrona de alta velocidad. Valida contratos JSON Schema y genera <b>hash HMAC-SHA256</b> del usuario antes de encolar.", td_style)
-        ],
-        [
-            Paragraph("<b>3. Mensajería</b>", td_bold),
-            Paragraph("<b>RabbitMQ</b> (AMQP)", td_style),
-            Paragraph("Amortiguador de eventos asíncronos para absorber picos masivos de telemetría sin pérdida de datos.", td_style)
-        ],
-        [
-            Paragraph("<b>4. Procesamiento</b>", td_bold),
-            Paragraph("<b>Consumer Worker</b> (Python)", td_style),
-            Paragraph("Consume en micro-lotes (<i>micro-batching</i> de 100 eventos / 1.5s) e inserta masivamente en la base de datos.", td_style)
-        ],
-        [
-            Paragraph("<b>5. Base de Datos</b>", td_bold),
-            Paragraph("<b>ClickHouse OLAP</b> (MergeTree)", td_style),
-            Paragraph("Motor columnar de ultra-alto rendimiento. Particionado mensual con <b>TTL de retención de 90 días</b> para minimización de datos.", td_style)
-        ],
-        [
-            Paragraph("<b>6. Gobernanza & UI</b>", td_bold),
-            Paragraph("<b>Aggregation API + Dashboard</b>", td_style),
-            Paragraph("API con control de acceso por roles (<b>RBAC</b>), métricas de salud SLA y filtro de privacidad <b>k-anonymity (k &ge; 5)</b>.", td_style)
+            Paragraph("<b>3. RabbitMQ</b> (AMQP)", td_bold),
+            Paragraph("Amortiguador de eventos asíncronos para tolerar picos masivos de telemetría sin pérdida.", td_style),
+            Paragraph("<b>6. Aggregation & UI</b>", td_bold),
+            Paragraph("API con <b>RBAC</b>, salud SLA y filtro de privacidad <b>k-anonymity (k &ge; 5)</b>.", td_style)
         ]
     ]
 
-    t_stack = Table(stack_data, colWidths=[95, 145, 300])
+    t_stack = Table(stack_data, colWidths=[120, 156, 120, 156])
     t_stack.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor("#0f172a")),
+        ('BACKGROUND', (0, 0), (0, -1), colors.HexColor("#f8fafc")),
+        ('BACKGROUND', (2, 0), (2, -1), colors.HexColor("#f8fafc")),
+        ('GRID', (0, 0), (-1, -1), 0.5, border_color),
+        ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+        ('TOPPADDING', (0, 0), (-1, -1), 4),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 4),
+        ('LEFTPADDING', (0, 0), (-1, -1), 5),
+        ('RIGHTPADDING', (0, 0), (-1, -1), 5),
+    ]))
+    story.append(t_stack)
+    story.append(Spacer(1, 10))
+
+    # SECTION 4: Diferenciadores Clave
+    story.append(Paragraph("4. Comparativa Estratégica: ONEST vs. OpenReplay & Mercado", section_title_style))
+
+    diff_data = [
+        [
+            Paragraph("<b>Frente a OpenReplay (DOM Replay vs. Telemetría Canónica):</b><br/>OpenReplay graba mutaciones continuas de DOM en video con riesgo de filtrar contraseñas o datos confidenciales en formularios y con alto costo de CPU y red. ONEST captura solo eventos semánticos (rutas, errores, tiempos, clics en botones) garantizando 100% de confidencialidad y 95% menos peso.", td_style),
+            Paragraph("<b>Frente a Matomo / GA / Umami (Rendimiento & Gobernanza B2B):</b><br/>No sufre de cuellos de botella de bases relacionales tradicionales (MySQL/PHP); ClickHouse procesa millones de eventos en milisegundos. Añade soporte multi-portal centralizado, matriz RBAC (Ejecutivo vs Analista) y cumplimiento estricto k-anonymity (k &ge; 5).", td_style)
+        ]
+    ]
+
+    t_diff = Table(diff_data, colWidths=[276, 276])
+    t_diff.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, -1), colors.HexColor("#f1f5f9")),
         ('GRID', (0, 0), (-1, -1), 0.5, border_color),
         ('VALIGN', (0, 0), (-1, -1), 'TOP'),
         ('TOPPADDING', (0, 0), (-1, -1), 5),
         ('BOTTOMPADDING', (0, 0), (-1, -1), 5),
         ('LEFTPADDING', (0, 0), (-1, -1), 6),
         ('RIGHTPADDING', (0, 0), (-1, -1), 6),
-    ]))
-    story.append(t_stack)
-    story.append(Spacer(1, 14))
-
-    # SECTION 4: Ventajas y Diferenciadores
-    story.append(Paragraph("4. Diferenciadores Clave frente al Mercado (Resumen Ejecutivo)", section_title_style))
-
-    diff_data = [
-        [
-            Paragraph("<b>Frente a PostHog / OpenReplay:</b><br/>No realiza grabaciones en video de la pantalla. Esto elimina el riesgo de fuga de información confidencial o contraseñas en formularios corporativos y reduce el consumo de red y almacenamiento en un 95%.", td_style),
-            Paragraph("<b>Frente a Matomo / Google Analytics:</b><br/>No sufre de cuellos de botella en bases de datos relacionales tradicionales (MySQL/PHP). ClickHouse permite consultar millones de eventos en milisegundos con costo mínimo.", td_style)
-        ],
-        [
-            Paragraph("<b>Frente a Umami / Plausible:</b><br/>Diseñado para entornos corporativos y auditorías B2B: soporte multi-portal centralizado, matriz RBAC (Ejecutivo vs Analista), k-anonymity (k &ge; 5) y alertas de cuentas ociosas.", td_style),
-            Paragraph("<b>100% Soberanía y On-Premise:</b><br/>Desplegable en cualquier servidor o nube privada mediante <font name='Courier'>docker compose up -d</font>, manteniendo los datos de la empresa bajo su exclusivo control.", td_style)
-        ]
-    ]
-
-    t_diff = Table(diff_data, colWidths=[270, 270])
-    t_diff.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (-1, -1), colors.HexColor("#f8fafc")),
-        ('GRID', (0, 0), (-1, -1), 0.5, border_color),
-        ('VALIGN', (0, 0), (-1, -1), 'TOP'),
-        ('TOPPADDING', (0, 0), (-1, -1), 6),
-        ('BOTTOMPADDING', (0, 0), (-1, -1), 6),
-        ('LEFTPADDING', (0, 0), (-1, -1), 8),
-        ('RIGHTPADDING', (0, 0), (-1, -1), 8),
     ]))
     story.append(t_diff)
 

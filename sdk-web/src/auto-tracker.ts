@@ -167,5 +167,34 @@ export class AutoTracker {
         page_path: window.location.pathname,
       });
     });
+
+    // 5. Captura no invasiva de interacciones y clics semánticos (sin formularios ni PII)
+    if (typeof document !== 'undefined') {
+      document.addEventListener('click', (event: MouseEvent) => {
+        try {
+          const target = event.target as HTMLElement | null;
+          if (!target) return;
+          const button = target.closest('button, a, [role="button"], input[type="submit"]') as HTMLElement | null;
+          if (button) {
+            this.updateActivity();
+            const tag = button.tagName.toLowerCase();
+            const elemId = button.id || '';
+            const elemText = (button.innerText || button.textContent || button.getAttribute('aria-label') || '').substring(0, 50).trim();
+            const href = tag === 'a' ? (button.getAttribute('href') || '').substring(0, 100) : undefined;
+
+            this.callbacks.onEvent('custom', {
+              action: 'click',
+              element_tag: tag,
+              element_id: elemId,
+              element_text: elemText,
+              link_target: href,
+              page_path: window.location.pathname,
+            });
+          }
+        } catch {
+          // Ignorar silenciosamente
+        }
+      }, { passive: true } as any);
+    }
   }
 }

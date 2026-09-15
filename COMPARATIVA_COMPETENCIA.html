@@ -44,7 +44,7 @@
     }
 
     .container {
-      max-width: 1240px;
+      max-width: 1280px;
       margin: 0 auto;
     }
 
@@ -89,7 +89,7 @@
     p.subtitle {
       color: var(--text-secondary);
       font-size: 1.05rem;
-      max-width: 750px;
+      max-width: 800px;
     }
 
     .header-actions {
@@ -187,9 +187,10 @@
     td {
       padding: 1.15rem 1.25rem;
       border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-      font-size: 0.925rem;
+      font-size: 0.885rem;
       color: #e2e8f0;
       vertical-align: top;
+      line-height: 1.5;
     }
 
     tr:last-child td {
@@ -202,12 +203,12 @@
 
     /* Highlighted Own Platform Row */
     tr.our-platform {
-      background: linear-gradient(90deg, rgba(16, 185, 129, 0.08) 0%, rgba(6, 182, 212, 0.05) 100%);
+      background: linear-gradient(90deg, rgba(16, 185, 129, 0.1) 0%, rgba(6, 182, 212, 0.06) 100%);
       border-left: 4px solid var(--accent-emerald);
     }
 
     tr.our-platform:hover {
-      background: linear-gradient(90deg, rgba(16, 185, 129, 0.12) 0%, rgba(6, 182, 212, 0.08) 100%);
+      background: linear-gradient(90deg, rgba(16, 185, 129, 0.15) 0%, rgba(6, 182, 212, 0.1) 100%);
     }
 
     tr.our-platform td {
@@ -225,7 +226,28 @@
       font-weight: 700;
       background: var(--accent-emerald);
       color: #022c22;
-      margin-left: 0.5rem;
+      margin-top: 0.25rem;
+    }
+
+    .pill-capture {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      margin-bottom: 0.4rem;
+    }
+
+    .pill-capture-red {
+      background: rgba(244, 63, 94, 0.15);
+      color: #fda4af;
+      border: 1px solid rgba(244, 63, 94, 0.3);
+    }
+
+    .pill-capture-emerald {
+      background: rgba(16, 185, 129, 0.15);
+      color: #6ee7b7;
+      border: 1px solid rgba(16, 185, 129, 0.3);
     }
 
     .pill-hosting {
@@ -289,6 +311,7 @@
     .icon-cyan { background: rgba(6, 182, 212, 0.15); color: var(--accent-cyan); }
     .icon-purple { background: rgba(139, 92, 246, 0.15); color: var(--accent-purple); }
     .icon-amber { background: rgba(245, 158, 11, 0.15); color: var(--accent-amber); }
+    .icon-rose { background: rgba(244, 63, 94, 0.15); color: var(--accent-rose); }
 
     .card-title {
       font-size: 1.1rem;
@@ -460,7 +483,7 @@
         </div>
         <h1>Benchmark de Analítica Web ONEST vs. Competencia</h1>
         <p class="subtitle">
-          Respuesta técnica comparativa: Cómo mide el tiempo, comportamiento y gobernanza nuestra plataforma frente a PostHog, OpenReplay, Umami, Plausible y Matomo.
+          Respuesta técnica comparativa: Cómo mide el tiempo, comportamiento y observabilidad nuestra plataforma frente a OpenReplay, PostHog, Umami, Plausible y Matomo.
         </p>
       </div>
       <div class="header-actions">
@@ -471,72 +494,130 @@
       </div>
     </header>
 
-    <!-- 1. TABLA COMPARATIVA DIRECTA -->
+    <!-- 1. TABLA COMPARATIVA DIRECTA CON DETALLE DE CAPTURA -->
     <section>
       <div class="section-title">
         <span class="number">1</span>
-        Matriz Comparativa de Herramientas
+        Matriz Comparativa de Enfoque, Captura y Medición
       </div>
 
       <div class="table-wrapper">
         <table>
           <thead>
             <tr>
-              <th style="width: 18%;">Herramienta</th>
-              <th style="width: 25%;">Enfoque principal</th>
-              <th style="width: 37%;">Cómo mide el tiempo</th>
-              <th style="width: 20%;">Tipo de hosting</th>
+              <th style="width: 16%;">Herramienta</th>
+              <th style="width: 22%;">Enfoque principal</th>
+              <th style="width: 26%;">Tipo de captura</th>
+              <th style="width: 24%;">Cómo mide / Graba</th>
+              <th style="width: 12%;">Hosting</th>
             </tr>
           </thead>
           <tbody>
-            <!-- PostHog -->
-            <tr class="competitor">
-              <td><strong>PostHog</strong></td>
-              <td>Analítica de producto y comportamiento</td>
-              <td>Tiempo en pantalla, grabaciones de sesión y embudos por duración</td>
-              <td><span class="pill-hosting">Docker / Kube / Cloud</span></td>
+            <!-- OpenReplay (Destacado del Benchmark) -->
+            <tr class="competitor" style="background: rgba(244, 63, 94, 0.03);">
+              <td>
+                <strong style="font-size: 1rem;">OpenReplay</strong><br>
+                <span style="font-size: 0.75rem; color: var(--text-muted);">Session replay</span>
+              </td>
+              <td>Reproducción visual y observabilidad de frontend</td>
+              <td>
+                <span class="pill-capture pill-capture-red">reproducción íntegra</span><br>
+                Captura del 100% de la actividad — vistas, clics, movimientos, red, consola, CPU/memoria — no solo un número resumen.
+              </td>
+              <td>
+                <strong>Grabación DOM continua</strong><br>
+                Registra mutaciones del DOM y eventos en flujo constante para poder reconstruir visualmente la sesión completa, en vez de derivar un solo indicador de duración.
+              </td>
+              <td><span class="pill-hosting">Docker / Helm / K8s</span></td>
             </tr>
 
-            <!-- OpenReplay -->
+            <!-- PostHog -->
             <tr class="competitor">
-              <td><strong>OpenReplay</strong></td>
-              <td><em>Session replay</em> y observabilidad frontend</td>
-              <td>Tiempo activo/inactivo segundo a segundo y reproducción visual</td>
-              <td><span class="pill-hosting">Docker / Helm / K8s</span></td>
+              <td>
+                <strong>PostHog</strong><br>
+                <span style="font-size: 0.75rem; color: var(--text-muted);">Product analytics</span>
+              </td>
+              <td>Analítica de producto y comportamiento</td>
+              <td>
+                <span class="pill-capture" style="background: rgba(245,158,11,0.15); color: #fde68a;">sesiones + embudos</span><br>
+                Tiempo en pantalla, grabaciones de sesión y embudos por duración.
+              </td>
+              <td>
+                <strong>Eventos + Replay opcional</strong><br>
+                Combina telemetría de eventos con grabación visual de navegación y retención.
+              </td>
+              <td><span class="pill-hosting">Docker / K8s / Cloud</span></td>
             </tr>
 
             <!-- Umami -->
             <tr class="competitor">
-              <td><strong>Umami</strong></td>
+              <td>
+                <strong>Umami</strong><br>
+                <span style="font-size: 0.75rem; color: var(--text-muted);">Web analytics</span>
+              </td>
               <td>Analítica web minimalista y privada</td>
-              <td>Duración media de sesión y tiempo por URL sin <em>cookies</em></td>
+              <td>
+                <span class="pill-capture" style="background: rgba(6,182,212,0.15); color: #a5f3fc;">resumen sin cookies</span><br>
+                Duración media de sesión y tiempo por URL sin <em>cookies</em>.
+              </td>
+              <td>
+                <strong>Ping periódico</strong><br>
+                Mide tiempo activo enviando pings heartbeat mientras la pestaña está visible.
+              </td>
               <td><span class="pill-hosting">Docker / Node / Postgres</span></td>
             </tr>
 
             <!-- Plausible -->
             <tr class="competitor">
-              <td><strong>Plausible</strong></td>
+              <td>
+                <strong>Plausible</strong><br>
+                <span style="font-size: 0.75rem; color: var(--text-muted);">Web analytics</span>
+              </td>
               <td>Analítica web simple (alternativa a GA)</td>
-              <td>Tiempo promedio de permanencia por visita y página</td>
+              <td>
+                <span class="pill-capture" style="background: rgba(139,92,246,0.15); color: #ddd6fe;">visitas agregadas</span><br>
+                Tiempo promedio de permanencia por visita y página.
+              </td>
+              <td>
+                <strong>Duración estimada</strong><br>
+                Compara timestamps entre páginas sucesivas para estimar estancia.
+              </td>
               <td><span class="pill-hosting">Docker / ClickHouse</span></td>
             </tr>
 
             <!-- Matomo -->
             <tr class="competitor">
-              <td><strong>Matomo</strong></td>
+              <td>
+                <strong>Matomo</strong><br>
+                <span style="font-size: 0.75rem; color: var(--text-muted);">Full analytics</span>
+              </td>
               <td>Analítica integral tradicional</td>
-              <td>Duración de visita, tiempo por página y rebote histórico</td>
+              <td>
+                <span class="pill-capture" style="background: rgba(100,116,139,0.15); color: #cbd5e1;">cookies de sesión</span><br>
+                Duración de visita, tiempo por página y rebote histórico.
+              </td>
+              <td>
+                <strong>Heartbeat tracker</strong><br>
+                Ping regular de presencia del visitante almacenado en tablas relacionales.
+              </td>
               <td><span class="pill-hosting">PHP + MySQL / Cloud</span></td>
             </tr>
 
             <!-- NUESTRA PLATAFORMA (ONEST) -->
             <tr class="our-platform">
               <td>
-                <strong>ONEST Analytics</strong>
+                <strong style="font-size: 1.05rem; color: #34d399;">ONEST Analytics</strong><br>
                 <span class="badge-tool">Nuestra Plataforma</span>
               </td>
-              <td><strong>Gobernanza corporativa, adopción de portales B2B y privacidad estricta (k &ge; 5)</strong></td>
-              <td><strong>Duración de sesión (session_start/end), tiempo de carga real (NavigationTiming API), permanencia en SPAs e inactividad</strong></td>
+              <td><strong>Gobernanza de adopción, salud técnica frontend y privacidad corporativa</strong></td>
+              <td>
+                <span class="pill-capture pill-capture-emerald">telemetría canónica segura</span><br>
+                <strong>Captura semántica estructurada</strong> — vistas de página, navegación SPA, interacción en botones, errores JS y tiempos reales de carga (Core Web Vitals).
+              </td>
+              <td>
+                <strong>Instrumentación reactiva por eventos</strong><br>
+                <strong>Sin mutaciones invasivas del DOM ni video.</strong> Registra el ciclo de vida (`PerformanceNavigationTiming`, `History API`, `window.onerror`) protegiendo PII y reduciendo 95% el tráfico de red.
+              </td>
               <td><span class="pill-hosting" style="background: rgba(16,185,129,0.15); color: #34d399; border-color: rgba(16,185,129,0.3);">Docker Compose (ClickHouse + RabbitMQ + FastAPI)</span></td>
             </tr>
           </tbody>
@@ -548,7 +629,7 @@
     <section>
       <div class="section-title">
         <span class="number">2</span>
-        ¿Cómo lo mido? (Métricas de Tiempo y Comportamiento)
+        ¿Cómo lo mido? (Métricas de Tiempo, Salud y Comportamiento)
       </div>
 
       <div class="grid-2">
@@ -558,7 +639,7 @@
             <div class="card-icon icon-cyan">⚡</div>
             <div>
               <div class="card-title">Tiempo de Rendimiento y Carga Real</div>
-              <span style="font-size: 0.75rem; color: var(--accent-cyan); font-weight: 600;">Core Web Vitals / Performance</span>
+              <span style="font-size: 0.75rem; color: var(--accent-cyan); font-weight: 600;">Core Web Vitals / Performance API</span>
             </div>
           </div>
           <p>
@@ -604,20 +685,20 @@
           </div>
         </div>
 
-        <!-- Tarjeta 4: Negocio y Adopción -->
+        <!-- Tarjeta 4: Clics e Interacciones -->
         <div class="card">
           <div class="card-header">
-            <div class="card-icon icon-amber">📊</div>
+            <div class="card-icon icon-rose">🖱️</div>
             <div>
-              <div class="card-title">Adopción y Cuentas Ociosas</div>
-              <span style="font-size: 0.75rem; color: var(--accent-amber); font-weight: 600;">KPIs Temporales de Negocio</span>
+              <div class="card-title">Observabilidad de Clics e Interacciones</div>
+              <span style="font-size: 0.75rem; color: var(--accent-rose); font-weight: 600;">Telemetría Semántica No Invasiva</span>
             </div>
           </div>
           <p>
-            Agregación en ClickHouse de <strong>DAU</strong> (Usuarios Diarios), <strong>MAU</strong> (Usuarios Mensuales), <strong>Ratio de Adopción (DAU/MAU)</strong> y alerta automática de cuentas con &gt;30 días sin ingresar.
+            Captura clics en botones y enlaces clave (<code>button</code>, <code>a</code>, <code>role="button"</code>) sin leer ni almacenar datos de inputs o formularios para preservar la confidencialidad.
           </p>
           <div class="code-pill">
-            SELECT uniqExact(user_id_hash) FROM events GROUP BY event_date
+            button.closest() &rarr; element_tag, element_id, element_text (max 50)
           </div>
         </div>
       </div>
@@ -636,7 +717,7 @@
           <span class="step-badge badge-client">1. CLIENTE</span>
           <div class="step-desc">
             <h4>SDK Web TypeScript (telemetry.js)</h4>
-            <p>Script ultra-ligero (&lt;12 KB), no intrusivo, sin cookies invasivas. Captura eventos automáticos y errores JS no controlados.</p>
+            <p>Script ultra-ligero (&lt;12 KB), no intrusivo, sin cookies invasivas. Captura eventos automáticos, clics de navegación y errores JS no controlados.</p>
           </div>
           <div class="step-tech">TypeScript / Vite</div>
         </div>
@@ -646,7 +727,7 @@
           <span class="step-badge badge-collector">2. BORDE / INGESTA</span>
           <div class="step-desc">
             <h4>Collector Service & Pseudonimización</h4>
-            <p>API asíncrona de alta concurrencia. Valida contratos JSON Schema y aplica hash HMAC-SHA256 con salt secreto antes de encolar.</p>
+            <p>API asíncrona de alta concurrencia. Valida contratos JSON Schema y genera <b>hash HMAC-SHA256</b> con salt secreto antes de encolar.</p>
           </div>
           <div class="step-tech">FastAPI / Python 3.11</div>
         </div>
@@ -656,7 +737,7 @@
           <span class="step-badge badge-queue">3. MENSAJERÍA</span>
           <div class="step-desc">
             <h4>RabbitMQ Event Buffer</h4>
-            <p>Amortiguador de eventos asíncronos para tolerar picos masivos de telemetría sin pérdida de datos ni bloqueo de clientes.</p>
+            <p>Amortiguador de eventos asíncronos para absorber picos masivos de telemetría sin pérdida de datos ni bloqueo de clientes.</p>
           </div>
           <div class="step-tech">RabbitMQ 3.13 (AMQP)</div>
         </div>
@@ -666,7 +747,7 @@
           <span class="step-badge badge-olap">4. BASE DE DATOS</span>
           <div class="step-desc">
             <h4>ClickHouse OLAP Columnar</h4>
-            <p>Motor de almacenamiento analítico optimizado. Particionado mensual con TTL de retención de 90 días (minimización por ley).</p>
+            <p>Motor de almacenamiento analítico optimizado. Particionado mensual con <b>TTL de retención de 90 días</b> para minimización de datos por ley.</p>
           </div>
           <div class="step-tech">ClickHouse MergeTree</div>
         </div>
@@ -676,7 +757,7 @@
           <span class="step-badge badge-api">5. GOBERNANZA & UI</span>
           <div class="step-desc">
             <h4>Aggregation API & Dashboard Ejecutivo</h4>
-            <p>Control de acceso basado en roles (RBAC) y filtro de privacidad k-anonymity (k &ge; 5) para prevenir reidentificación.</p>
+            <p>Control de acceso basado en roles (<b>RBAC</b>) y filtro de privacidad <b>k-anonymity (k &ge; 5)</b> para prevenir reidentificación.</p>
           </div>
           <div class="step-tech">FastAPI + HTML5/CSS</div>
         </div>
@@ -693,11 +774,11 @@
       <div class="grid-3">
         <div class="vs-card">
           <h4>
-            Vs. PostHog / OpenReplay
+            Vs. OpenReplay / PostHog
             <span class="vs-tag tag-diff">Seguridad PII</span>
           </h4>
           <p>
-            No graba la pantalla en video. Evita capturar datos bancarios, contraseñas o datos personales en formularios corporativos. Consume 95% menos ancho de banda.
+            No graba la pantalla en video continuo de DOM. Evita capturar datos bancarios, contraseñas o datos personales en formularios corporativos. Consume 95% menos ancho de banda.
           </p>
         </div>
 
@@ -707,7 +788,7 @@
             <span class="vs-tag tag-diff">Rendimiento OLAP</span>
           </h4>
           <p>
-            No usa bases de datos relacionales lentas (MySQL). ClickHouse procesa millones de eventos analíticos en milisegundos con bajo costo computacional.
+            No usa bases de datos relacionales lentas (MySQL/PHP). ClickHouse procesa millones de eventos analíticos en milisegundos con bajo costo computacional.
           </p>
         </div>
 
