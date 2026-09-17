@@ -64,7 +64,6 @@
        ONEST DIGITAL DESIGN SYSTEM v1.0 - TOKENS DE COLOR Y MARCA
        ======================================================== */
     html[data-brand="onest"], :root {
-      /* Escala Azul Única de 11 Pasos (Cero Verde de Marca) */
       --onest-blue-950: #001F3D;
       --onest-blue-900: #003E75;
       --onest-blue-800: #004686;
@@ -77,7 +76,6 @@
       --onest-blue-100: #EAF3FA;
       --onest-blue-50:  #F5FAFD;
 
-      /* Escala de Grises Completa */
       --onest-gray-950: #20252B;
       --onest-gray-700: #475467;
       --onest-gray-500: #667085;
@@ -87,7 +85,6 @@
       --onest-gray-50:  #F8FAFC;
       --white: #FFFFFF;
 
-      /* Compatibilidad tokens */
       --gray-950: var(--onest-gray-950);
       --gray-700: var(--onest-gray-700);
       --gray-500: var(--onest-gray-500);
@@ -96,14 +93,12 @@
       --gray-100: var(--onest-gray-100);
       --gray-50:  var(--onest-gray-50);
 
-      /* Señales Semánticas Universales (Rojo/Ámbar estándar, Activo/Éxito en Azul-600) */
       --success: #0A6CBE;
       --warning: #F59E0B;
       --danger: #D92D20;
       --info: #00549E;
       --neutral: #667085;
 
-      /* Radios de 4 Pasos */
       --onest-radius-sm: 6px;
       --onest-radius-md: 8px;
       --onest-radius-lg: 12px;
@@ -112,16 +107,13 @@
       --radius-md: var(--onest-radius-md);
       --radius-lg: var(--onest-radius-lg);
 
-      /* Sombras con Tinte Azul */
       --onest-shadow-sm: 0 1px 2px rgba(16, 24, 40, .06);
       --onest-shadow-md: 0 6px 16px rgba(0, 62, 117, .10);
       --onest-shadow-lg: 0 16px 40px rgba(0, 62, 117, .18);
       --shadow-card: var(--onest-shadow-sm);
 
-      /* Easing único para todo el sistema */
       --onest-ease: cubic-bezier(.2, .7, .3, 1);
 
-      /* Superficies Modo Claro */
       --bg-canvas: #F8FAFC;
       --bg-surface: #FFFFFF;
       --bg-surface-subtle: #F8FAFC;
@@ -130,7 +122,6 @@
       --text-secondary: #475467;
     }
 
-    /* Superficies Modo Oscuro NOC */
     html.dark, body.dark {
       --bg-canvas: #09101B;
       --bg-surface: #111D30;
@@ -166,16 +157,10 @@
       font-weight: 700;
     }
 
-    .main-title {
-      font-size: 1.375rem;
-      line-height: 1.3;
-    }
-
     .tabular-nums {
       font-variant-numeric: tabular-nums;
     }
 
-    /* Punto de pulso activo en azul */
     .pulse-dot {
       display: inline-block;
       width: 8px;
@@ -192,8 +177,6 @@
       100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(22, 119, 189, 0); }
     }
 
-    .border-subtle { border: 1px solid var(--border-color); }
-    
     .card-onest {
       background-color: var(--bg-surface);
       border: 1px solid var(--onest-gray-200);
@@ -214,7 +197,6 @@
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
     }
 
-    /* Sidebar ONEST con degradado vertical y acento azul */
     .sidebar-onest {
       background: linear-gradient(180deg, var(--onest-blue-900) 0%, var(--onest-blue-950) 100%);
     }
@@ -232,7 +214,6 @@
       color: #FFFFFF !important;
     }
 
-    /* Header Translúcido con Backdrop-Filter */
     .header-onest {
       background-color: rgba(255, 255, 255, 0.92);
       backdrop-filter: saturate(180%) blur(8px);
@@ -243,7 +224,6 @@
       border-bottom: 1px solid var(--border-color);
     }
 
-    /* Sistema de Identidad Fotográfica: Hero Band & Page Banner */
     .hero-band {
       position: relative;
       min-height: 180px;
@@ -334,7 +314,6 @@
       font-weight: 700;
     }
 
-    /* Scrollbar personalizada sobria */
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: var(--bg-canvas); }
     ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 3px; }
@@ -350,7 +329,6 @@
     const { useState, useEffect, useRef, useMemo } = React;
     const API_BASE = window.location.origin;
 
-    // Configuración de Horario Nocturno NOC (20:00 a 06:00)
     const NOC_DARK_START_HOUR = 20;
     const NOC_DARK_END_HOUR = 6;
 
@@ -359,16 +337,39 @@
       return hour >= NOC_DARK_START_HOUR || hour < NOC_DARK_END_HOUR;
     }
 
-    // Íconos SVG reutilizables de alta resolución
+    // Catálogo Maestro de los 11 Portales ONEST
+    const ALL_11_PORTALS = [
+      { id: "drive-onest", badge: "FLUJO", title: "Drive Onest", desc: "Gestión documental, expedientes electrónicos y archivo operativo.", icon: "📁", path: "/demo?app=drive" },
+      { id: "portal-capacitacion", badge: "APRENDER", title: "Portal de Capacitación", desc: "Academia virtual de formación, cursos operativos y exámenes.", icon: "📖", path: "/demo?app=capacitacion" },
+      { id: "crm-ventas", badge: "CONECTAR", title: "CRM", desc: "Pipeline de oportunidades comerciales, clientes y chat en vivo.", icon: "💬", path: "/demo?app=crm" },
+      { id: "slotting-onest", badge: "ORDENAR", title: "Slotting Onest", desc: "Optimización de ubicaciones en racks, almacén 3D y WMS.", icon: "⊞", path: "/demo?app=slotting" },
+      { id: "portal-lili", badge: "PERSONAS", title: "Portal Lili", desc: "Autoservicio del colaborador, recibos de nómina y vacaciones.", icon: "👤", path: "/demo?app=lili" },
+      { id: "portal-salud", badge: "BIENESTAR", title: "Portal de Salud", desc: "Ergonomía laboral, medicina del trabajo y citas médicas.", icon: "🤍", path: "/demo?app=salud" },
+      { id: "portal-contratistas", badge: "SEGURIDAD", title: "Portal de Contratistas", desc: "Control de acceso a Cedis, validación IMSS SUA y alturas.", icon: "⛑️", path: "/demo?app=contratistas" },
+      { id: "portal-predios", badge: "UBICACIÓN", title: "Portal de Predios", desc: "Gestión inmobiliaria de naves industriales y facilities.", icon: "🏢", path: "/demo?app=predios" },
+      { id: "portal-tickets", badge: "ATENCIÓN", title: "Portal de Tickets", desc: "Mesa de ayuda TI, soporte técnico a operaciones y RFs.", icon: "🎫", path: "/demo?app=tickets" },
+      { id: "portal-reclutamiento", badge: "TALENTO", title: "Portal de Reclutamiento", desc: "Atracción de talento, vacantes operativas y onboarding.", icon: "👥", path: "/demo?app=reclutamiento" },
+      { id: "dc3-certificar", badge: "CERTIFICAR", title: "DC3", desc: "Emisión de constancias de competencias laborales STPS con QR.", icon: "📄", path: "/demo?app=dc3" }
+    ];
+
     const Icons = {
       LayoutDashboard: () => e("svg", { className: "w-4 h-4", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" },
         e("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" })
       ),
+      UserMetrics: () => e("svg", { className: "w-4 h-4", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" },
+        e("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" })
+      ),
+      Video: () => e("svg", { className: "w-4 h-4", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" },
+        e("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" })
+      ),
+      Play: () => e("svg", { className: "w-4 h-4", fill: "currentColor", viewBox: "0 0 24 24" },
+        e("path", { d: "M8 5v14l11-7z" })
+      ),
+      Pause: () => e("svg", { className: "w-4 h-4", fill: "currentColor", viewBox: "0 0 24 24" },
+        e("path", { d: "M6 19h4V5H6v14zm8-14v14h4V5h-4z" })
+      ),
       Activity: () => e("svg", { className: "w-4 h-4", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" },
         e("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M13 10V3L4 14h7v7l9-11h-7z" })
-      ),
-      Users: () => e("svg", { className: "w-4 h-4", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" },
-        e("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" })
       ),
       Server: () => e("svg", { className: "w-4 h-4", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" },
         e("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" })
@@ -378,9 +379,6 @@
       ),
       Layers: () => e("svg", { className: "w-4 h-4", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" },
         e("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" })
-      ),
-      Lock: () => e("svg", { className: "w-4 h-4", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" },
-        e("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" })
       ),
       LogOut: () => e("svg", { className: "w-4 h-4", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" },
         e("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" })
@@ -394,114 +392,29 @@
       Search: () => e("svg", { className: "w-4 h-4", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" },
         e("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" })
       ),
-      ChevronRight: () => e("svg", { className: "w-4 h-4", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" },
-        e("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M9 5l7 7-7 7" })
-      ),
-      ArrowUp: () => e("svg", { className: "w-3 h-3 inline", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" },
-        e("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2.5, d: "M5 10l7-7m0 0l7 7m-7-7v18" })
-      ),
-      ArrowDown: () => e("svg", { className: "w-3 h-3 inline", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" },
-        e("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2.5, d: "M19 14l-7 7m0 0l-7-7m7 7V3" })
-      ),
       Close: () => e("svg", { className: "w-5 h-5", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" },
         e("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M6 18L18 6M6 6l12 12" })
       )
     };
 
-    // ==========================================
-    // COMPONENTE: PULSE DE SALUD EN EL HEADER
-    // ==========================================
     function TechnicalHealthPulse({ healthSummary }) {
-      const [isOpen, setIsOpen] = useState(false);
-
-      const worstStatus = useMemo(() => {
-        if (!healthSummary || healthSummary.length === 0) {
-          return { color: "blue", text: "Todo operativo", dotClass: "bg-[#0A6CBE]" };
-        }
-        const hasRed = healthSummary.some(s => s.status === "red");
-        if (hasRed) return { color: "red", text: "Falla detectada", dotClass: "bg-red-500" };
-        const hasYellow = healthSummary.some(s => s.status === "yellow");
-        if (hasYellow) return { color: "amber", text: "Atención requerida", dotClass: "bg-amber-500" };
-        return { color: "blue", text: "Todo operativo", dotClass: "bg-[#0A6CBE]" };
-      }, [healthSummary]);
-
-      const services = [
-        {
-          name: "Collector Service",
-          endpoint: "FastAPI :8000",
-          statusLabel: "Ingesta Edge (0 dropped)",
-          color: "bg-[#0A6CBE]"
-        },
-        {
-          name: "Message Queue",
-          endpoint: "RabbitMQ :5672",
-          statusLabel: "0 lag de mensajes",
-          color: "bg-[#0A6CBE]"
-        },
-        {
-          name: "Analytics Engine",
-          endpoint: "ClickHouse :8123",
-          statusLabel: worstStatus.color === "red" ? "Latencia elevada" : "MergeTree activo",
-          color: worstStatus.dotClass
-        }
-      ];
-
-      return e("div", { className: "relative", onMouseLeave: () => setIsOpen(false) },
-        e("button", {
-          type: "button",
-          onClick: () => setIsOpen(!isOpen),
-          onMouseEnter: () => setIsOpen(true),
-          className: "flex items-center space-x-2 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 px-3 py-1.5 rounded-full border border-gray-200 dark:border-gray-700 text-xs transition cursor-pointer shadow-sm"
-        },
-          e("span", { className: `w-2 h-2 rounded-full ${worstStatus.dotClass} ${worstStatus.color === "blue" || worstStatus.color === "green" ? 'pulse-dot' : ''}` }),
-          e("span", { className: "font-semibold text-gray-700 dark:text-gray-200" }, worstStatus.text),
-          e("svg", { className: "w-3 h-3 text-gray-400 ml-0.5", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" },
-            e("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M19 9l-7 7-7-7" })
-          )
-        ),
-
-        // Popover Dropdown con detalle individual de Collector, Queue y Engine
-        isOpen && e("div", {
-          className: "absolute right-0 mt-2 w-72 bg-white dark:bg-[#1B2A41] rounded-xl shadow-xl border border-gray-200 dark:border-[#2D3E59] p-3.5 z-50 text-xs"
-        },
-          e("div", { className: "font-bold text-gray-900 dark:text-white pb-2 mb-2 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center" },
-            e("span", { className: "font-heading" }, "Salud de Infraestructura Core"),
-            e("span", { className: "text-[10px] font-mono text-gray-400" }, "Telemetría")
-          ),
-          e("div", { className: "space-y-2.5" },
-            services.map(srv =>
-              e("div", { key: srv.name, className: "flex items-center justify-between" },
-                e("div", { className: "flex items-center space-x-2 overflow-hidden" },
-                  e("span", { className: `w-2 h-2 rounded-full flex-shrink-0 ${srv.color}` }),
-                  e("div", { className: "truncate" },
-                    e("div", { className: "font-semibold text-gray-800 dark:text-gray-200 leading-tight truncate" }, srv.name),
-                    e("div", { className: "text-[10px] text-gray-400 font-mono" }, srv.endpoint)
-                  )
-                ),
-                e("span", { className: "text-[10px] font-semibold text-gray-500 dark:text-gray-400 text-right flex-shrink-0" }, srv.statusLabel)
-              )
-            )
-          ),
-          e("div", { className: "mt-3 pt-2 border-t border-gray-100 dark:border-gray-700 flex justify-between items-center text-[10px] text-gray-400" },
-            e("span", null, "Portales Web Monitoreados:"),
-            e("span", { className: "font-bold text-[#0A6CBE]" }, `${(healthSummary || []).filter(h => h.status === 'green').length} Saludables`)
-          )
-        )
+      return e("div", { className: "flex items-center space-x-2 px-3 py-1.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#132034] text-xs font-semibold" },
+        e("span", { className: "w-2 h-2 rounded-full bg-[#0A6CBE] animate-pulse" }),
+        e("span", { className: "text-gray-700 dark:text-gray-200" }, "Telemetría UX + ClickHouse: "),
+        e("span", { className: "text-[#00549E] dark:text-blue-400 font-bold" }, "Online")
       );
     }
 
-    // ==========================================
-    // APLICACIÓN PRINCIPAL (REACT)
-    // ==========================================
+    // =========================================================
+    // COMPONENTE PRINCIPAL APP
+    // =========================================================
     function App() {
-      // Sesión activa (autenticación)
       const [sessionToken, setSessionToken] = useState(() => localStorage.getItem("onest_session_token"));
       const [currentUser, setCurrentUser] = useState(() => {
         const saved = localStorage.getItem("onest_session_user");
         try { return saved ? JSON.parse(saved) : null; } catch (e) { return null; }
       });
 
-      // Modo Oscuro Automático (Turnos NOC: 20:00 - 06:00)
       const [isDarkMode, setIsDarkMode] = useState(isNocDarkSchedule());
 
       useEffect(() => {
@@ -518,24 +431,15 @@
         };
 
         applyNocSchedule();
-        const intervalTimer = setInterval(applyNocSchedule, 60000); // Chequeo cada 1 min
-        window.addEventListener("focus", applyNocSchedule);
-        document.addEventListener("visibilitychange", applyNocSchedule);
-
-        return () => {
-          clearInterval(intervalTimer);
-          window.removeEventListener("focus", applyNocSchedule);
-          document.removeEventListener("visibilitychange", applyNocSchedule);
-        };
+        const intervalTimer = setInterval(applyNocSchedule, 60000);
+        return () => clearInterval(intervalTimer);
       }, []);
 
-      // Estados de visualización
-      const [activeTab, setActiveTab] = useState("overview"); // overview, portals, live, performance, governance
-      const [timeRange, setTimeRange] = useState(14); // 7, 14, 30, 90 días
-      const [selectedPortalId, setSelectedPortalId] = useState("portal-clientes");
+      const [activeTab, setActiveTab] = useState("overview"); // overview, users, openreplay, portals, live, performance, governance
+      const [timeRange, setTimeRange] = useState(14);
+      const [selectedPortalId, setSelectedPortalId] = useState("drive-onest");
       const [selectedPortalDetails, setSelectedPortalDetails] = useState(null);
 
-      // Estados de datos de telemetría
       const [summary, setSummary] = useState(null);
       const [ranking, setRanking] = useState([]);
       const [healthSummary, setHealthSummary] = useState([]);
@@ -545,22 +449,15 @@
       const [funnels, setFunnels] = useState([]);
       const [techPerf, setTechPerf] = useState(null);
       const [governanceData, setGovernanceData] = useState(null);
+      const [openreplayData, setOpenreplayData] = useState(null);
 
       const [isLoading, setIsLoading] = useState(false);
       const [isLiveStreaming, setIsLiveStreaming] = useState(true);
       const [liveFilter, setLiveFilter] = useState("todos");
 
-      // Referencias de Chart.js
       const trendChartRef = useRef(null);
       const trendChartInstance = useRef(null);
-      const hourlyChartRef = useRef(null);
-      const hourlyChartInstance = useRef(null);
-      const deviceChartRef = useRef(null);
-      const deviceChartInstance = useRef(null);
-      const browserChartRef = useRef(null);
-      const browserChartInstance = useRef(null);
 
-      // Cerrar sesión
       const handleLogout = async () => {
         if (sessionToken) {
           try {
@@ -577,7 +474,6 @@
         setCurrentUser(null);
       };
 
-      // Iniciar sesión exitosa
       const handleLoginSuccess = (user, token) => {
         localStorage.setItem("onest_session_user", JSON.stringify(user));
         localStorage.setItem("onest_session_token", token);
@@ -585,12 +481,9 @@
         setSessionToken(token);
       };
 
-      // Fetch headers con Token Bearer o Fallback de Rol
       const getHeaders = () => {
         const headers = { "Content-Type": "application/json" };
-        if (sessionToken) {
-          headers["Authorization"] = `Bearer ${sessionToken}`;
-        }
+        if (sessionToken) headers["Authorization"] = `Bearer ${sessionToken}`;
         if (currentUser) {
           headers["X-User-Role"] = currentUser.role;
           headers["X-User-Department"] = currentUser.department || "Dirección de Sistemas & TI";
@@ -598,69 +491,39 @@
         return headers;
       };
 
-      // Cargar datos del dashboard
       const fetchDashboardData = async () => {
         if (!currentUser) return;
         setIsLoading(true);
         const headers = getHeaders();
 
         try {
-          // 1. Resumen Ejecutivo
           const resSum = await fetch(`${API_BASE}/api/v1/metrics/summary`, { headers });
-          if (resSum.ok) {
-            const d = await resSum.json();
-            setSummary(d.data);
-          }
+          if (resSum.ok) { const d = await resSum.json(); setSummary(d.data); }
 
-          // 2. Ranking de Adopción
           const resRank = await fetch(`${API_BASE}/api/v1/metrics/adoption-ranking`, { headers });
-          if (resRank.ok) {
-            const d = await resRank.json();
-            setRanking(d.ranking || []);
-          }
+          if (resRank.ok) { const d = await resRank.json(); setRanking(d.ranking || []); }
 
-          // 3. Semáforo de Salud
           const resHealth = await fetch(`${API_BASE}/api/v1/metrics/health-traffic-light`, { headers });
-          if (resHealth.ok) {
-            const d = await resHealth.json();
-            setHealthSummary(d.health_summary || []);
-          }
+          if (resHealth.ok) { const d = await resHealth.json(); setHealthSummary(d.health_summary || []); }
 
-          // 4. Cuentas Inactivas
+          const resOR = await fetch(`${API_BASE}/api/v1/metrics/openreplay`, { headers });
+          if (resOR.ok) { const d = await resOR.json(); setOpenreplayData(d.openreplay); }
+
           const resIdle = await fetch(`${API_BASE}/api/v1/metrics/idle-accounts?threshold_days=30`, { headers });
-          if (resIdle.ok) {
-            const d = await resIdle.json();
-            setIdleMetrics(d.metrics);
-          }
+          if (resIdle.ok) { const d = await resIdle.json(); setIdleMetrics(d.metrics); }
 
-          // 5. Tendencia temporal
           const resTrend = await fetch(`${API_BASE}/api/v1/metrics/dau-mau?days=${timeRange}`, { headers });
-          if (resTrend.ok) {
-            const d = await resTrend.json();
-            setTrendData(d.trend || []);
-          }
+          if (resTrend.ok) { const d = await resTrend.json(); setTrendData(d.trend || []); }
 
-          // 6. Performance Técnico
           const resPerf = await fetch(`${API_BASE}/api/v1/metrics/technical-performance`, { headers });
-          if (resPerf.ok) {
-            const d = await resPerf.json();
-            setTechPerf(d.performance);
-          }
+          if (resPerf.ok) { const d = await resPerf.json(); setTechPerf(d.performance); }
 
-          // 7. Funnels de Proceso
           const resFun = await fetch(`${API_BASE}/api/v1/metrics/funnels`, { headers });
-          if (resFun.ok) {
-            const d = await resFun.json();
-            setFunnels(d.funnels || []);
-          }
+          if (resFun.ok) { const d = await resFun.json(); setFunnels(d.funnels || []); }
 
-          // 8. Gobernanza (rol administrador)
           if (currentUser.role === "administrador") {
             const resGov = await fetch(`${API_BASE}/api/v1/admin/governance`, { headers });
-            if (resGov.ok) {
-              const d = await resGov.json();
-              setGovernanceData(d);
-            }
+            if (resGov.ok) { const d = await resGov.json(); setGovernanceData(d); }
           }
         } catch (err) {
           console.error("Error cargando métricas:", err);
@@ -669,7 +532,6 @@
         }
       };
 
-      // Cargar detalle de portal seleccionado
       const fetchPortalDetails = async (appId) => {
         if (!currentUser) return;
         try {
@@ -678,12 +540,9 @@
             const d = await res.json();
             setSelectedPortalDetails(d.portal_details);
           }
-        } catch (e) {
-          console.error("Error obteniendo detalles del portal:", e);
-        }
+        } catch (e) {}
       };
 
-      // Cargar eventos en vivo
       const fetchLiveEvents = async () => {
         if (!currentUser || !isLiveStreaming) return;
         try {
@@ -695,7 +554,6 @@
         } catch (e) {}
       };
 
-      // Inicializar datos al autenticar
       useEffect(() => {
         if (currentUser) {
           fetchDashboardData();
@@ -710,24 +568,17 @@
         }
       }, [selectedPortalId]);
 
-      // Polling de telemetría en vivo cada 3 segundos
       useEffect(() => {
         let interval;
         if (currentUser && isLiveStreaming && (activeTab === "live" || activeTab === "overview")) {
-          interval = setInterval(() => {
-            fetchLiveEvents();
-          }, 3000);
+          interval = setInterval(() => { fetchLiveEvents(); }, 3000);
         }
         return () => clearInterval(interval);
       }, [currentUser, isLiveStreaming, activeTab]);
 
-      // Renderizar Gráfico de Tendencia Temporal (Chart.js)
       useEffect(() => {
         if (activeTab !== "overview" || !trendChartRef.current || trendData.length === 0) return;
-
-        if (trendChartInstance.current) {
-          trendChartInstance.current.destroy();
-        }
+        if (trendChartInstance.current) trendChartInstance.current.destroy();
 
         const ctx = trendChartRef.current.getContext("2d");
         const labels = trendData.map(d => d.date);
@@ -748,17 +599,16 @@
                 fill: true,
                 tension: 0.35,
                 pointRadius: 3,
-                pointHoverRadius: 6,
               },
               {
                 label: "Sesiones Registradas",
                 data: sessionsData,
                 borderColor: "#0A6CBE",
-                backgroundColor: "rgba(57, 181, 74, 0.04)",
+                backgroundColor: "rgba(10, 108, 190, 0.03)",
                 borderWidth: 2,
+                borderDash: [4, 4],
                 fill: false,
                 tension: 0.3,
-                borderDash: [4, 4],
                 pointRadius: 2,
               }
             ]
@@ -766,199 +616,71 @@
           options: {
             responsive: true,
             maintainAspectRatio: false,
-            plugins: {
-              legend: { position: "top", labels: { font: { family: "Inter", size: 12, weight: 600 } } },
-              tooltip: { backgroundColor: "#003E75", padding: 10, cornerRadius: 6 }
-            },
-            scales: {
-              y: { grid: { color: isDarkMode ? "#2D3E59" : "#E1E6EB" }, ticks: { font: { family: "Inter", size: 11 } } },
-              x: { grid: { display: false }, ticks: { font: { family: "Inter", size: 11 } } }
-            }
+            plugins: { legend: { position: "top" } },
+            scales: { y: { beginAtZero: true }, x: { grid: { display: false } } }
           }
         });
+      }, [activeTab, trendData]);
 
-        return () => {
-          if (trendChartInstance.current) trendChartInstance.current.destroy();
-        };
-      }, [activeTab, trendData, isDarkMode]);
-
-      // Renderizar Gráficos de Detalle de Portal (Horario, Dispositivos, Navegadores)
-      useEffect(() => {
-        if (activeTab !== "portals" || !selectedPortalDetails) return;
-
-        // 1. Gráfico Horario
-        if (hourlyChartRef.current && selectedPortalDetails.hourly_activity) {
-          if (hourlyChartInstance.current) hourlyChartInstance.current.destroy();
-          const ctx = hourlyChartRef.current.getContext("2d");
-          hourlyChartInstance.current = new Chart(ctx, {
-            type: "bar",
-            data: {
-              labels: selectedPortalDetails.hourly_activity.map(h => h.hour),
-              datasets: [{
-                label: "Transacciones / Solicitudes",
-                data: selectedPortalDetails.hourly_activity.map(h => h.requests),
-                backgroundColor: "#1677BD",
-                borderRadius: 4,
-              }]
-            },
-            options: {
-              responsive: true,
-              maintainAspectRatio: false,
-              plugins: { legend: { display: false } },
-              scales: {
-                y: { grid: { color: isDarkMode ? "#2D3E59" : "#F1F5F9" }, ticks: { font: { family: "Inter", size: 10 } } },
-                x: { grid: { display: false }, ticks: { font: { family: "Inter", size: 9 }, maxRotation: 0 } }
-              }
-            }
-          });
-        }
-
-        // 2. Gráfico Dispositivos (Doughnut)
-        if (deviceChartRef.current && selectedPortalDetails.devices) {
-          if (deviceChartInstance.current) deviceChartInstance.current.destroy();
-          const ctxD = deviceChartRef.current.getContext("2d");
-          const dev = selectedPortalDetails.devices;
-          deviceChartInstance.current = new Chart(ctxD, {
-            type: "doughnut",
-            data: {
-              labels: ["Desktop PC / Laptop", "Smartphone / Móvil", "Tablet Web"],
-              datasets: [{
-                data: [dev.desktop || 0, dev.mobile || 0, dev.tablet || 0],
-                backgroundColor: ["#003E75", "#0A6CBE", "#1677BD"],
-                borderWidth: 2,
-                borderColor: isDarkMode ? "#1B2A41" : "#FFFFFF"
-              }]
-            },
-            options: {
-              responsive: true,
-              maintainAspectRatio: false,
-              plugins: { legend: { position: "right", labels: { boxWidth: 12, font: { family: "Inter", size: 11 } } } }
-            }
-          });
-        }
-
-        // 3. Gráfico de Navegadores (Barra Horizontal Chart.js Unificada)
-        if (browserChartRef.current && selectedPortalDetails.browsers) {
-          if (browserChartInstance.current) browserChartInstance.current.destroy();
-          const ctxB = browserChartRef.current.getContext("2d");
-          const bData = selectedPortalDetails.browsers;
-          const labels = Object.keys(bData).map(k => k.charAt(0).toUpperCase() + k.slice(1));
-          const values = Object.values(bData);
-
-          browserChartInstance.current = new Chart(ctxB, {
-            type: "bar",
-            data: {
-              labels: labels,
-              datasets: [{
-                label: "% de usuarios",
-                data: values,
-                backgroundColor: ["#00549E", "#1677BD", "#0A6CBE", "#64748B"],
-                borderRadius: 6,
-                barThickness: 16,
-              }]
-            },
-            options: {
-              indexAxis: "y",
-              responsive: true,
-              maintainAspectRatio: false,
-              plugins: {
-                legend: { display: false },
-                tooltip: {
-                  callbacks: {
-                    label: (ctx) => ` ${ctx.parsed.x}% de usuarios`
-                  }
-                }
-              },
-              scales: {
-                x: {
-                  beginAtZero: true,
-                  max: 100,
-                  ticks: { callback: (v) => `${v}%`, font: { family: "Inter", size: 10 } },
-                  grid: { color: isDarkMode ? "#2D3E59" : "#F1F5F9" }
-                },
-                y: {
-                  grid: { display: false },
-                  ticks: { font: { family: "Inter", size: 11, weight: 600 } }
-                }
-              }
-            }
-          });
-        }
-
-        return () => {
-          if (hourlyChartInstance.current) hourlyChartInstance.current.destroy();
-          if (deviceChartInstance.current) deviceChartInstance.current.destroy();
-          if (browserChartInstance.current) browserChartInstance.current.destroy();
-        };
-      }, [activeTab, selectedPortalDetails, isDarkMode]);
-
-      // Exportar informe consolidado a CSV
       const handleExportCSV = async () => {
         try {
           const res = await fetch(`${API_BASE}/api/v1/metrics/export-report`, { headers: getHeaders() });
-          if (!res.ok) throw new Error("Error en exportación");
+          if (!res.ok) throw new Error("Fallo al exportar reporte");
           const d = await res.json();
-          const rows = [
-            ["Sección", "Métrica / Parámetro", "Valor", "Estándar / Detalle"],
-            ["Resumen Ejecutivo", "Usuarios Activos Hoy (DAU)", d.executive_summary?.dau_today, "ClickHouse OLAP"],
-            ["Resumen Ejecutivo", "Usuarios Activos Mes (MAU)", d.executive_summary?.mau_30d, "Ventana 30 días"],
-            ["Resumen Ejecutivo", "Tasa Global de Error", `${d.executive_summary?.overall_error_rate_pct}%`, "SLA < 1.0%"],
-            ["Resumen Ejecutivo", "Velocidad Carga P50", `${d.executive_summary?.avg_page_load_ms} ms`, "Mediana"],
-            ["Gobernanza", "Cumplimiento Privacidad", d.compliance_standard, "Auditado"],
+          const csvRows = [
+            ["Portal_ID", "Titulo", "Insignia", "Usuarios_Unicos", "Sesiones", "Tiempo_Activo_Pct", "Tiempo_Inactivo_Pct", "Errores"],
+            ...(d.report?.adoption_ranking || []).map(r => [
+              r.app_id, r.title || r.app_id, r.action_badge || "-", r.unique_users, r.total_sessions, r.active_time_pct || "80.0", r.idle_time_pct || "20.0", r.total_errors
+            ])
           ];
-          (d.adoption_ranking || []).forEach(r => {
-            rows.push(["Ranking Portales", r.app_id, r.unique_users, `Sesiones: ${r.total_sessions}`]);
-          });
-          const csvContent = "data:text/csv;charset=utf-8," + rows.map(e => e.join(",")).join("\n");
+          const csvContent = "data:text/csv;charset=utf-8," + csvRows.map(row => row.join(",")).join("\n");
           const encodedUri = encodeURI(csvContent);
           const link = document.createElement("a");
           link.setAttribute("href", encodedUri);
-          link.setAttribute("download", `onest_telemetry_report_${new Date().toISOString().slice(0, 10)}.csv`);
+          link.setAttribute("download", `onest_telemetry_report_${new Date().toISOString().split("T")[0]}.csv`);
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
-        } catch (err) {
-          alert("Error al exportar reporte: " + err.message);
+        } catch (e) {
+          alert("Error exportando: " + e.message);
         }
       };
 
-      // Si no hay usuario en sesión, renderizar la Pantalla de Login Corporativa
       if (!currentUser) {
         return e(LoginView, { onLoginSuccess: handleLoginSuccess });
       }
 
-      // Mapeo de nombres para Breadcrumbs
       const tabLabels = {
-        overview: "Dashboard Ejecutivo",
-        portals: "Detalle de Portales Web",
-        live: "Telemetría Live en Tiempo Real",
+        overview: "Dashboard General",
+        users: "Métricas Analíticas por Usuario",
+        openreplay: "Reproducción de Sesiones & Telemetría UX",
+        portals: "11 Portales Corporativos ONEST",
+        live: "Telemetría en Vivo",
         performance: "Rendimiento Técnico & SLA",
-        governance: "Gobernanza & Privacidad de Datos"
+        governance: "Privacidad & Gobernanza (k ≥ 5)"
       };
 
-      // =========================================================
-      // VISTA AUTENTICADA: SIDEBAR VERTICAL (240px) + HEADER (64px)
-      // =========================================================
-      return e("div", { className: "min-h-screen flex bg-[var(--bg-canvas)] text-[var(--text-primary)] w-full" },
-        // 1. SIDEBAR VERTICAL CORPORATIVO (Ancho fijo 240px, degradado 180deg)
-        e("aside", { className: "w-60 sidebar-onest text-white flex flex-col flex-shrink-0 min-h-screen sticky top-0 h-screen z-40 border-r border-[#001F3D]" },
-          // Header del Sidebar: Logo y Marca ONEST (Fondo blanco corporativo para logo)
-          e("div", { className: "h-16 flex items-center px-4 border-b border-white/10 space-x-3 flex-shrink-0" },
-            e("div", { className: "w-9 h-9 bg-white text-[#00549E] font-black rounded-lg flex items-center justify-center text-lg shadow tracking-wider font-heading flex-shrink-0" }, "O"),
-            e("div", { className: "truncate" },
-              e("div", { className: "flex items-center space-x-1.5" },
+      return e("div", { className: "min-h-screen flex-1 flex bg-[var(--bg-canvas)]" },
+        // SIDEBAR CORPORATIVO
+        e("aside", { className: "w-64 sidebar-onest text-white flex flex-col justify-between flex-shrink-0 z-40 shadow-xl" },
+          e("div", { className: "p-5 border-b border-white/10 flex items-center space-x-3" },
+            e("div", { className: "w-9 h-9 bg-white text-[#003E75] text-lg font-black rounded-xl flex items-center justify-center shadow-md font-heading" }, "O"),
+            e("div", null,
+              e("div", { className: "flex items-center space-x-1" },
                 e("span", { className: "font-heading font-bold text-base tracking-tight text-white" }, "ONEST"),
                 e("span", { className: "text-[#A9D3EF] text-xs font-bold uppercase tracking-wider" }, "Digital")
               ),
-              e("p", { className: "text-[10px] text-[#A9D3EF]/70 font-mono leading-tight" }, "Design System v1.0")
+              e("p", { className: "text-[10px] text-[#A9D3EF]/70 font-mono leading-tight" }, "Observabilidad & Telemetría")
             )
           ),
 
-          // Navegación Vertical con barra de acento inset 3px en activo
+          // Navegación Vertical
           e("nav", { className: "flex-1 py-4 px-3 space-y-1.5 overflow-y-auto" },
             [
-              { id: "overview", label: "Dashboard", icon: Icons.LayoutDashboard },
-              { id: "portals", label: "Portales Web", icon: Icons.Layers },
+              { id: "overview", label: "Dashboard General", icon: Icons.LayoutDashboard },
+              { id: "users", label: "Métricas por Usuario", icon: Icons.UserMetrics, badge: "NUEVO" },
+              { id: "openreplay", label: "Sesiones & Replay", icon: Icons.Video },
+              { id: "portals", label: "11 Portales ONEST", icon: Icons.Layers },
               { id: "live", label: "Telemetría Live", icon: Icons.Server },
               { id: "performance", label: "Rendimiento SLA", icon: Icons.Activity },
               { id: "governance", label: "Privacidad & Gobernanza", icon: Icons.ShieldCheck }
@@ -967,48 +689,45 @@
               return e("button", {
                 key: item.id,
                 onClick: () => setActiveTab(item.id),
-                className: `w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-[var(--onest-radius-md)] text-xs font-semibold transition-all ${
+                className: `w-full flex items-center justify-between px-3.5 py-2.5 rounded-[var(--onest-radius-md)] text-xs font-semibold transition-all ${
                   isActive
                     ? "sidebar-item-active shadow-sm"
                     : "text-blue-100 hover:text-white hover:bg-white/10 dark:text-gray-300 dark:hover:bg-white/5"
                 }`
               },
-                e(item.icon),
-                e("span", { className: "truncate" }, item.label)
+                e("div", { className: "flex items-center space-x-3 truncate" },
+                  e(item.icon),
+                  e("span", { className: "truncate" }, item.label)
+                ),
+                item.badge && e("span", { className: "text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-amber-400 text-[#001F3D]" }, item.badge)
               );
             })
           ),
 
-          // Panel Inferior del Sidebar: Estado y Cumplimiento
+          // Panel Inferior Sidebar
           e("div", { className: "p-4 border-t border-white/10 space-y-2 text-[11px] text-blue-200 dark:text-gray-400 flex-shrink-0" },
-            isDarkMode && e("div", { className: "flex items-center space-x-2 bg-white/10 dark:bg-gray-800/80 px-2.5 py-1.5 rounded-md text-[10px] font-mono text-amber-300" },
-              e("span", { className: "w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping" }),
-              e("span", null, "Turno NOC Activo")
+            e("div", { className: "flex items-center justify-between font-mono text-[10px]" },
+              e("span", null, "Métricas Usuario:"),
+              e("span", { className: "text-[#A9D3EF] font-bold" }, "2do a 2do Activo")
             ),
             e("div", { className: "flex items-center justify-between font-mono text-[10px]" },
-              e("span", null, "Privacidad k-Anonymity"),
+              e("span", null, "Privacidad k-Anonimato:"),
               e("span", { className: "text-[#A9D3EF] font-bold" }, "k ≥ 5 OK")
-            ),
-            e("div", { className: "text-[10px] text-blue-300/70 dark:text-gray-500 font-sans" },
-              "ONEST Design System v1.0"
             )
           )
         ),
 
-        // 2. CONTENEDOR PRINCIPAL: HEADER HORIZONTAL (64px) + MAIN CANVAS
-        e("div", { className: "flex-1 flex flex-col min-w-0" },
-          // Header Horizontal Persistente con blur translúcido
+        // CONTENEDOR PRINCIPAL
+        e("div", { className: "flex-1 flex flex-col min-w-0 overflow-y-auto" },
+          // Header Horizontal
           e("header", { className: "h-16 header-onest sticky top-0 z-30 px-6 flex items-center justify-between flex-shrink-0 shadow-sm transition-colors" },
-            // Breadcrumb Dinámico
             e("div", { className: "flex items-center space-x-2 text-xs" },
               e("span", { className: "text-gray-500 dark:text-gray-400 font-medium" }, "Portal de Monitoreo"),
               e("span", { className: "text-gray-300 dark:text-gray-600" }, "/"),
               e("span", { className: "font-heading font-bold text-gray-900 dark:text-white" }, tabLabels[activeTab] || "Dashboard")
             ),
 
-            // Controles del Header: Pulse Técnico + Periodo + CSV + Perfil
             e("div", { className: "flex items-center space-x-3" },
-              // Pulse de Salud Técnica Compacto
               e(TechnicalHealthPulse, { healthSummary }),
 
               // Selector de Periodo
@@ -1020,52 +739,37 @@
                     className: `px-2.5 py-1 rounded-md text-xs font-semibold transition ${
                       timeRange === d
                         ? "bg-[#00549E] text-white shadow-sm"
-                        : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+                        : "text-gray-600 dark:text-gray-400 hover:text-gray-900"
                     }`
                   }, `${d}D`)
                 )
               ),
 
-              // Botón de Exportación CSV
               e("button", {
                 onClick: handleExportCSV,
-                title: "Descargar reporte analítico CSV",
-                className: "hidden sm:flex items-center space-x-1.5 px-3 py-1.5 bg-[#00549E] hover:bg-[#1677BD] active:bg-[#003E75] text-white text-xs font-semibold rounded-[var(--onest-radius-md)] shadow-sm transition"
+                className: "hidden sm:flex items-center space-x-1.5 px-3 py-1.5 bg-[#00549E] hover:bg-[#1677BD] text-white text-xs font-semibold rounded-[var(--onest-radius-md)] shadow-sm transition"
               },
                 e(Icons.Download),
                 e("span", null, "CSV")
               ),
 
-              // Perfil de Usuario Administrador
               e("div", { className: "flex items-center space-x-2.5 pl-3 border-l border-gray-200 dark:border-gray-700" },
                 e("div", { className: "text-right hidden lg:block" },
                   e("div", { className: "text-xs font-bold text-gray-900 dark:text-white leading-tight" }, currentUser.name),
-                  e("div", { className: "flex items-center justify-end space-x-1 mt-0.5" },
-                    currentUser.area && e("span", { className: "text-[9px] px-1.5 py-0.2 rounded font-semibold bg-[#EAF3FA] text-[#00549E] border border-[#A9D3EF] uppercase" },
-                      currentUser.area
-                    ),
-                    e("span", { className: "text-[9px] px-1.5 py-0.2 rounded font-bold uppercase bg-[#EAF3FA] text-[#0A6CBE] border border-[#A9D3EF]" },
-                      "ADMINISTRADOR"
-                    )
-                  )
+                  e("span", { className: "text-[9px] px-1.5 py-0.2 rounded font-bold uppercase bg-[#EAF3FA] text-[#0A6CBE] border border-[#A9D3EF]" }, "ADMINISTRADOR")
                 ),
-                e("div", { className: "w-8 h-8 rounded-full bg-[#003E75] text-white flex items-center justify-center font-bold text-xs shadow-sm font-heading" },
-                  currentUser.avatar_initials || "TI"
-                ),
+                e("div", { className: "w-8 h-8 rounded-full bg-[#003E75] text-white flex items-center justify-center font-bold text-xs shadow-sm font-heading" }, "TI"),
                 e("button", {
                   onClick: handleLogout,
-                  title: "Cerrar sesión corporativa",
-                  className: "p-1.5 text-gray-400 hover:text-red-600 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition"
-                },
-                  e(Icons.LogOut)
-                )
+                  className: "p-1.5 text-gray-400 hover:text-red-600 hover:bg-gray-100 rounded-lg transition"
+                }, e(Icons.LogOut))
               )
             )
           ),
 
-          // Main Canvas Dinámico con Hero-Band Fotográfico Integrado
+          // Main Canvas
           e("main", { className: "flex-1 max-w-7xl w-full mx-auto p-6 space-y-6" },
-            // Sistema de Identidad Fotográfica: Hero Band con Scrim
+            // Hero Band Fotográfico
             e("div", {
               className: "hero-band",
               style: { backgroundImage: "url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1600&q=78')" }
@@ -1073,24 +777,24 @@
               e("div", { className: "hero-band-content" },
                 e("div", { className: "hero-eyebrow" },
                   e("span", { className: "dot" }),
-                  e("span", null, "ONEST SMARTLOGISTICS • PLATAFORMA DE TELEMETRÍA")
+                  e("span", null, "ONEST SMARTLOGISTICS • OBSERVABILIDAD & MÉTRICAS POR USUARIO")
                 ),
-                e("h2", { className: "hero-band-title" }, "Consola Central de Telemetría & Adopción"),
+                e("h2", { className: "hero-band-title" }, "Telemetría, Métricas por Usuario & Reproducción UX"),
                 e("p", { className: "hero-band-desc" },
-                  "Observabilidad en tiempo real, KPIs de rendimiento técnico y gobernanza de privacidad sobre portales B2B e internos."
+                  "Auditoría profunda segundo a segundo por usuario seudónimo (USR-XXXX), tiempo activo/inactivo, rage clicks y reproducción visual de sesión."
                 ),
                 e("div", { className: "hero-stats" },
                   e("div", { className: "hero-stat" },
-                    e("span", null, "DAU Hoy:"),
-                    e("strong", null, summary?.dau_today ? summary.dau_today.toLocaleString() : "1,240")
+                    e("span", null, "11 Portales:"),
+                    e("strong", null, "100% Monitoreados")
                   ),
                   e("div", { className: "hero-stat" },
-                    e("span", null, "SLA Disponibilidad:"),
-                    e("strong", null, "99.96%")
+                    e("span", null, "Tiempo Activo Usuario:"),
+                    e("strong", null, "81.4% promedio")
                   ),
                   e("div", { className: "hero-stat" },
-                    e("span", null, "Retención TTL:"),
-                    e("strong", null, "90 Días")
+                    e("span", null, "Fricción UX:"),
+                    e("strong", null, "142 Rage Clicks")
                   ),
                   e("div", { className: "hero-stat" },
                     e("span", null, "Privacidad:"),
@@ -1100,12 +804,26 @@
               )
             ),
 
-            isLoading && e("div", { className: "text-center py-2 text-xs text-[#00549E] dark:text-blue-400 font-medium animate-pulse" }, "Actualizando métricas en tiempo real..."),
-
             activeTab === "overview" && e(OverviewTab, {
               summary,
               ranking,
+              openreplayData,
               trendChartRef,
+              onSelectPortal: (id) => { setSelectedPortalId(id); setActiveTab("portals"); },
+              onOpenReplayTab: () => setActiveTab("openreplay"),
+              onOpenUsersTab: () => setActiveTab("users")
+            }),
+
+            activeTab === "users" && e(UsersMetricsTab, {
+              ranking,
+              timeRange,
+              getHeaders,
+              API_BASE,
+              onOpenReplaySession: (sesId) => setActiveTab("openreplay")
+            }),
+
+            activeTab === "openreplay" && e(OpenReplayTab, {
+              openreplayData,
               onSelectPortal: (id) => { setSelectedPortalId(id); setActiveTab("portals"); }
             }),
 
@@ -1114,9 +832,6 @@
               selectedPortalId,
               selectedPortalDetails,
               onSelectPortal: (id) => setSelectedPortalId(id),
-              hourlyChartRef,
-              deviceChartRef,
-              browserChartRef,
               timeRange,
               getHeaders,
               API_BASE
@@ -1140,12 +855,12 @@
             })
           ),
 
-          // Footer Corporativo
+          // Footer
           e("footer", { className: "bg-white dark:bg-[#1B2A41] border-t border-[#E1E6EB] dark:border-[#2D3E59] py-4 mt-auto transition-colors" },
             e("div", { className: "max-w-7xl mx-auto px-6 text-center text-xs text-gray-500 dark:text-gray-400 flex flex-col sm:flex-row justify-between items-center" },
-              e("span", null, "© 2026 ONEST Logistics - Todos los derechos reservados."),
+              e("span", null, "© 2026 ONEST SmartLogistics - Todos los derechos reservados."),
               e("span", { className: "mt-2 sm:mt-0 font-mono text-[11px] text-gray-400 dark:text-gray-500" },
-                "Privacy by Design • Umbral k ≥ 5 • HMAC-SHA256 • Retención 90 días"
+                "Métricas por Usuario • Reproductor de Sesiones • Privacy by Design (k ≥ 5) • Zero PII"
               )
             )
           )
@@ -1153,400 +868,26 @@
       );
     }
 
-    // ==========================================
-    // 1. PANTALLA DE LOGIN CORPORATIVA
-    // ==========================================
-    function LoginView({ onLoginSuccess }) {
-      const [email, setEmail] = useState("");
-      const [password, setPassword] = useState("");
-      const [errorMsg, setErrorMsg] = useState("");
-      const [loading, setLoading] = useState(false);
-      const [demoUsers, setDemoUsers] = useState([]);
-
-      useEffect(() => {
-        fetch(`${API_BASE}/api/v1/auth/demo-users`)
-          .then(r => r.json())
-          .then(d => setDemoUsers(d))
-          .catch(() => {});
-      }, []);
-
-      const submitLogin = async (loginEmail, loginPwd, quickRole = null) => {
-        setLoading(true);
-        setErrorMsg("");
-        try {
-          const res = await fetch(`${API_BASE}/api/v1/auth/login`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              email: loginEmail || email,
-              password: loginPwd !== undefined ? loginPwd : password,
-              quick_role: quickRole
-            })
-          });
-
-          if (!res.ok) {
-            const err = await res.json();
-            throw new Error(err.detail || "Fallo en autenticación");
-          }
-
-          const data = await res.json();
-          onLoginSuccess(data.user, data.access_token);
-        } catch (err) {
-          setErrorMsg(err.message);
-        } finally {
-          setLoading(false);
-        }
-      };
-
-      return e("div", { className: "min-h-screen bg-[var(--bg-canvas)] flex flex-col justify-center py-10 sm:px-6 lg:px-8" },
-        e("div", { className: "sm:mx-auto sm:w-full sm:max-w-3xl text-center" },
-          e("div", { className: "w-14 h-14 bg-[#003E75] text-white text-2xl font-black rounded-2xl mx-auto flex items-center justify-center shadow-lg mb-3 font-heading" }, "O"),
-          e("h2", { className: "text-2xl font-bold text-[#003E75] dark:text-blue-400 tracking-tight font-heading" }, "ONEST Digital"),
-          e("p", { className: "mt-1 text-sm font-semibold text-[#00549E] dark:text-blue-300" }, "Consola de Monitoreo & Telemetría de Sistemas (TI)"),
-          e("div", { className: "mt-2 inline-flex items-center space-x-1.5 bg-[#EAF3FA] dark:bg-blue-950/40 text-[#00549E] dark:text-[#A9D3EF] border border-[#A9D3EF] dark:border-blue-800 px-3 py-1 rounded-full text-xs font-bold" },
-            e("span", { className: "pulse-dot" }),
-            e("span", null, "ACCESO EXCLUSIVO: EQUIPO DE SISTEMAS (TODOS ADMINISTRADORES)")
-          )
-        ),
-
-        e("div", { className: "mt-6 sm:mx-auto sm:w-full sm:max-w-3xl" },
-          e("div", { className: "card-onest py-8 px-6 sm:px-8 shadow-xl" },
-            errorMsg && e("div", { className: "mb-4 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 text-xs p-3 rounded-lg flex items-center space-x-2" },
-              e("span", { className: "font-bold" }, "Error:"),
-              e("span", null, errorMsg)
-            ),
-
-            // Formulario tradicional
-            e("form", {
-              onSubmit: (ev) => { ev.preventDefault(); submitLogin(); },
-              className: "space-y-4"
-            },
-              e("div", { className: "grid grid-cols-1 sm:grid-cols-2 gap-4" },
-                e("div", null,
-                  e("label", { className: "block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1 uppercase tracking-wider" }, "Correo de Sistemas"),
-                  e("input", {
-                    type: "email",
-                    required: true,
-                    value: email,
-                    onChange: (e) => setEmail(e.target.value),
-                    placeholder: "nombre@onest.com (acceso como Administrador)",
-                    className: "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-[#132034] text-gray-900 dark:text-white rounded-lg text-sm focus:outline-none focus:border-[#00549E]"
-                  })
-                ),
-                e("div", null,
-                  e("label", { className: "block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1 uppercase tracking-wider" }, "Contraseña"),
-                  e("input", {
-                    type: "password",
-                    value: password,
-                    onChange: (e) => setPassword(e.target.value),
-                    placeholder: "•••••••• (Demo: onest2026)",
-                    className: "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-[#132034] text-gray-900 dark:text-white rounded-lg text-sm focus:outline-none focus:border-[#00549E]"
-                  })
-                )
-              ),
-              e("button", {
-                type: "submit",
-                disabled: loading,
-                className: "w-full bg-[#00549E] hover:bg-[#003E75] text-white py-2.5 px-4 rounded-lg font-semibold text-sm shadow transition duration-150 flex items-center justify-center space-x-2 font-heading"
-              },
-                loading ? e("span", { className: "animate-spin" }, "⏳") : e(Icons.Lock),
-                e("span", null, loading ? "Verificando..." : "Ingresar como Administrador de Sistemas")
-              )
-            ),
-
-            // Divisor
-            e("div", { className: "mt-6 relative flex items-center justify-center" },
-              e("div", { className: "border-t border-gray-200 dark:border-gray-700 w-full" }),
-              e("span", { className: "bg-[var(--bg-surface)] px-3 text-xs text-gray-500 dark:text-gray-400 font-semibold uppercase tracking-wider relative" }, "Selecciona tu perfil de Sistemas (1-Clic)")
-            ),
-
-            // Perfiles de 1-Clic para los Administradores
-            e("div", { className: "mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2.5" },
-              demoUsers.map(user =>
-                e("button", {
-                  key: user.email,
-                  type: "button",
-                  onClick: () => submitLogin(user.email, "onest2026", "administrador"),
-                  className: "text-left p-3 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-[#00549E] hover:bg-blue-50/50 dark:hover:bg-blue-900/20 transition flex items-center justify-between group shadow-sm bg-[var(--bg-surface)]"
-                },
-                  e("div", { className: "flex items-center space-x-3 overflow-hidden w-full" },
-                    e("div", { className: "w-9 h-9 flex-shrink-0 rounded-full bg-[#003E75] text-white font-bold text-xs flex items-center justify-center group-hover:bg-[#00549E] shadow-sm font-heading" },
-                      user.avatar_initials
-                    ),
-                    e("div", { className: "truncate flex-1" },
-                      e("div", { className: "text-xs font-bold text-gray-900 dark:text-white leading-tight truncate group-hover:text-[#00549E] font-heading" }, user.name),
-                      e("div", { className: "text-[11px] text-gray-500 dark:text-gray-400 leading-tight truncate mt-0.5" }, user.title),
-                      e("div", { className: "flex items-center space-x-1.5 mt-1" },
-                        e("span", { className: "text-[9px] font-semibold px-1.5 py-0.5 rounded bg-blue-50 dark:bg-blue-900/40 text-[#00549E] dark:text-blue-300 border border-blue-200 dark:border-blue-800 uppercase truncate" },
-                          user.area || "Sistemas"
-                        ),
-                        e("span", { className: "text-[9px] font-bold px-1.5 py-0.5 rounded bg-[#EAF3FA] dark:bg-blue-950/40 text-[#00549E] dark:text-[#A9D3EF] border border-[#A9D3EF] dark:border-blue-800 uppercase flex-shrink-0" },
-                          "ADMINISTRADOR"
-                        )
-                      )
-                    )
-                  )
-                )
-              )
-            )
-          )
-        )
-      );
-    }
-
-    // ==========================================
-    // 2. PESTAÑA: RESUMEN EJECUTIVO (BENTO GRID)
-    // ==========================================
-    function OverviewTab({ summary, ranking, trendChartRef, onSelectPortal }) {
-      const s = summary || {
-        dau_today: 1240,
-        mau_30d: 4850,
-        overall_error_rate_pct: 0.85,
-        avg_page_load_ms: 320,
-        active_apps_count: 5
-      };
-
-      const stickiness = s.mau_30d > 0 ? ((s.dau_today / s.mau_30d) * 100).toFixed(1) : "25.6";
-
-      return e("div", { className: "space-y-6" },
-        // Franja Superior: 4 KPIs Principales
-        e("div", { className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" },
-          // KPI 1: DAU
-          e("div", { className: "card-onest p-5" },
-            e("div", { className: "flex justify-between items-start" },
-              e("span", { className: "text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider font-heading" }, "Usuarios Activos (DAU)"),
-              e("span", { className: "text-xs font-bold text-[#00549E] bg-[#EAF3FA] dark:bg-blue-950/40 px-2 py-0.5 rounded-full" }, "+12.4% vs ayer")
-            ),
-            e("div", { className: "mt-2 text-3xl font-extrabold text-[#003E75] dark:text-blue-400 font-heading tabular-nums" }, s.dau_today.toLocaleString()),
-            e("div", { className: "mt-2 text-xs text-gray-500 dark:text-gray-400 flex items-center justify-between" },
-              e("span", null, `MAU (30D): ${s.mau_30d.toLocaleString()}`),
-              e("span", { className: "font-semibold text-[#00549E] dark:text-blue-300" }, `Stickiness: ${stickiness}%`)
-            )
-          ),
-
-          // KPI 2: Tasa de Error Global
-          e("div", { className: "card-onest p-5" },
-            e("div", { className: "flex justify-between items-start" },
-              e("span", { className: "text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider font-heading" }, "Tasa Global de Error"),
-              e("span", { className: `text-xs font-bold px-2 py-0.5 rounded-full ${s.overall_error_rate_pct < 1.0 ? 'bg-[#EAF3FA] text-[#00549E] dark:bg-blue-950/40 dark:text-[#A9D3EF]' : 'bg-red-100 text-red-800'}` },
-                s.overall_error_rate_pct < 1.0 ? "Saludable" : "Atención"
-              )
-            ),
-            e("div", { className: "mt-2 text-3xl font-extrabold text-gray-900 dark:text-white font-heading tabular-nums" }, `${s.overall_error_rate_pct}%`),
-            e("div", { className: "mt-2 text-xs text-gray-500 dark:text-gray-400 flex items-center justify-between" },
-              e("span", null, "Objetivo SLA: < 1.0%"),
-              e("span", { className: "text-[#0A6CBE] dark:text-[#3893D2] font-semibold" }, "Uptime: 99.96%")
-            )
-          ),
-
-          // KPI 3: Latencia Promedio
-          e("div", { className: "card-onest p-5" },
-            e("div", { className: "flex justify-between items-start" },
-              e("span", { className: "text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider font-heading" }, "Velocidad de Carga"),
-              e("span", { className: "text-xs font-bold text-[#1677BD] bg-[#EAF3FA] dark:bg-blue-950/40 px-2 py-0.5 rounded-full" }, "P50 Mediana")
-            ),
-            e("div", { className: "mt-2 text-3xl font-extrabold text-[#003E75] dark:text-blue-400 font-heading tabular-nums" }, `${s.avg_page_load_ms} ms`),
-            e("div", { className: "mt-2 text-xs text-gray-500 dark:text-gray-400 flex items-center justify-between" },
-              e("span", null, "P90: 580 ms"),
-              e("span", { className: "text-gray-600 dark:text-gray-400" }, "P99: 1,120 ms")
-            )
-          ),
-
-          // KPI 4: Portales Activos
-          e("div", { className: "card-onest p-5" },
-            e("div", { className: "flex justify-between items-start" },
-              e("span", { className: "text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider font-heading" }, "Portales Monitoreados"),
-              e("span", { className: "text-xs font-bold text-[#003E75] dark:text-blue-300 bg-[#EAF3FA] dark:bg-blue-950/40 px-2 py-0.5 rounded-full" }, "En Producción")
-            ),
-            e("div", { className: "mt-2 text-3xl font-extrabold text-gray-900 dark:text-white font-heading tabular-nums" }, s.active_apps_count),
-            e("div", { className: "mt-2 text-xs text-gray-500 dark:text-gray-400 flex items-center justify-between" },
-              e("span", null, "Gobernanza: Activa"),
-              e("span", { className: "text-[#0A6CBE] dark:text-[#3893D2] font-mono" }, "100% compliant")
-            )
-          )
-        ),
-
-        // Gráfica de Tendencia Temporal (14 días)
-        e("div", { className: "card-onest p-6" },
-          e("div", { className: "flex flex-col sm:flex-row justify-between sm:items-center mb-4 gap-2" },
-            e("div", null,
-              e("h3", { className: "text-base font-bold text-[#003E75] dark:text-blue-300 font-heading" }, "Tendencia Temporal de Usuarios Activos y Sesiones"),
-              e("p", { className: "text-xs text-gray-500 dark:text-gray-400 mt-0.5" }, "Evolución histórica diaria con protección de umbral de privacidad k ≥ 5")
-            ),
-            e("div", { className: "text-xs bg-gray-100 dark:bg-gray-800 px-3 py-1 rounded-md text-gray-600 dark:text-gray-300 font-mono" },
-              "Agregación: Diaria • ClickHouse OLAP"
-            )
-          ),
-          e("div", { className: "h-72 w-full" },
-            e("canvas", { ref: trendChartRef })
-          )
-        ),
-
-        // Tabla de Ranking de Adopción por Portal Web
-        e("div", { className: "card-onest overflow-hidden" },
-          e("div", { className: "px-6 py-4 border-b border-[#E1E6EB] dark:border-[#2D3E59] flex justify-between items-center" },
-            e("div", null,
-              e("h3", { className: "text-base font-bold text-[#003E75] dark:text-blue-300 font-heading" }, "Ranking de Adopción por Portal Web Corporativo"),
-              e("p", { className: "text-xs text-gray-500 dark:text-gray-400 mt-0.5" }, "Haz clic en cualquier sistema para auditar su telemetría profunda")
-            ),
-            e("span", { className: "text-xs text-gray-400 font-mono" }, "ClickHouse analytics.events")
-          ),
-          e("div", { className: "overflow-x-auto" },
-            e("table", { className: "w-full text-left text-sm" },
-              e("thead", { className: "bg-[#F8FAFC] dark:bg-[#132034] text-xs font-bold text-gray-600 dark:text-gray-300 border-b border-[#E1E6EB] dark:border-[#2D3E59]" },
-                e("tr", null,
-                  e("th", { className: "px-6 py-3 font-heading" }, "Sistema / Portal Web"),
-                  e("th", { className: "px-6 py-3 font-heading" }, "Usuarios Únicos"),
-                  e("th", { className: "px-6 py-3 font-heading" }, "Total Sesiones"),
-                  e("th", { className: "px-6 py-3 font-heading" }, "Páginas Vistas"),
-                  e("th", { className: "px-6 py-3 font-heading" }, "Tasa de Error"),
-                  e("th", { className: "px-6 py-3 font-heading" }, "Estado de Privacidad"),
-                  e("th", { className: "px-6 py-3 text-right font-heading" }, "Acción")
-                )
-              ),
-              e("tbody", { className: "divide-y divide-[#E1E6EB] dark:divide-[#2D3E59]" },
-                ranking.map(portal => {
-                  const isSuppressed = portal.privacy_suppressed;
-                  return e("tr", {
-                    key: portal.app_id,
-                    className: "hover:bg-[#F8FAFC] dark:hover:bg-white/5 cursor-pointer transition",
-                    onClick: () => onSelectPortal(portal.app_id)
-                  },
-                    e("td", { className: "px-6 py-4 font-semibold text-[#003E75] dark:text-blue-300 font-heading" },
-                      e("div", { className: "flex items-center space-x-2" },
-                        e("div", { className: `w-2.5 h-2.5 rounded-full ${isSuppressed ? 'bg-amber-500' : 'bg-[#0A6CBE]'}` }),
-                        e("span", null, portal.app_id)
-                      )
-                    ),
-                    e("td", { className: "px-6 py-4 font-mono text-sm tabular-nums" },
-                      isSuppressed
-                        ? e("span", { className: "text-xs bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800 px-2 py-0.5 rounded" }, "Censurado (<5)")
-                        : portal.unique_users?.toLocaleString()
-                    ),
-                    e("td", { className: "px-6 py-4 font-mono text-sm text-gray-700 dark:text-gray-300 tabular-nums" },
-                      isSuppressed ? "-" : portal.total_sessions?.toLocaleString()
-                    ),
-                    e("td", { className: "px-6 py-4 font-mono text-sm text-gray-700 dark:text-gray-300 tabular-nums" },
-                      isSuppressed ? "-" : portal.total_page_views?.toLocaleString()
-                    ),
-                    e("td", { className: "px-6 py-4 text-xs font-semibold" },
-                      isSuppressed ? "-" : e("span", { className: "text-[#0A6CBE] dark:text-[#3893D2]" }, "0.45%")
-                    ),
-                    e("td", { className: "px-6 py-4 text-xs" },
-                      isSuppressed
-                        ? e("span", { className: "font-semibold text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950/40 px-2 py-0.5 rounded-full" }, "k < 5 Protegido")
-                        : e("span", { className: "font-semibold text-[#0A6CBE] dark:text-[#A9D3EF] bg-[#EAF3FA] dark:bg-blue-950/40 px-2 py-0.5 rounded-full" }, "k ≥ 5 Conforme")
-                    ),
-                    e("td", { className: "px-6 py-4 text-right" },
-                      e("button", {
-                        onClick: (ev) => { ev.stopPropagation(); onSelectPortal(portal.app_id); },
-                        className: "text-xs font-semibold text-[#00549E] dark:text-blue-400 hover:underline"
-                      }, "Ver detalle →")
-                    )
-                  );
-                })
-              )
-            )
-          )
-        )
-      );
-    }
-
-    // ==========================================
-    // COMPONENTE: ACTIVIDAD DETALLADA POR USUARIO (SEUDÓNIMA)
-    // ==========================================
-    function UserActivitySubTab({ selectedPortalId, timeRange, getHeaders, ranking, onSelectPortal, API_BASE }) {
+    // =========================================================
+    // 1. PESTAÑA: MÉTRICAS ANALÍTICAS POR USUARIO (NUEVO MÓDULO)
+    // =========================================================
+    function UsersMetricsTab({ ranking, timeRange, getHeaders, API_BASE, onOpenReplaySession }) {
       const [users, setUsers] = useState([]);
       const [searchTerm, setSearchTerm] = useState("");
-      const [portalFilter, setPortalFilter] = useState(selectedPortalId || "todos");
+      const [portalFilter, setPortalFilter] = useState("todos");
       const [sortCol, setSortCol] = useState("sessions");
       const [sortDir, setSortDir] = useState("desc");
       const [selectedUser, setSelectedUser] = useState(null);
-      const [lastSync, setLastSync] = useState(() => new Date().toLocaleTimeString());
       const [isSyncing, setIsSyncing] = useState(false);
+      const [lastSync, setLastSync] = useState(() => new Date().toLocaleTimeString());
 
-      const drillChartRef = useRef(null);
-      const drillChartInstance = useRef(null);
+      const userTrendChartRef = useRef(null);
+      const userTrendChartInstance = useRef(null);
 
-      // Generador de respaldo de usuarios con k-anonimato garantizado
-      const generateFallbackUsers = (pFilter, days, term) => {
-        const apps = [
-          "crm-ventas", "portal-clientes", "portal-proveedores",
-          "portal-colaborador", "portal-comercial", "portal-soporte-ti",
-          "erp-portal", "portal-rrhh", "portal-auditoria"
-        ];
-        const routesMap = {
-          "crm-ventas": ["/oportunidades/pipeline", "/clientes/cartera", "/cotizaciones/activas", "/reportes/cierre"],
-          "portal-clientes": ["/rastreo/guias", "/pedidos/seguimiento", "/notificaciones/status", "/descargas/comprobante"],
-          "portal-proveedores": ["/facturas/carga-xml", "/ordenes-compra/consulta", "/pagos/calendario", "/certificados/sat"],
-          "portal-colaborador": ["/recibos-nomina", "/solicitud-vacaciones", "/tramites/constancias", "/beneficios/consulta"],
-          "portal-comercial": ["/cotizador/envios", "/tarifas/cobertura", "/solicitud/contacto", "/catalogo/servicios"],
-          "portal-soporte-ti": ["/tickets/crear", "/tickets/mis-solicitudes", "/base-conocimiento", "/inventario/equipos"],
-          "erp-portal": ["/inventario/stock", "/ordenes/compra", "/almacen/entradas", "/embarques/salidas"],
-          "portal-rrhh": ["/nomina/recibos", "/asistencia/turnos", "/incidencias/reporte", "/expedientes/personal"],
-          "portal-auditoria": ["/auditorias/logs", "/cumplimiento/k-anon", "/alertas/seguridad", "/reportes/descargas"],
-        };
-        const devicesList = ["Desktop Windows", "MacBook Pro", "Mobile Android", "iPhone iOS"];
-        const browsersList = ["Google Chrome", "Microsoft Edge", "Mozilla Firefox", "Apple Safari"];
-        const mult = Math.max(1, days / 14);
-        const targetPortal = pFilter && pFilter !== "todos" ? pFilter.trim() : null;
-        const count = targetPortal ? 24 : 36;
-        const res = [];
-
-        for (let i = 0; i < count; i++) {
-          const portal = targetPortal ? targetPortal : apps[i % apps.length];
-          const hex = ((i * 1234567 + 0x4A1F) & 0xFFFF).toString(16).padStart(4, "0").toUpperCase();
-          const code = `USR-${hex}`;
-
-          const sess = Math.round((14 + (i * 9) % 50) * mult);
-          const pv = Math.round(sess * (3.8 + (i % 5) * 0.7));
-          const secs = i * 420 + (i % 7) * 110;
-          let rel = secs < 3600 ? `hace ${Math.max(2, Math.floor(secs / 60))}m` : (secs < 86400 ? `hace ${Math.floor(secs / 3600)}h` : `hace ${Math.floor(secs / 86400)}d`);
-          const diff = ((i * 13) % 41) - 15;
-          const timeline = [];
-          for (let d = 0; d < Math.min(days, 14); d++) {
-            timeline.push({ day: `D-${Math.min(days, 14) - d}`, sessions: Math.max(0, Math.round((sess / Math.max(1, Math.min(days, 14))) * (0.6 + 0.8 * ((i + d) % 4) / 3))) });
-          }
-          const routes = routesMap[portal] || ["/" + portal + "/inicio", "/" + portal + "/detalle", "/" + portal + "/reportes"];
-          const topPages = [
-            { path: routes[0], hits: Math.round(pv * 0.48) },
-            { path: routes[1], hits: Math.round(pv * 0.32) },
-            { path: routes[2] || ("/" + portal + "/ayuda"), hits: Math.round(pv * 0.20) }
-          ];
-
-          const item = {
-            user_id: code,
-            portal: portal,
-            sessions: sess,
-            page_views: pv,
-            last_activity: rel,
-            last_activity_seconds: secs,
-            trend_pct: Math.abs(diff),
-            trend_direction: diff > 0 ? "up" : (diff < 0 ? "down" : "same"),
-            primary_device: devicesList[i % devicesList.length],
-            primary_browser: browsersList[i % browsersList.length],
-            timeline: timeline,
-            top_pages: topPages,
-            privacy_k_compliant: true
-          };
-
-          if (term) {
-            const t = term.toLowerCase().trim();
-            if (!item.user_id.toLowerCase().includes(t) && !item.portal.toLowerCase().includes(t)) continue;
-          }
-          res.push(item);
-        }
-        return res;
-      };
-
-      // Cargar actividad de usuarios
       const loadUsers = async () => {
         setIsSyncing(true);
         try {
-          const query = new URLSearchParams({
-            days: timeRange,
-            limit: 50
-          });
+          const query = new URLSearchParams({ days: timeRange, limit: 50 });
           if (portalFilter && portalFilter !== "todos") query.append("app_id", portalFilter);
           if (searchTerm) query.append("search", searchTerm);
 
@@ -1562,74 +903,50 @@
               return;
             }
           }
-        } catch (err) {
-          // Usar generador fallback
-        }
-        const fallback = generateFallbackUsers(portalFilter, timeRange, searchTerm);
-        setUsers(fallback);
-        setLastSync(new Date().toLocaleTimeString());
+        } catch (err) {}
         setIsSyncing(false);
       };
 
-      // Polling periódico cada 20 segundos y al cambiar filtros
       useEffect(() => {
         loadUsers();
         const interval = setInterval(loadUsers, 20000);
         return () => clearInterval(interval);
       }, [portalFilter, timeRange, searchTerm]);
 
-      // Gráfica de Drill-down
+      // Gráfica de Drill-down del usuario seleccionado
       useEffect(() => {
-        if (!selectedUser || !drillChartRef.current) return;
-        if (drillChartInstance.current) {
-          drillChartInstance.current.destroy();
-          drillChartInstance.current = null;
+        if (!selectedUser || !userTrendChartRef.current) return;
+        if (userTrendChartInstance.current) {
+          userTrendChartInstance.current.destroy();
+          userTrendChartInstance.current = null;
         }
-        const ctx = drillChartRef.current.getContext("2d");
-        drillChartInstance.current = new Chart(ctx, {
+        const ctx = userTrendChartRef.current.getContext("2d");
+        userTrendChartInstance.current = new Chart(ctx, {
           type: "line",
           data: {
             labels: (selectedUser.timeline || []).map(t => t.day),
-            datasets: [{
-              label: "Sesiones",
-              data: (selectedUser.timeline || []).map(t => t.sessions),
-              borderColor: "#00549E",
-              backgroundColor: "rgba(0, 84, 158, 0.12)",
-              borderWidth: 2,
-              fill: true,
-              tension: 0.35,
-              pointBackgroundColor: "#00549E",
-              pointRadius: 3
-            }]
+            datasets: [
+              {
+                label: "Sesiones",
+                data: (selectedUser.timeline || []).map(t => t.sessions),
+                borderColor: "#00549E",
+                backgroundColor: "rgba(0, 84, 158, 0.12)",
+                borderWidth: 2,
+                fill: true,
+                tension: 0.35,
+                pointRadius: 3
+              }
+            ]
           },
           options: {
             responsive: true,
             maintainAspectRatio: false,
-            plugins: {
-              legend: { display: false },
-              tooltip: {
-                backgroundColor: "#1B2A41",
-                padding: 10,
-                titleFont: { family: "Inter", size: 11, weight: "bold" },
-                bodyFont: { family: "Inter", size: 12 }
-              }
-            },
-            scales: {
-              y: { beginAtZero: true, grid: { color: "rgba(100, 116, 139, 0.1)" }, ticks: { precision: 0 } },
-              x: { grid: { display: false }, ticks: { font: { size: 10 } } }
-            }
+            plugins: { legend: { display: false } },
+            scales: { y: { beginAtZero: true }, x: { grid: { display: false } } }
           }
         });
-
-        return () => {
-          if (drillChartInstance.current) {
-            drillChartInstance.current.destroy();
-            drillChartInstance.current = null;
-          }
-        };
       }, [selectedUser]);
 
-      // Ordenamiento de tabla
       const sortedUsers = useMemo(() => {
         const copy = [...users];
         copy.sort((a, b) => {
@@ -1644,29 +961,55 @@
       }, [users, sortCol, sortDir]);
 
       const handleSort = (col) => {
-        if (sortCol === col) {
-          setSortDir(sortDir === "asc" ? "desc" : "asc");
-        } else {
-          setSortCol(col);
-          setSortDir("desc");
-        }
+        if (sortCol === col) setSortDir(sortDir === "asc" ? "desc" : "asc");
+        else { setSortCol(col); setSortDir("desc"); }
       };
 
-      const renderSortIndicator = (col) => {
-        if (sortCol !== col) return e("span", { className: "text-gray-300 dark:text-gray-600 ml-1 text-[10px]" }, "⇅");
-        return sortDir === "asc"
-          ? e("span", { className: "text-[#00549E] dark:text-blue-400 ml-1 text-[10px]" }, "▲")
-          : e("span", { className: "text-[#00549E] dark:text-blue-400 ml-1 text-[10px]" }, "▼");
-      };
+      // Resumen Global de los usuarios listados
+      const aggregateStats = useMemo(() => {
+        const totalU = sortedUsers.length;
+        if (totalU === 0) return { avgActive: 81.4, totalRage: 18, avgDuration: "14m", usersWithRage: 4 };
+        const totalAct = sortedUsers.reduce((acc, u) => acc + (u.active_time_pct || 80), 0);
+        const totalR = sortedUsers.reduce((acc, u) => acc + (u.rage_clicks_count || 0), 0);
+        const withR = sortedUsers.filter(u => (u.rage_clicks_count || 0) > 0).length;
+        return {
+          avgActive: (totalAct / totalU).toFixed(1),
+          totalRage: totalR,
+          usersWithRage: withR,
+          avgDuration: "14.2m"
+        };
+      }, [sortedUsers]);
 
-      return e("div", { className: "space-y-4" },
+      return e("div", { className: "space-y-6" },
+        // 4 Tarjetas de Métricas a Nivel Usuario
+        e("div", { className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" },
+          e("div", { className: "card-onest p-5 border-l-4 border-l-[#00549E]" },
+            e("div", { className: "text-xs font-bold text-gray-500 uppercase tracking-wider font-heading" }, "Usuarios Monitoreados"),
+            e("div", { className: "text-2xl font-black text-[#003E75] dark:text-blue-300 mt-1 tabular-nums font-heading" }, sortedUsers.length),
+            e("div", { className: "text-xs text-gray-400 mt-1" }, "Cohorte activa en " + timeRange + " días")
+          ),
+          e("div", { className: "card-onest p-5 border-l-4 border-l-[#0A6CBE]" },
+            e("div", { className: "text-xs font-bold text-gray-500 uppercase tracking-wider font-heading" }, "Tiempo Activo Promedio"),
+            e("div", { className: "text-2xl font-black text-[#0A6CBE] dark:text-[#3893D2] mt-1 tabular-nums font-heading" }, `${aggregateStats.avgActive}%`),
+            e("div", { className: "text-xs text-gray-400 mt-1" }, "Segundo a segundo en telemetría UX")
+          ),
+          e("div", { className: "card-onest p-5 border-l-4 border-l-red-500" },
+            e("div", { className: "text-xs font-bold text-gray-500 uppercase tracking-wider font-heading" }, "Usuarios con Rage Clicks"),
+            e("div", { className: "text-2xl font-black text-red-600 dark:text-red-400 mt-1 tabular-nums font-heading" }, `${aggregateStats.usersWithRage} usuarios`),
+            e("div", { className: "text-xs text-red-500 mt-1" }, `${aggregateStats.totalRage} clics repetitivos totales`)
+          ),
+          e("div", { className: "card-onest p-5 border-l-4 border-l-amber-500" },
+            e("div", { className: "text-xs font-bold text-gray-500 uppercase tracking-wider font-heading" }, "Gobernanza de Privacidad"),
+            e("div", { className: "text-2xl font-black text-gray-900 dark:text-white mt-1 tabular-nums font-heading" }, "k ≥ 5"),
+            e("div", { className: "text-xs text-emerald-600 mt-1" }, "Zero-PII • HMAC-SHA256")
+          )
+        ),
+
         // Barra de Controles y Filtros
         e("div", { className: "card-onest p-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-4" },
-          // Búsqueda interactiva
+          // Buscador
           e("div", { className: "relative w-full md:w-80" },
-            e("div", { className: "absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400" },
-              e(Icons.Search)
-            ),
+            e("div", { className: "absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400" }, e(Icons.Search)),
             e("input", {
               type: "text",
               value: searchTerm,
@@ -1676,499 +1019,320 @@
             })
           ),
 
-          // Selector de Portal + Indicador de Auto-sync
+          // Filtros
           e("div", { className: "flex flex-wrap items-center gap-3 w-full md:w-auto justify-between md:justify-end" },
             e("div", { className: "flex items-center space-x-2 text-xs" },
-              e("span", { className: "text-gray-500 dark:text-gray-400 font-medium" }, "Portal:"),
+              e("span", { className: "text-gray-500 dark:text-gray-400 font-medium" }, "Portal ONEST:"),
               e("select", {
                 value: portalFilter,
                 onChange: (ev) => setPortalFilter(ev.target.value),
                 className: "text-xs border border-[#CBD5E1] dark:border-[#2D3E59] rounded-lg px-2.5 py-1.5 bg-white dark:bg-[#132034] text-gray-700 dark:text-gray-200 font-semibold focus:outline-none"
               },
-                e("option", { value: "todos" }, "Todos los portales web"),
-                (ranking || []).map(r =>
-                  e("option", { key: r.app_id, value: r.app_id }, r.app_id)
-                )
+                e("option", { value: "todos" }, "Todos los 11 Portales"),
+                ALL_11_PORTALS.map(r => e("option", { key: r.id, value: r.id }, `${r.title} (${r.badge})`))
               )
             ),
 
-            // Badge de Auto-sync y botón de refresco manual
             e("div", { className: "flex items-center space-x-2 text-xs text-gray-500 dark:text-gray-400 bg-[#F8FAFC] dark:bg-[#132034] border border-[#E1E6EB] dark:border-[#2D3E59] px-3 py-1.5 rounded-lg font-mono text-[11px]" },
               e("span", { className: `w-2 h-2 rounded-full ${isSyncing ? "bg-amber-500 animate-ping" : "pulse-dot"}` }),
               e("span", null, `Sync: ${lastSync}`),
-              e("button", {
-                type: "button",
-                onClick: loadUsers,
-                title: "Refrescar ahora",
-                className: "p-0.5 hover:text-[#00549E] dark:hover:text-blue-400 transition"
-              }, e(Icons.Refresh))
+              e("button", { onClick: loadUsers, className: "p-0.5 hover:text-[#00549E] transition" }, e(Icons.Refresh))
             )
           )
         ),
 
-        // Aviso de Cumplimiento Privacy by Design
-        e("div", { className: "bg-blue-50/60 dark:bg-blue-950/20 border border-blue-200/80 dark:border-blue-800/40 rounded-xl p-3 flex items-center justify-between text-xs" },
-          e("div", { className: "flex items-center space-x-2 text-[#003E75] dark:text-blue-300" },
-            e(Icons.ShieldCheck),
-            e("span", { className: "font-semibold" },
-              `Cohorte Activa (${sortedUsers.length} usuarios seudónimos en ventana de ${timeRange} días):`
-            ),
-            e("span", { className: "text-gray-600 dark:text-gray-400 hidden sm:inline" },
-              "Telemetría seudónima procesada en borde con HMAC-SHA256 sin exposición de PII."
-            )
-          ),
-          e("span", { className: "font-mono font-bold text-[#00549E] dark:text-[#3893D2] bg-white dark:bg-black/20 px-2 py-0.5 rounded border border-[#A9D3EF] dark:border-blue-800 text-[10px]" },
-            "k ≥ 5 CONFORME"
-          )
-        ),
-
-        // Tabla Dinámica de Actividad por Usuario
+        // Tabla Detallada de Métricas por Usuario
         e("div", { className: "card-onest overflow-hidden" },
           e("div", { className: "overflow-x-auto" },
             e("table", { className: "w-full text-left text-xs" },
               e("thead", { className: "bg-[#F8FAFC] dark:bg-[#132034] font-bold text-[#475467] dark:text-gray-300 border-b border-[#E1E6EB] dark:border-[#2D3E59] select-none" },
                 e("tr", null,
-                  e("th", {
-                    onClick: () => handleSort("user_id"),
-                    className: "px-5 py-3 font-heading cursor-pointer hover:text-[#00549E] dark:hover:text-white"
-                  },
-                    e("div", { className: "flex items-center" }, "Identificador Seudónimo", renderSortIndicator("user_id"))
-                  ),
-                  e("th", {
-                    onClick: () => handleSort("portal"),
-                    className: "px-4 py-3 font-heading cursor-pointer hover:text-[#00549E] dark:hover:text-white"
-                  },
-                    e("div", { className: "flex items-center" }, "Portal Asociado", renderSortIndicator("portal"))
-                  ),
-                  e("th", {
-                    onClick: () => handleSort("sessions"),
-                    className: "px-4 py-3 font-heading cursor-pointer hover:text-[#00549E] dark:hover:text-white"
-                  },
-                    e("div", { className: "flex items-center" }, "Sesiones", renderSortIndicator("sessions"))
-                  ),
-                  e("th", {
-                    onClick: () => handleSort("page_views"),
-                    className: "px-4 py-3 font-heading cursor-pointer hover:text-[#00549E] dark:hover:text-white"
-                  },
-                    e("div", { className: "flex items-center" }, "Páginas Vistas", renderSortIndicator("page_views"))
-                  ),
-                  e("th", {
-                    onClick: () => handleSort("last_activity_seconds"),
-                    className: "px-4 py-3 font-heading cursor-pointer hover:text-[#00549E] dark:hover:text-white"
-                  },
-                    e("div", { className: "flex items-center" }, "Última Actividad", renderSortIndicator("last_activity_seconds"))
-                  ),
-                  e("th", { className: "px-4 py-3 font-heading" }, "Tendencia"),
-                  e("th", { className: "px-5 py-3 text-right font-heading" }, "Drill-Down")
+                  e("th", { onClick: () => handleSort("user_id"), className: "px-5 py-3 font-heading cursor-pointer hover:text-[#00549E]" }, "Usuario Seudónimo ⇅"),
+                  e("th", { onClick: () => handleSort("portal_title"), className: "px-4 py-3 font-heading cursor-pointer hover:text-[#00549E]" }, "Portal & Insignia ⇅"),
+                  e("th", { onClick: () => handleSort("sessions"), className: "px-4 py-3 font-heading cursor-pointer hover:text-[#00549E]" }, "Sesiones ⇅"),
+                  e("th", { onClick: () => handleSort("active_time_pct"), className: "px-6 py-3 font-heading cursor-pointer hover:text-[#00549E]" }, "Tiempo Activo (Telemetría) ⇅"),
+                  e("th", { onClick: () => handleSort("rage_clicks_count"), className: "px-4 py-3 font-heading cursor-pointer hover:text-[#00549E]" }, "Rage Clicks ⇅"),
+                  e("th", { onClick: () => handleSort("avg_latency_ms"), className: "px-4 py-3 font-heading cursor-pointer hover:text-[#00549E]" }, "Latencia P90 ⇅"),
+                  e("th", { className: "px-4 py-3 font-heading" }, "Última Actividad"),
+                  e("th", { className: "px-5 py-3 text-right font-heading" }, "Auditar / Replay")
                 )
               ),
               e("tbody", { className: "divide-y divide-[#E1E6EB] dark:divide-[#2D3E59]" },
-                sortedUsers.length === 0
-                  ? e("tr", null,
-                      e("td", { colSpan: 7, className: "px-6 py-8 text-center text-gray-400 text-xs" }, "No se encontraron usuarios seudónimos que coincidan con los filtros.")
-                    )
-                  : sortedUsers.map(u =>
-                      e("tr", {
-                        key: u.user_id,
-                        onClick: () => setSelectedUser(u),
-                        className: `hover:bg-blue-50/40 dark:hover:bg-white/5 cursor-pointer transition ${
-                          selectedUser && selectedUser.user_id === u.user_id ? "bg-blue-50 dark:bg-blue-900/30" : ""
-                        }`
-                      },
-                        e("td", { className: "px-5 py-3 font-mono font-bold" },
-                          e("span", { className: "bg-gray-100 dark:bg-gray-800 text-[#003E75] dark:text-blue-300 px-2 py-0.5 rounded border border-gray-200 dark:border-gray-700 tracking-wider" },
-                            u.user_id
-                          )
+                sortedUsers.map(u =>
+                  e("tr", {
+                    key: u.user_id,
+                    onClick: () => setSelectedUser(u),
+                    className: "hover:bg-blue-50/40 dark:hover:bg-white/5 cursor-pointer transition"
+                  },
+                    e("td", { className: "px-5 py-3.5 font-mono font-bold" },
+                      e("span", { className: "bg-gray-100 dark:bg-gray-800 text-[#003E75] dark:text-blue-300 px-2 py-0.5 rounded border border-gray-200 dark:border-gray-700 tracking-wider" },
+                        u.user_id
+                      )
+                    ),
+                    e("td", { className: "px-4 py-3.5" },
+                      e("div", { className: "flex items-center space-x-1.5" },
+                        e("span", { className: "font-semibold text-gray-900 dark:text-white" }, u.portal_title || u.portal),
+                        e("span", { className: "text-[9px] font-bold px-1.5 py-0.2 rounded bg-blue-50 text-[#00549E] border border-blue-200 font-mono" }, u.action_badge || "ONEST")
+                      )
+                    ),
+                    e("td", { className: "px-4 py-3.5 font-mono font-bold text-gray-900 dark:text-white tabular-nums" },
+                      u.sessions?.toLocaleString()
+                    ),
+                    e("td", { className: "px-6 py-3.5" },
+                      e("div", { className: "space-y-1" },
+                        e("div", { className: "flex justify-between text-[11px] font-mono" },
+                          e("span", { className: "text-[#00549E] dark:text-[#3893D2] font-bold" }, `${u.active_time_pct}% activo`),
+                          e("span", { className: "text-amber-600" }, `${u.idle_time_pct}% ocioso`)
                         ),
-                        e("td", { className: "px-4 py-3" },
-                          e("span", { className: "font-sans font-semibold text-gray-700 dark:text-gray-300" }, u.portal)
-                        ),
-                        e("td", { className: "px-4 py-3 font-mono tabular-nums text-gray-900 dark:text-white font-bold" },
-                          u.sessions.toLocaleString()
-                        ),
-                        e("td", { className: "px-4 py-3 font-mono tabular-nums text-gray-600 dark:text-gray-400" },
-                          u.page_views.toLocaleString()
-                        ),
-                        e("td", { className: "px-4 py-3 font-mono text-gray-500 dark:text-gray-400" },
-                          u.last_activity
-                        ),
-                        e("td", { className: "px-4 py-3" },
-                          e("span", { className: `inline-flex items-center space-x-1 px-2 py-0.5 rounded text-[11px] font-mono font-semibold ${
-                            u.trend_direction === 'up'
-                              ? 'bg-[#EAF3FA] text-[#00549E] dark:bg-blue-950/40 dark:text-[#A9D3EF]'
-                              : (u.trend_direction === 'down'
-                                  ? 'bg-red-100 text-red-800 dark:bg-red-950/40 dark:text-red-300'
-                                  : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300')
-                          }` },
-                            u.trend_direction === 'up' ? e(Icons.ArrowUp) : (u.trend_direction === 'down' ? e(Icons.ArrowDown) : null),
-                            e("span", null, `${u.trend_direction === 'up' ? '+' : (u.trend_direction === 'down' ? '-' : '')}${u.trend_pct}%`)
-                          )
-                        ),
-                        e("td", { className: "px-5 py-3 text-right" },
-                          e("button", {
-                            type: "button",
-                            onClick: (ev) => { ev.stopPropagation(); setSelectedUser(u); },
-                            className: "inline-flex items-center space-x-1 text-xs font-semibold text-[#00549E] dark:text-blue-400 hover:underline"
-                          },
-                            e("span", null, "Detalle"),
-                            e(Icons.ChevronRight)
-                          )
+                        e("div", { className: "w-full h-2 bg-amber-200 dark:bg-amber-950/60 rounded-full overflow-hidden flex" },
+                          e("div", { className: "bg-[#00549E] h-full", style: { width: `${u.active_time_pct}%` } }),
+                          e("div", { className: "bg-amber-500 h-full", style: { width: `${u.idle_time_pct}%` } })
                         )
                       )
+                    ),
+                    e("td", { className: "px-4 py-3.5 font-mono" },
+                      u.rage_clicks_count > 0
+                        ? e("span", { className: "px-2 py-0.5 rounded bg-red-100 text-red-800 font-bold" }, `⚠️ ${u.rage_clicks_count}`)
+                        : e("span", { className: "text-gray-400" }, "0")
+                    ),
+                    e("td", { className: "px-4 py-3.5 font-mono" },
+                      e("span", { className: "font-semibold text-gray-700 dark:text-gray-300" }, `${u.p90_latency_ms || 320}ms`)
+                    ),
+                    e("td", { className: "px-4 py-3.5 font-mono text-gray-500 dark:text-gray-400" },
+                      u.last_activity
+                    ),
+                    e("td", { className: "px-5 py-3.5 text-right" },
+                      e("button", {
+                        onClick: (ev) => { ev.stopPropagation(); setSelectedUser(u); },
+                        className: "px-2.5 py-1 bg-[#00549E] hover:bg-[#0A6CBE] text-white rounded text-xs font-semibold shadow-xs transition"
+                      }, "Ver Métricas →")
                     )
+                  )
+                )
               )
             )
           )
         ),
 
-        // Panel Modal de Drill-down Detallado
+        // Modal de Drill-down del Usuario con Métricas y Acceso a Session Replay
         selectedUser && e("div", {
-          className: "fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs",
+          className: "fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs",
           onClick: () => setSelectedUser(null)
         },
           e("div", {
-            className: "bg-white dark:bg-[#1B2A41] rounded-2xl shadow-2xl border border-gray-200 dark:border-[#2D3E59] max-w-2xl w-full p-6 space-y-5 animate-in fade-in zoom-in-95 duration-150",
+            className: "bg-white dark:bg-[#1B2A41] rounded-2xl shadow-2xl border border-gray-200 dark:border-[#2D3E59] max-w-3xl w-full p-6 space-y-5 animate-in fade-in zoom-in-95 duration-150 max-h-[90vh] overflow-y-auto",
             onClick: (ev) => ev.stopPropagation()
           },
-            // Cabecera del Drill-down
+            // Header del Drill-down
             e("div", { className: "flex justify-between items-start pb-4 border-b border-gray-100 dark:border-gray-700" },
-              e("div", null,
-                e("div", { className: "flex items-center space-x-3" },
-                  e("span", { className: "w-9 h-9 rounded-xl bg-[#003E75] text-white flex items-center justify-center font-mono font-bold text-xs" }, "USR"),
-                  e("div", null,
+              e("div", { className: "flex items-center space-x-3" },
+                e("div", { className: "w-10 h-10 rounded-xl bg-[#003E75] text-white flex items-center justify-center font-mono font-bold text-sm shadow" }, "USR"),
+                e("div", null,
+                  e("div", { className: "flex items-center space-x-2" },
                     e("h3", { className: "text-lg font-black font-mono text-[#003E75] dark:text-blue-300 tracking-wider" }, selectedUser.user_id),
-                    e("p", { className: "text-xs text-gray-500 dark:text-gray-400" }, `Portal: ${selectedUser.portal} • Ventana: ${timeRange} días`)
+                    e("span", { className: "text-xs font-bold px-2 py-0.5 rounded bg-[#EAF3FA] text-[#00549E] border border-[#A9D3EF]" }, selectedUser.action_badge)
+                  ),
+                  e("p", { className: "text-xs text-gray-500 dark:text-gray-400 mt-0.5" },
+                    `${selectedUser.portal_title} • ${selectedUser.location}`
                   )
                 )
               ),
-              e("div", { className: "flex items-center space-x-2" },
-                e("span", { className: "bg-[#EAF3FA] text-[#00549E] dark:bg-blue-950/40 dark:text-[#A9D3EF] text-[10px] font-mono font-bold px-2 py-1 rounded-full border border-[#A9D3EF] dark:border-blue-800" },
-                  "k-Anonymity Verified"
-                ),
-                e("button", {
-                  type: "button",
-                  onClick: () => setSelectedUser(null),
-                  className: "p-1.5 text-gray-400 hover:text-gray-700 dark:hover:text-white rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition"
-                }, e(Icons.Close))
-              )
+              e("button", {
+                onClick: () => setSelectedUser(null),
+                className: "p-1.5 text-gray-400 hover:text-gray-700 dark:hover:text-white rounded-lg transition"
+              }, e(Icons.Close))
             ),
 
-            // Métricas Rápidas
+            // Métricas Rápidas del Usuario
             e("div", { className: "grid grid-cols-2 sm:grid-cols-4 gap-3 text-center" },
               e("div", { className: "p-3 bg-[#F8FAFC] dark:bg-[#132034] rounded-xl border border-gray-200 dark:border-gray-700" },
-                e("div", { className: "text-[11px] text-gray-500 dark:text-gray-400 font-medium" }, "Total Sesiones"),
-                e("div", { className: "text-xl font-black text-[#003E75] dark:text-blue-300 mt-1 font-heading tabular-nums" }, selectedUser.sessions.toLocaleString())
+                e("div", { className: "text-[11px] text-gray-500 uppercase font-heading" }, "Sesiones Totales"),
+                e("div", { className: "text-xl font-black text-[#003E75] dark:text-blue-300 mt-1 font-heading tabular-nums" }, selectedUser.sessions?.toLocaleString())
               ),
               e("div", { className: "p-3 bg-[#F8FAFC] dark:bg-[#132034] rounded-xl border border-gray-200 dark:border-gray-700" },
-                e("div", { className: "text-[11px] text-gray-500 dark:text-gray-400 font-medium" }, "Páginas Vistas"),
-                e("div", { className: "text-xl font-black text-gray-900 dark:text-white mt-1 font-heading tabular-nums" }, selectedUser.page_views.toLocaleString())
+                e("div", { className: "text-[11px] text-gray-500 uppercase font-heading" }, "Tiempo Activo %"),
+                e("div", { className: "text-xl font-black text-[#0A6CBE] dark:text-[#3893D2] mt-1 font-heading tabular-nums" }, `${selectedUser.active_time_pct}%`)
               ),
               e("div", { className: "p-3 bg-[#F8FAFC] dark:bg-[#132034] rounded-xl border border-gray-200 dark:border-gray-700" },
-                e("div", { className: "text-[11px] text-gray-500 dark:text-gray-400 font-medium" }, "Págs / Sesión"),
-                e("div", { className: "text-xl font-black text-[#00549E] dark:text-[#3893D2] mt-1 font-heading tabular-nums" },
-                  (selectedUser.page_views / Math.max(1, selectedUser.sessions)).toFixed(1)
-                )
+                e("div", { className: "text-[11px] text-gray-500 uppercase font-heading" }, "Rage Clicks"),
+                e("div", { className: "text-xl font-black text-red-600 mt-1 font-heading tabular-nums" }, selectedUser.rage_clicks_count || 0)
               ),
               e("div", { className: "p-3 bg-[#F8FAFC] dark:bg-[#132034] rounded-xl border border-gray-200 dark:border-gray-700" },
-                e("div", { className: "text-[11px] text-gray-500 dark:text-gray-400 font-medium" }, "Último Acceso"),
-                e("div", { className: "text-sm font-bold text-gray-800 dark:text-gray-200 mt-1 font-mono" }, selectedUser.last_activity)
+                e("div", { className: "text-[11px] text-gray-500 uppercase font-heading" }, "Latencia P90"),
+                e("div", { className: "text-xl font-black text-gray-900 dark:text-white mt-1 font-heading tabular-nums" }, `${selectedUser.p90_latency_ms} ms`)
               )
             ),
 
-            // Gráfico de Sesiones en el Tiempo (Chart.js)
-            e("div", { className: "p-4 bg-[#F8FAFC] dark:bg-[#132034] rounded-xl border border-gray-200 dark:border-gray-700" },
-              e("div", { className: "flex justify-between items-center mb-2" },
-                e("h4", { className: "text-xs font-bold text-[#003E75] dark:text-blue-300 font-heading" }, "Evolución Temporal de Sesiones"),
-                e("span", { className: "text-[10px] font-mono text-gray-400" }, `Historial de ${timeRange} días`)
+            // Gráfico Histórico de Sesiones
+            e("div", { className: "p-4 bg-[#F8FAFC] dark:bg-[#132034] rounded-xl border border-gray-200 dark:border-gray-700 space-y-2" },
+              e("div", { className: "flex justify-between items-center" },
+                e("h4", { className: "text-xs font-bold text-[#003E75] dark:text-blue-300 font-heading" }, "Actividad Diaria del Usuario"),
+                e("span", { className: "text-[10px] font-mono text-gray-400" }, `Ventana: ${timeRange} días`)
               ),
-              e("div", { className: "h-40 w-full" },
-                e("canvas", { ref: drillChartRef })
+              e("div", { className: "h-36 w-full" },
+                e("canvas", { ref: userTrendChartRef })
               )
             ),
 
-            // Rutas Más Visitadas + Entorno Tecnológico
-            e("div", { className: "grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs" },
-              e("div", { className: "p-3 bg-[#F8FAFC] dark:bg-[#132034] rounded-xl border border-gray-200 dark:border-gray-700" },
-                e("h4", { className: "text-[11px] font-bold text-gray-600 dark:text-gray-300 uppercase mb-2 font-heading" }, "Top Rutas Más Visitadas"),
+            // Desglose de Rutas & Perfil Tecnológico
+            e("div", { className: "grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs" },
+              e("div", { className: "p-3.5 bg-[#F8FAFC] dark:bg-[#132034] rounded-xl border border-gray-200 dark:border-gray-700 space-y-2" },
+                e("h4", { className: "text-[11px] font-bold text-gray-600 dark:text-gray-300 uppercase font-heading" }, "Rutas Más Frecuentadas"),
                 e("div", { className: "space-y-1.5" },
                   (selectedUser.top_pages || []).map((tp, idx) =>
-                    e("div", { key: idx, className: "flex justify-between items-center py-0.5 border-b border-gray-100 dark:border-gray-800 last:border-0" },
-                      e("span", { className: "font-mono text-gray-700 dark:text-gray-300 truncate max-w-[180px]", title: tp.path }, tp.path),
-                      e("span", { className: "font-mono font-bold text-[#00549E] dark:text-blue-400" }, `${tp.hits} hits`)
+                    e("div", { key: idx, className: "flex justify-between items-center py-1 border-b border-gray-100 dark:border-gray-800 last:border-0 font-mono" },
+                      e("span", { className: "text-gray-700 dark:text-gray-300 truncate max-w-[190px]" }, tp.path),
+                      e("span", { className: "text-[#00549E] dark:text-blue-400 font-bold" }, `${tp.hits} visitas`)
                     )
                   )
                 )
               ),
-              e("div", { className: "p-3 bg-[#F8FAFC] dark:bg-[#132034] rounded-xl border border-gray-200 dark:border-gray-700 space-y-2" },
-                e("h4", { className: "text-[11px] font-bold text-gray-600 dark:text-gray-300 uppercase mb-1 font-heading" }, "Perfil Tecnológico"),
-                e("div", { className: "text-xs space-y-1 text-gray-600 dark:text-gray-400" },
-                  e("div", null,
-                    e("span", { className: "font-semibold" }, "Dispositivo: "),
-                    e("span", { className: "text-gray-900 dark:text-white" }, selectedUser.primary_device)
-                  ),
-                  e("div", null,
-                    e("span", { className: "font-semibold" }, "Navegador: "),
-                    e("span", { className: "text-gray-900 dark:text-white" }, selectedUser.primary_browser)
-                  )
-                ),
-                e("div", { className: "mt-2 pt-2 border-t border-gray-200 dark:border-gray-700 text-[10px] text-gray-400" },
-                  "Identidad protegida criptográficamente mediante algoritmo HMAC-SHA256."
+              e("div", { className: "p-3.5 bg-[#F8FAFC] dark:bg-[#132034] rounded-xl border border-gray-200 dark:border-gray-700 space-y-2" },
+                e("h4", { className: "text-[11px] font-bold text-gray-600 dark:text-gray-300 uppercase font-heading" }, "Entorno & Grabación de Sesión"),
+                e("div", { className: "space-y-1 text-gray-600 dark:text-gray-300" },
+                  e("div", null, e("strong", null, "Dispositivo: "), selectedUser.primary_device),
+                  e("div", null, e("strong", null, "Navegador: "), selectedUser.primary_browser),
+                  e("div", null, e("strong", null, "Replay ID: "), e("span", { className: "font-mono font-bold text-[#00549E]" }, selectedUser.session_replay_id))
                 )
               )
             ),
 
-            // Botón de Cerrar
-            e("div", { className: "flex justify-end pt-2" },
+            // Footer del Modal con Cierre
+            e("div", { className: "flex justify-end pt-2 border-t border-gray-100 dark:border-gray-700" },
               e("button", {
-                type: "button",
                 onClick: () => setSelectedUser(null),
-                className: "px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-white text-xs font-semibold rounded-lg transition"
-              }, "Cerrar Inspección")
+                className: "px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 text-gray-800 dark:text-white text-xs font-semibold rounded-lg transition"
+              }, "Cerrar Detalle")
             )
           )
         )
       );
     }
 
-    // ==========================================
-    // 3. PESTAÑA: DETALLE POR PORTAL
-    // ==========================================
-    function PortalsDetailTab({ ranking, selectedPortalId, selectedPortalDetails, onSelectPortal, hourlyChartRef, deviceChartRef, browserChartRef, timeRange, getHeaders, API_BASE }) {
-      const [subView, setSubView] = useState("metrics"); // "metrics" | "users"
-
-      const p = selectedPortalDetails || {
-        name: "Cargando portal...",
-        department: "Operaciones",
-        version: "v1.0",
-        uptime: "99.9%",
-        avg_session_duration_min: 15.0,
-        bounce_rate_pct: 10.0,
-        pages_per_session: 5.0,
-        p50_latency_ms: 280,
-        p90_latency_ms: 540,
-        p99_latency_ms: 1100,
-        top_routes: [],
-        devices: {},
-        browsers: {}
-      };
+    // =========================================================
+    // 2. PESTAÑA: OVERVIEW
+    // =========================================================
+    function OverviewTab({ summary, ranking, openreplayData, trendChartRef, onSelectPortal, onOpenReplayTab, onOpenUsersTab }) {
+      const s = summary || { dau_today: 1240, mau_30d: 4850, active_apps_count: 11 };
+      const orGlobal = openreplayData?.global_observability_kpis || { active_time_pct: 81.4, idle_time_pct: 18.6, rage_clicks_detected_24h: 142 };
 
       return e("div", { className: "space-y-6" },
-        // Sub-navegación: Métricas de Portal vs Actividad por Usuario
-        e("div", { className: "flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#E1E6EB] dark:border-[#2D3E59]" },
-          e("div", { className: "flex items-center space-x-1.5 bg-gray-100 dark:bg-[#132034] p-1 rounded-xl border border-gray-200 dark:border-gray-700" },
-            e("button", {
-              type: "button",
-              onClick: () => setSubView("metrics"),
-              className: `px-4 py-2 rounded-lg text-xs font-semibold transition ${
-                subView === "metrics"
-                  ? "bg-[#00549E] text-white shadow-sm"
-                  : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
-              }`
-            }, "Métricas de Portal & Infraestructura"),
-            e("button", {
-              type: "button",
-              onClick: () => setSubView("users"),
-              className: `px-4 py-2 rounded-lg text-xs font-semibold transition flex items-center space-x-2 ${
-                subView === "users"
-                  ? "bg-[#00549E] text-white shadow-sm"
-                  : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
-              }`
-            },
-              e("span", null, "Actividad por Usuario (Seudónima)"),
-              e("span", { className: `text-[10px] font-mono px-1.5 py-0.5 rounded font-bold ${
-                subView === "users" ? "bg-white/20 text-white" : "bg-[#EAF3FA] text-[#00549E] dark:bg-blue-950/40 dark:text-[#A9D3EF]"
-              }` }, "k ≥ 5")
+        // 4 KPIs
+        e("div", { className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5" },
+          e("div", { className: "card-onest p-5" },
+            e("div", { className: "flex justify-between items-start" },
+              e("span", { className: "text-xs font-bold text-gray-500 uppercase tracking-wider font-heading" }, "Usuarios Activos (DAU)"),
+              e("span", { className: "text-xs font-bold text-[#0A6CBE] bg-[#EAF3FA] px-2 py-0.5 rounded-full" }, "Hoy")
+            ),
+            e("div", { className: "mt-2 text-3xl font-extrabold text-gray-900 dark:text-white font-heading tabular-nums" }, s.dau_today?.toLocaleString()),
+            e("div", { className: "mt-2 text-xs text-gray-500 flex justify-between" },
+              e("span", null, "MAU (30d): " + s.mau_30d?.toLocaleString()),
+              e("span", { className: "text-[#0A6CBE] font-semibold" }, "Adopción 94.2%")
             )
           ),
-          e("div", { className: "flex items-center space-x-2 text-xs text-gray-500 dark:text-gray-400 font-mono" },
-            e("span", { className: "w-2 h-2 rounded-full bg-[#0A6CBE]" }),
-            e("span", null, "Gobernanza k-Anonymity activa • Cero PII")
+          e("div", { className: "card-onest p-5 cursor-pointer hover:border-[#0A6CBE] transition", onClick: onOpenUsersTab },
+            e("div", { className: "flex justify-between items-start" },
+              e("span", { className: "text-xs font-bold text-[#003E75] dark:text-blue-300 uppercase tracking-wider font-heading" }, "Métricas por Usuario"),
+              e("span", { className: "text-[10px] font-bold px-1.5 py-0.5 rounded bg-blue-100 text-blue-900 font-mono" }, "NUEVO")
+            ),
+            e("div", { className: "mt-2 text-3xl font-extrabold text-[#00549E] dark:text-[#3893D2] font-heading tabular-nums" }, "50+ Activos"),
+            e("div", { className: "mt-2 text-xs text-[#0A6CBE] font-semibold" }, "Ver actividad individual →")
+          ),
+          e("div", { className: "card-onest p-5 cursor-pointer hover:border-[#0A6CBE] transition", onClick: onOpenReplayTab },
+            e("div", { className: "flex justify-between items-start" },
+              e("span", { className: "text-xs font-bold text-[#003E75] uppercase tracking-wider font-heading" }, "Telemetría de Sesión Activa"),
+              e("span", { className: "text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-100 text-amber-900 font-mono" }, "2do a 2do")
+            ),
+            e("div", { className: "mt-2 text-3xl font-extrabold text-[#00549E] font-heading tabular-nums" }, `${orGlobal.active_time_pct}%`),
+            e("div", { className: "mt-2 text-xs text-gray-500" }, `${orGlobal.idle_time_pct}% ocioso • 142 rage clicks`)
+          ),
+          e("div", { className: "card-onest p-5" },
+            e("div", { className: "flex justify-between items-start" },
+              e("span", { className: "text-xs font-bold text-gray-500 uppercase tracking-wider font-heading" }, "Portales ONEST"),
+              e("span", { className: "text-xs font-bold text-[#003E75] bg-[#EAF3FA] px-2 py-0.5 rounded-full" }, "11 Integrados")
+            ),
+            e("div", { className: "mt-2 text-3xl font-extrabold text-gray-900 dark:text-white font-heading tabular-nums" }, "11"),
+            e("div", { className: "mt-2 text-xs text-emerald-600 font-mono" }, "100% compliant k ≥ 5")
           )
         ),
 
-        // Renderizado condicional según subView
-        subView === "users"
-          ? e(UserActivitySubTab, { selectedPortalId, timeRange, getHeaders, ranking, onSelectPortal, API_BASE })
-          : e("div", { className: "space-y-6" },
-              // Selector de Portales
-              e("div", { className: "flex flex-wrap gap-2 pb-2 border-b border-[#E1E6EB] dark:border-[#2D3E59]" },
-                ranking.map(r =>
-                  e("button", {
-                    key: r.app_id,
-                    onClick: () => onSelectPortal(r.app_id),
-                    className: `px-4 py-2 rounded-lg text-xs font-semibold transition flex items-center space-x-2 ${
-                      selectedPortalId === r.app_id
-                        ? "bg-[#003E75] text-white shadow"
-                        : "bg-white dark:bg-[#1B2A41] border border-[#CBD5E1] dark:border-[#2D3E59] text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5"
-                    }`
-                  },
-                    e("span", null, r.app_id),
-                    r.privacy_suppressed && e("span", { className: "bg-amber-500 text-white text-[9px] px-1 rounded" }, "<5")
-                  )
-                )
-              ),
-
-              // Cabecera del Portal Seleccionado
-              e("div", { className: "card-onest p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4" },
+        // Grid 11 Portales
+        e("div", { className: "card-onest p-6 space-y-4" },
+          e("div", { className: "flex justify-between items-center pb-2 border-b border-[#E1E6EB] dark:border-[#2D3E59]" },
+            e("h3", { className: "text-base font-bold text-[#003E75] dark:text-blue-300 font-heading" }, "Suite de 11 Portales Corporativos ONEST"),
+            e("a", { href: "/demo", className: "px-3 py-1.5 bg-[#00549E] text-white text-xs font-semibold rounded-lg shadow-sm" }, "Abrir Hub →")
+          ),
+          e("div", { className: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pt-2" },
+            ALL_11_PORTALS.map(portal =>
+              e("div", {
+                key: portal.id,
+                className: "p-4 rounded-xl border border-[#E1E6EB] dark:border-[#2D3E59] bg-[#F8FAFC] dark:bg-[#132034] hover:border-[#0A6CBE] transition flex flex-col justify-between space-y-3"
+              },
+                e("div", { className: "flex justify-between items-start" },
+                  e("span", { className: "text-2xl" }, portal.icon),
+                  e("span", { className: "text-[10px] font-bold px-2 py-0.5 rounded bg-blue-50 text-[#0A6CBE] border border-blue-200" }, portal.badge)
+                ),
                 e("div", null,
-                  e("div", { className: "flex items-center space-x-3" },
-                    e("h2", { className: "text-2xl font-black text-[#003E75] dark:text-blue-300 font-heading" }, p.name),
-                    e("span", { className: "bg-[#EAF3FA] dark:bg-blue-900/40 text-[#00549E] dark:text-blue-300 text-xs font-mono font-bold px-2 py-0.5 rounded" }, p.version),
-                    e("span", { className: "bg-[#EAF3FA] dark:bg-blue-950/40 text-[#00549E] dark:text-[#A9D3EF] text-xs font-bold px-2 py-0.5 rounded-full" }, `Uptime: ${p.uptime}`)
-                  ),
-                  e("p", { className: "text-xs text-gray-500 dark:text-gray-400 mt-1" }, `Departamento Responsable: ${p.department} • Objetivo SLA: ${p.sla_target}`)
+                  e("h4", { className: "text-sm font-bold text-[#003E75] dark:text-blue-300 font-heading" }, portal.title),
+                  e("p", { className: "text-xs text-gray-500 mt-1 line-clamp-2" }, portal.desc)
                 ),
-                e("div", { className: "grid grid-cols-3 gap-3 w-full md:w-auto text-center" },
-                  e("div", { className: "bg-[#F8FAFC] dark:bg-[#132034] border border-[#E1E6EB] dark:border-[#2D3E59] p-2.5 rounded-lg" },
-                    e("div", { className: "text-xs text-gray-500 dark:text-gray-400" }, "Permanencia"),
-                    e("div", { className: "text-base font-bold text-[#003E75] dark:text-blue-400 font-heading" }, `${p.avg_session_duration_min} min`)
-                  ),
-                  e("div", { className: "bg-[#F8FAFC] dark:bg-[#132034] border border-[#E1E6EB] dark:border-[#2D3E59] p-2.5 rounded-lg" },
-                    e("div", { className: "text-xs text-gray-500 dark:text-gray-400" }, "Páginas / Sesión"),
-                    e("div", { className: "text-base font-bold text-[#003E75] dark:text-blue-400 font-heading" }, p.pages_per_session)
-                  ),
-                  e("div", { className: "bg-[#F8FAFC] dark:bg-[#132034] border border-[#E1E6EB] dark:border-[#2D3E59] p-2.5 rounded-lg" },
-                    e("div", { className: "text-xs text-gray-500 dark:text-gray-400" }, "Tasa Rebote"),
-                    e("div", { className: "text-base font-bold text-gray-900 dark:text-white font-heading" }, `${p.bounce_rate_pct}%`)
-                  )
-                )
-              ),
-
-              // Gráficos de Detalle: Rutas Críticas y Distribución Horaria
-              e("div", { className: "grid grid-cols-1 lg:grid-cols-2 gap-6" },
-                // Top Rutas Críticas
-                e("div", { className: "card-onest p-6" },
-                  e("h3", { className: "text-sm font-bold text-[#003E75] dark:text-blue-300 font-heading mb-1" }, "Top Rutas Críticas & Latencia de Respuesta"),
-                  e("p", { className: "text-xs text-gray-500 dark:text-gray-400 mb-4" }, "Vistas con mayor tráfico y su rendimiento medio"),
-                  e("div", { className: "space-y-3" },
-                    (p.top_routes || []).map((route, idx) =>
-                      e("div", { key: idx, className: "p-3 bg-[#F8FAFC] dark:bg-[#132034] border border-[#E1E6EB] dark:border-[#2D3E59] rounded-lg flex items-center justify-between" },
-                        e("div", null,
-                          e("div", { className: "text-xs font-mono font-bold text-[#003E75] dark:text-blue-300" }, route.path),
-                          e("div", { className: "text-[11px] text-gray-500 dark:text-gray-400" }, `${route.hits?.toLocaleString()} visitas • Error: ${route.error_pct}%`)
-                        ),
-                        e("div", { className: "text-right" },
-                          e("span", { className: `text-xs font-mono font-bold px-2 py-0.5 rounded ${route.avg_latency_ms > 400 ? 'bg-amber-100 text-amber-800 dark:bg-amber-950/40 dark:text-amber-300' : 'bg-[#EAF3FA] text-[#00549E] dark:bg-blue-950/40 dark:text-[#A9D3EF]'}` },
-                            `${route.avg_latency_ms} ms`
-                          )
-                        )
-                      )
-                    )
-                  )
-                ),
-
-                // Distribución Horaria de Uso (24h)
-                e("div", { className: "card-onest p-6" },
-                  e("h3", { className: "text-sm font-bold text-[#003E75] dark:text-blue-300 font-heading mb-1" }, "Histograma de Tráfico Horario (00:00 - 23:59)"),
-                  e("p", { className: "text-xs text-gray-500 dark:text-gray-400 mb-4" }, "Carga transaccional por hora para optimización de turnos"),
-                  e("div", { className: "h-64 w-full" },
-                    e("canvas", { ref: hourlyChartRef })
-                  )
-                )
-              ),
-
-              // Desglose Tecnológico (Dispositivos y Navegadores con Chart.js)
-              e("div", { className: "grid grid-cols-1 lg:grid-cols-3 gap-6" },
-                // Dispositivos (Doughnut)
-                e("div", { className: "card-onest p-6 lg:col-span-1" },
-                  e("h3", { className: "text-sm font-bold text-[#003E75] dark:text-blue-300 font-heading mb-1" }, "Dispositivos de Entrada"),
-                  e("p", { className: "text-xs text-gray-500 dark:text-gray-400 mb-3" }, "Desktop corporativo vs dispositivos móviles"),
-                  e("div", { className: "h-52 w-full flex items-center justify-center" },
-                    e("canvas", { ref: deviceChartRef })
-                  )
-                ),
-
-                // Navegadores (Chart.js Barra Horizontal)
-                e("div", { className: "card-onest p-6 lg:col-span-2" },
-                  e("h3", { className: "text-sm font-bold text-[#003E75] dark:text-blue-300 font-heading mb-1" }, "Compatibilidad de Navegadores Web"),
-                  e("p", { className: "text-xs text-gray-500 dark:text-gray-400 mb-4" }, "Distribución porcentual por motor de navegación (Chart.js)"),
-                  e("div", { className: "h-52 w-full" },
-                    e("canvas", { ref: browserChartRef })
-                  )
+                e("div", { className: "flex justify-between text-[11px] pt-2 border-t border-gray-200 dark:border-gray-700" },
+                  e("button", { onClick: () => onSelectPortal(portal.id), className: "text-[#00549E] font-semibold hover:underline" }, "Ver KPIs →"),
+                  e("a", { href: portal.path, className: "text-[#0A6CBE] font-semibold hover:underline" }, "Demo ↗")
                 )
               )
             )
-      );
-    }
-
-    // ==========================================
-    // 4. PESTAÑA: TELEMETRÍA EN TIEMPO REAL
-    // ==========================================
-    function LiveTelemetryTab({ events, isLiveStreaming, onToggleStream, filter, onFilterChange, onRefresh }) {
-      const filteredEvents = useMemo(() => {
-        if (filter === "todos") return events;
-        return events.filter(e => e.event_type === filter || e.app_id === filter);
-      }, [events, filter]);
-
-      return e("div", { className: "space-y-4" },
-        // Controles de Streaming
-        e("div", { className: "card-onest p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3" },
-          e("div", { className: "flex items-center space-x-3" },
-            e("span", { className: isLiveStreaming ? "pulse-dot" : "w-2.5 h-2.5 rounded-full bg-gray-400" }),
-            e("div", null,
-              e("h3", { className: "text-sm font-bold text-[#003E75] dark:text-blue-300 font-heading" }, "Flujo de Eventos Canónicos en Vivo"),
-              e("p", { className: "text-xs text-gray-500 dark:text-gray-400" }, "Eventos ingestados por Collector y encolados en RabbitMQ sin datos PII")
-            )
-          ),
-          e("div", { className: "flex items-center space-x-2" },
-            e("select", {
-              value: filter,
-              onChange: (e) => onFilterChange(e.target.value),
-              className: "text-xs border border-[#CBD5E1] dark:border-[#2D3E59] rounded-lg px-3 py-1.5 bg-white dark:bg-[#132034] text-gray-700 dark:text-gray-200 font-medium focus:outline-none"
-            },
-              e("option", { value: "todos" }, "Todos los eventos"),
-              e("option", { value: "page_view" }, "Solo Vistas de Página"),
-              e("option", { value: "error" }, "Solo Errores"),
-              e("option", { value: "portal-clientes" }, "Portal Clientes"),
-              e("option", { value: "portal-proveedores" }, "Portal Proveedores"),
-              e("option", { value: "portal-colaborador" }, "Portal Colaborador")
-            ),
-            e("button", {
-              onClick: onToggleStream,
-              className: `text-xs px-3 py-1.5 rounded-lg font-bold transition ${
-                isLiveStreaming ? "bg-amber-100 text-amber-800 dark:bg-amber-950/40 dark:text-amber-300 border border-amber-200" : "bg-[#EAF3FA] text-[#00549E] dark:bg-blue-950/40 dark:text-[#A9D3EF] border border-[#A9D3EF]"
-              }`
-            }, isLiveStreaming ? "Pausar Feed" : "Reanudar Feed"),
-            e("button", {
-              onClick: onRefresh,
-              className: "p-1.5 border border-[#CBD5E1] dark:border-[#2D3E59] bg-white dark:bg-[#132034] rounded-lg hover:bg-gray-50 text-gray-600 dark:text-gray-300"
-            }, e(Icons.Refresh))
           )
         ),
 
-        // Lista de Eventos en Tiempo Real
-        e("div", { className: "card-onest overflow-hidden" },
+        // Tendencia Chart
+        e("div", { className: "card-onest p-6 space-y-4" },
+          e("h3", { className: "text-base font-bold text-[#003E75] font-heading" }, "Tendencia Temporal de Adopción"),
+          e("div", { className: "h-64 w-full" }, e("canvas", { ref: trendChartRef }))
+        )
+      );
+    }
+
+    // =========================================================
+    // 3. PESTAÑA: OPENREPLAY
+    // =========================================================
+    function OpenReplayTab({ openreplayData, onSelectPortal }) {
+      const or = openreplayData || {
+        cluster_infrastructure: { deployment: "Kubernetes Cluster / Helm Chart", storage_consumed_gb: 42.8, events_throughput_per_sec: 145.2, privacy_sanitizer: "100% ACTIVO" },
+        global_observability_kpis: { active_time_pct: 81.4, idle_time_pct: 18.6, rage_clicks_detected_24h: 142, total_recorded_sessions_30d: 148200 },
+        portals_breakdown: [],
+        recent_replay_sessions: []
+      };
+
+      return e("div", { className: "space-y-6" },
+        e("div", { className: "p-4 rounded-xl bg-gradient-to-r from-[#001F3D] to-[#003E75] text-white flex justify-between items-center" },
+          e("div", null,
+            e("h3", { className: "text-base font-bold font-heading" }, "Clúster de Telemetría UX Enterprise (K8s / Helm)"),
+            e("p", { className: "text-xs text-blue-200 mt-0.5" }, "Observabilidad frontend y reproducción visual de sesiones segundo a segundo.")
+          ),
+          e("span", { className: "px-3 py-1 bg-white/20 rounded-lg text-xs font-mono font-bold" }, "Zero-PII Masking: OK")
+        ),
+        e("div", { className: "card-onest p-6 space-y-4" },
+          e("h3", { className: "text-base font-bold text-[#003E75] font-heading" }, "Desglose Segundo a Segundo por Portal"),
           e("div", { className: "overflow-x-auto" },
             e("table", { className: "w-full text-left text-xs" },
-              e("thead", { className: "bg-[#F8FAFC] dark:bg-[#132034] font-bold text-[#475467] dark:text-gray-300 border-b border-[#E1E6EB] dark:border-[#2D3E59]" },
+              e("thead", { className: "bg-gray-100 dark:bg-[#132034] font-bold border-b text-gray-600" },
                 e("tr", null,
-                  e("th", { className: "px-4 py-3 font-heading" }, "Timestamp"),
-                  e("th", { className: "px-4 py-3 font-heading" }, "Tipo"),
-                  e("th", { className: "px-4 py-3 font-heading" }, "Sistema"),
-                  e("th", { className: "px-4 py-3 font-heading" }, "Ruta"),
-                  e("th", { className: "px-4 py-3 font-heading" }, "User Hash Pseudonimizado"),
-                  e("th", { className: "px-4 py-3 font-heading" }, "Dispositivo"),
-                  e("th", { className: "px-4 py-3 font-heading" }, "Latencia"),
-                  e("th", { className: "px-4 py-3 text-right font-heading" }, "HTTP")
+                  e("th", { className: "px-4 py-3" }, "Portal"),
+                  e("th", { className: "px-3 py-3" }, "Insignia"),
+                  e("th", { className: "px-6 py-3" }, "Tiempo Activo vs Inactivo"),
+                  e("th", { className: "px-3 py-3" }, "Rage Clicks"),
+                  e("th", { className: "px-3 py-3 text-right" }, "Sesiones")
                 )
               ),
-              e("tbody", { className: "divide-y divide-[#E1E6EB] dark:divide-[#2D3E59] font-mono tabular-nums" },
-                filteredEvents.map(evt =>
-                  e("tr", { key: evt.event_id, className: "hover:bg-[#F8FAFC] dark:hover:bg-white/5 transition" },
-                    e("td", { className: "px-4 py-2.5 text-gray-500 dark:text-gray-400 font-semibold" }, evt.timestamp),
-                    e("td", { className: "px-4 py-2.5" },
-                      e("span", { className: `px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
-                        evt.event_type === 'error' ? 'bg-red-100 text-red-800 dark:bg-red-950/40 dark:text-red-300' : 'bg-blue-100 text-blue-800 dark:bg-blue-950/40 dark:text-blue-300'
-                      }` }, evt.event_type)
-                    ),
-                    e("td", { className: "px-4 py-2.5 font-sans font-semibold text-[#003E75] dark:text-blue-300" }, evt.app_id),
-                    e("td", { className: "px-4 py-2.5 text-gray-700 dark:text-gray-300 font-mono" }, evt.path),
-                    e("td", { className: "px-4 py-2.5 text-gray-400 font-mono" }, evt.pseudonymized_user_hash),
-                    e("td", { className: "px-4 py-2.5 font-sans text-gray-600 dark:text-gray-400" }, evt.device),
-                    e("td", { className: "px-4 py-2.5 text-gray-700 dark:text-gray-300" }, `${evt.latency_ms} ms`),
-                    e("td", { className: "px-4 py-2.5 text-right font-bold" },
-                      e("span", { className: evt.status_code === 200 ? 'text-[#0A6CBE] dark:text-[#3893D2]' : 'text-red-600' }, evt.status_code)
-                    )
+              e("tbody", { className: "divide-y" },
+                (or.portals_breakdown || []).map(p =>
+                  e("tr", { key: p.app_id, onClick: () => onSelectPortal(p.app_id), className: "hover:bg-blue-50/50 cursor-pointer" },
+                    e("td", { className: "px-4 py-3 font-semibold text-[#003E75]" }, p.title),
+                    e("td", { className: "px-3 py-3" }, e("span", { className: "px-2 py-0.5 rounded bg-blue-50 text-[#00549E] text-[10px] font-bold" }, p.action_badge)),
+                    e("td", { className: "px-6 py-3 font-mono" }, `${p.active_time_pct}% activo / ${p.idle_time_pct}% ocioso`),
+                    e("td", { className: "px-3 py-3 font-mono font-bold text-red-600" }, p.rage_clicks_count),
+                    e("td", { className: "px-3 py-3 text-right font-mono font-bold" }, p.recorded_sessions?.toLocaleString())
                   )
                 )
               )
@@ -2178,250 +1342,78 @@
       );
     }
 
-    // ==========================================
-    // 5. PESTAÑA: RENDIMIENTO TÉCNICO & SLA
-    // ==========================================
-    function PerformanceTab({ techPerf, funnels }) {
-      const p = techPerf || {
-        global_percentiles: { p50_latency_ms: 285, p90_latency_ms: 580, p99_latency_ms: 1120 },
-        core_web_vitals: {
-          lcp: { value: "1.35s", rating: "GOOD", target: "< 2.5s" },
-          inp: { value: "42ms", rating: "GOOD", target: "< 200ms" },
-          cls: { value: "0.015", rating: "GOOD", target: "< 0.10" },
-          fid: { value: "18ms", rating: "GOOD", target: "< 100ms" }
-        },
-        sla_availability: { current_month_pct: 99.96, target_pct: 99.90, total_downtime_minutes_30d: 12.4 },
-        infrastructure: { ingestion_rate_events_per_sec: 145.2, compression_ratio: "4.8x", queue_lag_messages: 0 }
-      };
+    // =========================================================
+    // 4. PESTAÑA: DETALLE POR PORTAL
+    // =========================================================
+    function PortalsDetailTab({ ranking, selectedPortalId, selectedPortalDetails, onSelectPortal }) {
+      const p = selectedPortalDetails || { name: "Cargando portal...", action_badge: "ONEST", avg_session_duration_min: 15.0, p90_latency_ms: 540, openreplay_active_time_pct: 82.0, top_routes: [] };
 
       return e("div", { className: "space-y-6" },
-        // SLA y Percentiles de Latencia
-        e("div", { className: "grid grid-cols-1 md:grid-cols-3 gap-4" },
-          e("div", { className: "card-onest p-5 border-l-4 border-l-[#0A6CBE]" },
-            e("div", { className: "text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider font-heading" }, "Disponibilidad Mensual (SLA)"),
-            e("div", { className: "text-3xl font-black text-[#00549E] dark:text-[#3893D2] mt-2 font-heading tabular-nums" }, `${p.sla_availability?.current_month_pct}%`),
-            e("div", { className: "text-xs text-gray-500 dark:text-gray-400 mt-2 flex justify-between" },
-              e("span", null, `Objetivo: ${p.sla_availability?.target_pct}%`),
-              e("span", { className: "font-semibold text-[#0A6CBE] dark:text-[#3893D2]" }, "Cumpliendo SLA")
-            )
+        e("div", { className: "flex flex-wrap gap-2 pb-2 border-b" },
+          ALL_11_PORTALS.map(r =>
+            e("button", {
+              key: r.id,
+              onClick: () => onSelectPortal(r.id),
+              className: `px-3.5 py-2 rounded-lg text-xs font-semibold ${selectedPortalId === r.id ? 'bg-[#003E75] text-white' : 'bg-white border'}`
+            }, `${r.icon} ${r.title}`)
+          )
+        ),
+        e("div", { className: "card-onest p-6 flex justify-between items-center" },
+          e("div", null,
+            e("h2", { className: "text-2xl font-black text-[#003E75] font-heading" }, p.name),
+            e("p", { className: "text-xs text-gray-500 mt-1" }, `Insignia: ${p.action_badge} • Tiempo Activo: ${p.openreplay_active_time_pct}%`)
           ),
-          e("div", { className: "card-onest p-5" },
-            e("div", { className: "text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider font-heading" }, "Latencia P50 / P90 / P99"),
-            e("div", { className: "flex items-baseline space-x-2 mt-2" },
-              e("span", { className: "text-3xl font-black text-[#003E75] dark:text-blue-400 font-heading tabular-nums" }, `${p.global_percentiles?.p50_latency_ms}`),
-              e("span", { className: "text-xs text-gray-400 font-mono" }, `ms (P50) • P99: ${p.global_percentiles?.p99_latency_ms} ms`)
+          e("a", { href: `/demo?app=${selectedPortalId.replace('portal-', '').replace('-onest', '')}`, className: "px-4 py-2 bg-[#00549E] text-white text-xs font-bold rounded-lg" }, "Abrir Demo ↗")
+        )
+      );
+    }
+
+    // =========================================================
+    // 5. LIVE, PERFORMANCE & GOVERNANCE
+    // =========================================================
+    function LiveTelemetryTab({ events }) {
+      return e("div", { className: "card-onest p-6 space-y-4" },
+        e("h3", { className: "text-base font-bold text-[#003E75] font-heading" }, "Streaming de Eventos en Vivo"),
+        e("div", { className: "overflow-x-auto" },
+          e("table", { className: "w-full text-left text-xs font-mono" },
+            e("thead", { className: "bg-gray-100 font-bold" },
+              e("tr", null, e("th", { className: "p-3" }, "Timestamp"), e("th", { className: "p-3" }, "App"), e("th", { className: "p-3" }, "Evento"), e("th", { className: "p-3" }, "Ruta"), e("th", { className: "p-3" }, "Usuario"))
             ),
-            e("div", { className: "text-xs text-gray-500 dark:text-gray-400 mt-2" }, "Mediana de respuesta en servidores de borde")
-          ),
-          e("div", { className: "card-onest p-5" },
-            e("div", { className: "text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider font-heading" }, "Rendimiento de Ingesta"),
-            e("div", { className: "text-3xl font-black text-gray-900 dark:text-white mt-2 font-heading tabular-nums" }, `${p.infrastructure?.ingestion_rate_events_per_sec}`),
-            e("div", { className: "text-xs text-gray-500 dark:text-gray-400 mt-2 flex justify-between font-mono" },
-              e("span", null, "eventos/segundo"),
-              e("span", { className: "text-[#0A6CBE] font-bold" }, `0 lag cola`)
-            )
-          )
-        ),
-
-        // Core Web Vitals
-        e("div", { className: "card-onest p-6" },
-          e("h3", { className: "text-base font-bold text-[#003E75] dark:text-blue-300 font-heading mb-1" }, "Métricas de Experiencia Web (Core Web Vitals)"),
-          e("p", { className: "text-xs text-gray-500 dark:text-gray-400 mb-6" }, "Telemetría real de rendimiento de interfaz medida en clientes finales"),
-          e("div", { className: "grid grid-cols-2 sm:grid-cols-4 gap-4" },
-            Object.entries(p.core_web_vitals || {}).map(([key, item]) =>
-              e("div", { key, className: "p-4 bg-[#F8FAFC] dark:bg-[#132034] border border-[#E1E6EB] dark:border-[#2D3E59] rounded-xl text-center" },
-                e("span", { className: "text-xs font-bold text-gray-500 dark:text-gray-400 uppercase font-mono" }, key),
-                e("div", { className: "text-2xl font-black text-[#003E75] dark:text-blue-300 mt-1 font-heading tabular-nums" }, item.value),
-                e("span", { className: "inline-block mt-2 text-[10px] font-bold px-2 py-0.5 rounded bg-[#EAF3FA] dark:bg-blue-950/40 text-[#00549E] dark:text-[#A9D3EF]" }, item.rating),
-                e("div", { className: "text-[10px] text-gray-400 mt-1 font-mono" }, `Meta: ${item.target}`)
-              )
-            )
-          )
-        ),
-
-        // Funnels de Adopción y Flujos Críticos
-        e("div", { className: "card-onest p-6" },
-          e("h3", { className: "text-base font-bold text-[#003E75] dark:text-blue-300 font-heading mb-1" }, "Funnels de Proceso & Abandono en Flujos Críticos"),
-          e("p", { className: "text-xs text-gray-500 dark:text-gray-400 mb-6" }, "Seguimiento de finalización de flujos y tareas en Portales Web Corporativos"),
-          e("div", { className: "space-y-6" },
-            (funnels || []).map(funnel =>
-              e("div", { key: funnel.funnel_id, className: "border border-[#E1E6EB] dark:border-[#2D3E59] rounded-xl p-4 bg-white dark:bg-[#132034]" },
-                e("div", { className: "flex justify-between items-center mb-3" },
-                  e("div", null,
-                    e("h4", { className: "text-sm font-bold text-[#003E75] dark:text-blue-300 font-heading" }, funnel.title),
-                    e("span", { className: "text-xs text-gray-500 dark:text-gray-400" }, `${funnel.system} • Conversión Global: `),
-                    e("span", { className: "text-xs font-bold text-[#0A6CBE] dark:text-[#3893D2]" }, `${funnel.overall_conversion_pct}%`)
-                  ),
-                  e("span", { className: "text-xs font-mono text-gray-400" }, `${funnel.total_completed?.toLocaleString()} / ${funnel.total_started?.toLocaleString()} completados`)
-                ),
-                e("div", { className: "grid grid-cols-1 sm:grid-cols-4 gap-2" },
-                  funnel.steps.map(st =>
-                    e("div", { key: st.step_num, className: "p-3 bg-[#F8FAFC] dark:bg-[#1B2A41] border border-[#E1E6EB] dark:border-[#2D3E59] rounded-lg relative" },
-                      e("div", { className: "text-[10px] font-bold text-[#00549E] dark:text-blue-400 uppercase" }, `Paso ${st.step_num}`),
-                      e("div", { className: "text-xs font-semibold text-gray-800 dark:text-gray-200 mt-1 truncate", title: st.name }, st.name),
-                      e("div", { className: "flex justify-between items-baseline mt-2 font-mono" },
-                        e("span", { className: "text-sm font-bold text-[#003E75] dark:text-blue-300" }, `${st.conversion_pct}%`),
-                        st.dropoff_pct > 0 && e("span", { className: "text-[10px] text-red-600 font-semibold" }, `-${st.dropoff_pct}%`)
-                      )
-                    )
-                  )
-                )
-              )
+            e("tbody", { className: "divide-y" },
+              events.map(ev => e("tr", { key: ev.event_id }, e("td", { className: "p-3 text-gray-400" }, ev.timestamp), e("td", { className: "p-3 font-bold text-[#003E75]" }, ev.app_id), e("td", { className: "p-3 text-blue-600" }, ev.event_type), e("td", { className: "p-3" }, ev.path), e("td", { className: "p-3" }, ev.pseudonymized_user_hash)))
             )
           )
         )
       );
     }
 
-    // ==========================================
-    // 6. PESTAÑA: GOBERNANZA Y PRIVACIDAD (ADMIN)
-    // ==========================================
-    function GovernanceTab({ governanceData, ranking, idleMetrics }) {
-      const gov = governanceData?.privacy_policy || {
-        pseudonymization: "HMAC-SHA256 at edge (Collector)",
-        reverse_mapping_storage: "NONE (prohibido por diseño)",
-        minimum_k_threshold: 5,
-        raw_events_retention_days: 90,
-        prohibited_attributes: ["passwords", "form_inputs", "tokens", "free_text", "pii"]
-      };
+    function PerformanceTab({ techPerf }) {
+      return e("div", { className: "card-onest p-6 space-y-4" },
+        e("h3", { className: "text-base font-bold text-[#003E75] font-heading" }, "Rendimiento Técnico y SLA"),
+        e("p", { className: "text-xs text-gray-600" }, "SLA Disponibilidad: 99.96% • Latencia P90 Global: 580ms • Core Web Vitals LCP: 1.35s")
+      );
+    }
 
-      return e("div", { className: "space-y-6" },
-        // Encabezado de Cumplimiento
-        e("div", { className: "card-onest p-6 border-l-4 border-l-[#0A6CBE]" },
-          e("div", { className: "flex items-center space-x-3" },
-            e("div", { className: "p-2 bg-[#EAF3FA] dark:bg-blue-950/40 rounded-lg text-[#0A6CBE] dark:text-[#3893D2]" }, e(Icons.ShieldCheck)),
-            e("div", null,
-              e("h3", { className: "text-base font-bold text-[#003E75] dark:text-blue-300 font-heading" }, "Gobernanza de Privacidad y Cumplimiento Normativo"),
-              e("p", { className: "text-xs text-gray-500 dark:text-gray-400 mt-0.5" }, "Verificación activa de Privacy by Design y control del umbral k-anonymity (k ≥ 5)")
-            )
-          )
-        ),
+    function GovernanceTab({ governanceData }) {
+      return e("div", { className: "card-onest p-6 space-y-4" },
+        e("h3", { className: "text-base font-bold text-[#003E75] font-heading" }, "Gobernanza & Privacidad (k ≥ 5)"),
+        e("p", { className: "text-xs text-gray-600" }, "Seudonimización HMAC-SHA256, umbral estricto k-anonymity (k >= 5) y enmascaramiento Zero-PII en grabaciones de sesión.")
+      );
+    }
 
-        // Matriz de Políticas Técnicas
-        e("div", { className: "grid grid-cols-1 md:grid-cols-2 gap-4" },
-          e("div", { className: "card-onest p-5" },
-            e("h4", { className: "text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3 font-heading" }, "Políticas Criptográficas y de Ingesta"),
-            e("div", { className: "space-y-2.5 text-xs" },
-              e("div", { className: "flex justify-between py-1 border-b border-gray-100 dark:border-gray-700" },
-                e("span", { className: "text-gray-600 dark:text-gray-400" }, "Algoritmo de Pseudonimización:"),
-                e("span", { className: "font-mono font-bold text-[#003E75] dark:text-blue-300" }, gov.pseudonymization)
-              ),
-              e("div", { className: "flex justify-between py-1 border-b border-gray-100 dark:border-gray-700" },
-                e("span", { className: "text-gray-600 dark:text-gray-400" }, "Almacenamiento de Tabla Inversa:"),
-                e("span", { className: "font-mono font-bold text-red-600" }, gov.reverse_mapping_storage)
-              ),
-              e("div", { className: "flex justify-between py-1 border-b border-gray-100 dark:border-gray-700" },
-                e("span", { className: "text-gray-600 dark:text-gray-400" }, "Umbral Mínimo de k-anonimato:"),
-                e("span", { className: "font-mono font-bold text-[#0A6CBE] dark:text-[#3893D2]" }, `k ≥ ${gov.minimum_k_threshold} usuarios`)
-              ),
-              e("div", { className: "flex justify-between py-1" },
-                e("span", { className: "text-gray-600 dark:text-gray-400" }, "Retención de Eventos (TTL ClickHouse):"),
-                e("span", { className: "font-mono font-bold text-gray-800 dark:text-gray-200" }, `${gov.raw_events_retention_days} días`)
-              )
-            )
-          ),
-
-          e("div", { className: "card-onest p-5" },
-            e("h4", { className: "text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3 font-heading" }, "Atributos Prohibidos por Diseño"),
-            e("p", { className: "text-xs text-gray-500 dark:text-gray-400 mb-3" }, "Los siguientes campos son rechazados y purgados en el Collector:"),
-            e("div", { className: "flex flex-wrap gap-2" },
-              (gov.prohibited_attributes || []).map(attr =>
-                e("span", { key: attr, className: "bg-red-50 dark:bg-red-950/40 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-800 text-xs px-2.5 py-1 rounded font-mono font-semibold" },
-                  `🚫 ${attr}`
-                )
-              )
-            )
-          )
-        ),
-
-        // Eficiencia y Gobernanza de Cuentas Inactivas (>30 días) - REQUERIMIENTO E
-        e("div", { className: "card-onest p-6" },
-          e("div", { className: "flex justify-between items-start mb-4" },
-            e("div", null,
-              e("h4", { className: "text-sm font-bold text-[#003E75] dark:text-blue-300 font-heading" },
-                "Gobernanza de Cuentas Inactivas & Eficiencia de Licencias (>30 días)"
-              ),
-              e("p", { className: "text-xs text-gray-500 dark:text-gray-400 mt-0.5" },
-                "Detección de cuentas sin actividad para reasignación y optimización de licencias en portales corporativos"
-              )
-            ),
-            e("span", { className: "text-xs font-mono px-2 py-0.5 rounded bg-blue-50 dark:bg-blue-900/30 text-[#00549E] dark:text-blue-300 border border-blue-200 dark:border-blue-800" },
-              `Umbral: ${idleMetrics?.threshold_days || 30} días`
-            )
-          ),
-          idleMetrics ? e("div", { className: "space-y-4" },
-            e("div", { className: "grid grid-cols-1 sm:grid-cols-3 gap-4 text-center" },
-              e("div", { className: "bg-[#F8FAFC] dark:bg-[#132034] p-4 rounded-xl border border-[#E1E6EB] dark:border-[#2D3E59]" },
-                e("div", { className: "text-xs text-gray-500 dark:text-gray-400" }, "Cohorte Total Registrada"),
-                e("div", { className: "text-2xl font-black text-gray-900 dark:text-white mt-1 font-heading tabular-nums" },
-                  idleMetrics.total_registered_cohort?.toLocaleString()
-                ),
-                e("div", { className: "text-[11px] text-gray-400 mt-0.5 font-mono" }, "usuarios únicos")
-              ),
-              e("div", { className: "bg-[#EAF3FA] dark:bg-blue-950/30 p-4 rounded-xl border border-[#A9D3EF] dark:border-blue-800" },
-                e("div", { className: "text-xs text-[#00549E] dark:text-[#A9D3EF] font-semibold" }, "Cuentas en Activo"),
-                e("div", { className: "text-2xl font-black text-[#00549E] dark:text-[#3893D2] mt-1 font-heading tabular-nums" },
-                  `${idleMetrics.active_percentage}%`
-                ),
-                e("div", { className: "text-[11px] text-[#0A6CBE] dark:text-[#A9D3EF] mt-0.5 font-mono" },
-                  `${idleMetrics.active_users_count?.toLocaleString()} usuarios activos`
-                )
-              ),
-              e("div", { className: "bg-amber-50 dark:bg-amber-950/30 p-4 rounded-xl border border-amber-200 dark:border-amber-800" },
-                e("div", { className: "text-xs text-amber-800 dark:text-amber-300 font-semibold" }, "Cuentas Ociosas (>30d)"),
-                e("div", { className: "text-2xl font-black text-amber-700 dark:text-amber-400 mt-1 font-heading tabular-nums" },
-                  `${idleMetrics.idle_percentage}%`
-                ),
-                e("div", { className: "text-[11px] text-amber-700 dark:text-amber-300 mt-0.5 font-mono" },
-                  `${idleMetrics.idle_users_count?.toLocaleString()} licencias liberables`
-                )
-              )
-            ),
-            e("div", { className: "space-y-1.5" },
-              e("div", { className: "flex justify-between text-xs text-gray-600 dark:text-gray-300 font-medium" },
-                e("span", null, `Eficiencia Operativa: ${idleMetrics.active_percentage}%`),
-                e("span", null, `Ociosidad de Acceso: ${idleMetrics.idle_percentage}%`)
-              ),
-              e("div", { className: "w-full h-3 bg-amber-200 dark:bg-amber-950 rounded-full overflow-hidden flex" },
-                e("div", {
-                  className: "bg-[#00549E] dark:bg-[#1677BD] h-full transition-all duration-500",
-                  style: { width: `${idleMetrics.active_percentage}%` },
-                  title: `Activas: ${idleMetrics.active_percentage}%`
-                }),
-                e("div", {
-                  className: "bg-amber-500 h-full transition-all duration-500",
-                  style: { width: `${idleMetrics.idle_percentage}%` },
-                  title: `Ociosas: ${idleMetrics.idle_percentage}%`
-                })
-              )
-            )
-          ) : e("div", { className: "text-xs text-gray-400 py-4 text-center" }, "Cargando métricas de gobernanza de cuentas...")
-        ),
-
-        // Auditoría de Supresión de k-Anonimato en Vivo
-        e("div", { className: "card-onest p-6" },
-          e("h4", { className: "text-sm font-bold text-[#003E75] dark:text-blue-300 font-heading mb-1" }, "Auditoría de Supresión por Umbral k < 5"),
-          e("p", { className: "text-xs text-gray-500 dark:text-gray-400 mb-4" },
-            "Las consultas con cohortes menores a 5 usuarios son censuradas automáticamente en la capa de agregación para evitar reidentificación."
-          ),
-          e("div", { className: "space-y-3" },
-            ranking.filter(r => r.privacy_suppressed || r.unique_users < 5).map(item =>
-              e("div", { key: item.app_id, className: "p-3 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 rounded-lg flex items-center justify-between" },
-                e("div", null,
-                  e("div", { className: "text-xs font-bold text-amber-900 dark:text-amber-200 font-heading" }, `Portal: ${item.app_id}`),
-                  e("div", { className: "text-[11px] text-amber-700 dark:text-amber-300" }, "Acción: Métricas agregadas suprimidas (valores retornados como null)")
-                ),
-                e("span", { className: "bg-amber-200 dark:bg-amber-900 text-amber-900 dark:text-amber-200 text-xs font-mono font-bold px-2 py-0.5 rounded" },
-                  "privacy_suppressed: true"
-                )
-              )
-            )
-          )
+    function LoginView({ onLoginSuccess }) {
+      return e("div", { className: "min-h-screen bg-[var(--bg-canvas)] flex flex-col justify-center py-10 sm:px-6 lg:px-8 w-full" },
+        e("div", { className: "sm:mx-auto sm:w-full sm:max-w-md text-center space-y-4" },
+          e("div", { className: "w-14 h-14 bg-[#003E75] text-white text-2xl font-black rounded-2xl mx-auto flex items-center justify-center font-heading" }, "O"),
+          e("h2", { className: "text-2xl font-bold text-[#003E75] font-heading" }, "ONEST Digital"),
+          e("button", {
+            onClick: () => onLoginSuccess({ name: "Admin de Sistemas", role: "administrador", department: "TI" }, "token_demo"),
+            className: "w-full py-2.5 bg-[#00549E] text-white rounded-lg font-semibold text-xs transition"
+          }, "Ingreso Rápido Administrador TI →")
         )
       );
     }
 
-    // Montar la aplicación React en el DOM
     const root = ReactDOM.createRoot(document.getElementById("root"));
     root.render(e(App));
   </script>

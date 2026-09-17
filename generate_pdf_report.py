@@ -103,7 +103,7 @@ def build_pdf(filename="COMPARATIVA_COMPETENCIA.pdf"):
     # Header Badge & Title
     story.append(Paragraph("<b>ONEST WEB ANALYTICS PLATFORM</b> | DOCUMENTO EJECUTIVO DE ARQUITECTURA", ParagraphStyle('Badge', fontName='Helvetica-Bold', fontSize=8, textColor=accent_emerald, spaceAfter=2)))
     story.append(Paragraph("Benchmark de Analítica Web vs. Competencia & Métodos de Medición", title_style))
-    story.append(Paragraph("Respuesta técnica comparativa: Cómo mide el tiempo, comportamiento y observabilidad nuestra plataforma frente a OpenReplay, PostHog, Umami, Plausible y Matomo.", subtitle_style))
+    story.append(Paragraph("Respuesta técnica comparativa: Cómo mide el tiempo, comportamiento y observabilidad nuestra plataforma frente a soluciones de Session Replay, Product Analytics y analítica tradicional.", subtitle_style))
     story.append(HRFlowable(width="100%", thickness=1.5, color=accent_emerald, spaceBefore=0, spaceAfter=10))
 
     # SECTION 1: Matriz Comparativa (5 Columnas exactas)
@@ -118,7 +118,7 @@ def build_pdf(filename="COMPARATIVA_COMPETENCIA.pdf"):
             Paragraph("<b>Hosting</b>", th_style)
         ],
         [
-            Paragraph("<b>OpenReplay</b><br/><font size=6 color='#64748b'>Session replay</font>", td_bold),
+            Paragraph("<b>Session Replay</b><br/><font size=6 color='#64748b'>DOM Recorder</font>", td_bold),
             Paragraph("Reproducción visual y observabilidad de frontend", td_style),
             Paragraph("<font color='#e11d48'><b>reproducción íntegra</b></font><br/>Captura 100% de actividad: vistas, clics, red, consola, CPU/memoria.", td_style),
             Paragraph("<b>Grabación DOM continua</b>: Registra mutaciones del DOM para reconstruir visualmente la sesión.", td_style),
@@ -248,11 +248,11 @@ def build_pdf(filename="COMPARATIVA_COMPETENCIA.pdf"):
     story.append(Spacer(1, 10))
 
     # SECTION 4: Diferenciadores Clave
-    story.append(Paragraph("4. Comparativa Estratégica: ONEST vs. OpenReplay & Mercado", section_title_style))
+    story.append(Paragraph("4. Comparativa Estratégica: ONEST vs. Session Replay Tradicional & Mercado", section_title_style))
 
     diff_data = [
         [
-            Paragraph("<b>Frente a OpenReplay (DOM Replay vs. Telemetría Canónica):</b><br/>OpenReplay graba mutaciones continuas de DOM en video con riesgo de filtrar contraseñas o datos confidenciales en formularios y con alto costo de CPU y red. ONEST captura solo eventos semánticos (rutas, errores, tiempos, clics en botones) garantizando 100% de confidencialidad y 95% menos peso.", td_style),
+            Paragraph("<b>Frente a Grabación Continua DOM (DOM Replay vs. Telemetría Canónica):</b><br/>Las grabaciones continuas de DOM en video pueden generar alto consumo de CPU y red. ONEST captura telemetría de sesión estructurada y eventos canónicos (rutas, errores, tiempos, clics, tiempo activo/ocioso) garantizando 100% de confidencialidad y 95% menos peso.", td_style),
             Paragraph("<b>Frente a Matomo / GA / Umami (Rendimiento & Gobernanza B2B):</b><br/>No sufre de cuellos de botella de bases relacionales tradicionales (MySQL/PHP); ClickHouse procesa millones de eventos en milisegundos. Añade soporte multi-portal centralizado, matriz RBAC (Ejecutivo vs Analista) y cumplimiento estricto k-anonymity (k &ge; 5).", td_style)
         ]
     ]

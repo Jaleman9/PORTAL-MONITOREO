@@ -31,6 +31,7 @@ app.include_router(auth_router)
 
 import os
 from fastapi.responses import HTMLResponse, FileResponse
+from fastapi.staticfiles import StaticFiles
 
 DASHBOARD_PATH = os.environ.get(
     "DASHBOARD_PATH",
@@ -52,7 +53,15 @@ SDK_PATH = os.environ.get(
         )
     ),
 )
+ASSETS_PATH = os.environ.get(
+    "ASSETS_PATH",
+    os.path.abspath(
+        os.path.join(os.path.dirname(__file__), "..", "..", "dashboard", "assets")
+    ),
+)
 
+if os.path.exists(ASSETS_PATH):
+    app.mount("/assets", StaticFiles(directory=ASSETS_PATH), name="assets")
 
 NO_CACHE_HEADERS = {
     "Cache-Control": "no-cache, no-store, must-revalidate, max-age=0",
@@ -292,4 +301,22 @@ async def get_pseudonymized_user_activity(
             app_id=app_id, days=days, search=search, limit=limit
         ),
     }
+
+
+@app.get("/api/v1/metrics/session-replay", tags=["Session Replay & Telemetry"])
+@app.get("/api/v1/metrics/openreplay", tags=["Session Replay & Telemetry"], include_in_schema=False)
+async def get_session_replay_metrics(
+    user: AuthenticatedUser = Depends(
+        require_role([UserRole.EJECUTIVO, UserRole.ADMINISTRADOR])
+    ),
+):
+    """Métricas de Session Replay, observabilidad frontend y desglose segundo a segundo de tiempo activo/inactivo."""
+    metrics = kpi_service.get_openreplay_metrics()
+    return {
+        "user_context": {"role": user.role.value, "department": user.department},
+        "session_replay": metrics,
+        "openreplay": metrics,
+    }
+
+
 
