@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-brand="onest">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ONEST Digital - Plataforma de Telemetría & Analítica Web</title>
   
-  <!-- Google Fonts: Montserrat (Títulos/Branding) & Inter (Datos/Tablas/Cuerpo) -->
+  <!-- Google Fonts: Montserrat (600/700) & Inter (400/500/600) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   
-  <!-- Tailwind CSS CDN con configuración inline -->
+  <!-- Tailwind CSS CDN con configuración inline homologada -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -20,15 +20,26 @@
           colors: {
             onest: {
               blue: {
+                950: "#001F3D",
                 900: "#003E75",
+                800: "#004686",
                 700: "#00549E",
+                600: "#0A6CBE",
                 500: "#1677BD",
+                400: "#3893D2",
+                300: "#4FA8E0",
+                200: "#A9D3EF",
                 100: "#EAF3FA",
+                50:  "#F5FAFD",
               },
-              green: {
-                700: "#2B9138",
-                500: "#39B54A",
-                100: "#EAF7EC",
+              gray: {
+                950: "#20252B",
+                700: "#475467",
+                500: "#667085",
+                300: "#D0D5DD",
+                200: "#E1E6EB",
+                100: "#F2F4F7",
+                50:  "#F8FAFC",
               }
             }
           },
@@ -49,59 +60,82 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
-    :root {
-      /* ========================================================
-         ONEST DIGITAL DESIGN SYSTEM v1.0 - TOKENS
-         ======================================================== */
+    /* ========================================================
+       ONEST DIGITAL DESIGN SYSTEM v1.0 - TOKENS DE COLOR Y MARCA
+       ======================================================== */
+    html[data-brand="onest"], :root {
+      /* Escala Azul Única de 11 Pasos (Cero Verde de Marca) */
+      --onest-blue-950: #001F3D;
       --onest-blue-900: #003E75;
+      --onest-blue-800: #004686;
       --onest-blue-700: #00549E;
+      --onest-blue-600: #0A6CBE;
       --onest-blue-500: #1677BD;
+      --onest-blue-400: #3893D2;
+      --onest-blue-300: #4FA8E0;
+      --onest-blue-200: #A9D3EF;
       --onest-blue-100: #EAF3FA;
-
-      --onest-green-700: #2B9138;
-      --onest-green-500: #39B54A;
-      --onest-green-100: #EAF7EC;
+      --onest-blue-50:  #F5FAFD;
 
       /* Escala de Grises Completa */
-      --gray-950: #20252B;
-      --gray-700: #475467;
-      --gray-500: #667085;
-      --gray-300: #D0D5DD;
-      --gray-200: #E1E6EB;
-      --gray-100: #F2F4F7;
-      --gray-50: #F8FAFC;
+      --onest-gray-950: #20252B;
+      --onest-gray-700: #475467;
+      --onest-gray-500: #667085;
+      --onest-gray-300: #D0D5DD;
+      --onest-gray-200: #E1E6EB;
+      --onest-gray-100: #F2F4F7;
+      --onest-gray-50:  #F8FAFC;
       --white: #FFFFFF;
 
-      /* Colores Semánticos */
-      --success: #22A447;
+      /* Compatibilidad tokens */
+      --gray-950: var(--onest-gray-950);
+      --gray-700: var(--onest-gray-700);
+      --gray-500: var(--onest-gray-500);
+      --gray-300: var(--onest-gray-300);
+      --gray-200: var(--onest-gray-200);
+      --gray-100: var(--onest-gray-100);
+      --gray-50:  var(--onest-gray-50);
+
+      /* Señales Semánticas Universales (Rojo/Ámbar estándar, Activo/Éxito en Azul-600) */
+      --success: #0A6CBE;
       --warning: #F59E0B;
       --danger: #D92D20;
-      --info: #1677BD;
+      --info: #00549E;
       --neutral: #667085;
 
-      /* Radios */
-      --radius-sm: 6px;
-      --radius-md: 8px;
-      --radius-lg: 12px;
+      /* Radios de 4 Pasos */
+      --onest-radius-sm: 6px;
+      --onest-radius-md: 8px;
+      --onest-radius-lg: 12px;
+      --onest-radius-xl: 18px;
+      --radius-sm: var(--onest-radius-sm);
+      --radius-md: var(--onest-radius-md);
+      --radius-lg: var(--onest-radius-lg);
 
-      /* Superficies Modo Claro (70% Neutros, 20% Azul, 10% Verde) */
-      --bg-canvas: #F5F7F9;
+      /* Sombras con Tinte Azul */
+      --onest-shadow-sm: 0 1px 2px rgba(16, 24, 40, .06);
+      --onest-shadow-md: 0 6px 16px rgba(0, 62, 117, .10);
+      --onest-shadow-lg: 0 16px 40px rgba(0, 62, 117, .18);
+      --shadow-card: var(--onest-shadow-sm);
+
+      /* Easing único para todo el sistema */
+      --onest-ease: cubic-bezier(.2, .7, .3, 1);
+
+      /* Superficies Modo Claro */
+      --bg-canvas: #F8FAFC;
       --bg-surface: #FFFFFF;
       --bg-surface-subtle: #F8FAFC;
-      --bg-sidebar: #003E75;
       --border-color: #E1E6EB;
       --text-primary: #20252B;
-      --text-secondary: #667085;
-      --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.05);
+      --text-secondary: #475467;
     }
 
-    /* Superficies Modo Oscuro (Turnos Nocturnos NOC: 20:00 - 06:00) */
+    /* Superficies Modo Oscuro NOC */
     html.dark, body.dark {
-      --bg-canvas: #0B1220;
-      --bg-surface: #1B2A41;
-      --bg-surface-subtle: #132034;
-      --bg-sidebar: #09101B;
-      --border-color: #2D3E59;
+      --bg-canvas: #09101B;
+      --bg-surface: #111D30;
+      --bg-surface-subtle: #0D1626;
+      --border-color: #1E2E48;
       --text-primary: #F1F5F9;
       --text-secondary: #94A3B8;
 
@@ -109,12 +143,12 @@
       --gray-700: #CBD5E1;
       --gray-500: #94A3B8;
       --gray-300: #334155;
-      --gray-200: #2D3E59;
-      --gray-100: #1B2A41;
-      --gray-50: #132034;
+      --gray-200: #1E2E48;
+      --gray-100: #111D30;
+      --gray-50: #0D1626;
 
-      --onest-blue-100: #1A365D;
-      --onest-green-100: #0F381E;
+      --onest-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+      --onest-shadow-md: 0 6px 16px rgba(0, 0, 0, 0.5);
       --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.4);
     }
 
@@ -127,59 +161,177 @@
       transition: background-color 0.25s ease, color 0.25s ease;
     }
 
-    h1, h2, h3, h4, .font-heading {
+    h1, h2, h3, h4, .font-heading, .main-title {
       font-family: 'Montserrat', Arial, sans-serif;
+      font-weight: 700;
+    }
+
+    .main-title {
+      font-size: 1.375rem;
+      line-height: 1.3;
     }
 
     .tabular-nums {
       font-variant-numeric: tabular-nums;
     }
 
+    /* Punto de pulso activo en azul */
     .pulse-dot {
       display: inline-block;
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background-color: var(--onest-green-500);
-      box-shadow: 0 0 0 0 rgba(57, 181, 74, 0.7);
+      background-color: var(--onest-blue-500);
+      box-shadow: 0 0 0 0 rgba(22, 119, 189, 0.7);
       animation: pulsing 1.8s infinite;
     }
 
     @keyframes pulsing {
-      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(57, 181, 74, 0.7); }
-      70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(57, 181, 74, 0); }
-      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(57, 181, 74, 0); }
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(22, 119, 189, 0.7); }
+      70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(22, 119, 189, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(22, 119, 189, 0); }
     }
 
     .border-subtle { border: 1px solid var(--border-color); }
     
     .card-onest {
       background-color: var(--bg-surface);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-card);
-      transition: all 0.2s ease;
+      border: 1px solid var(--onest-gray-200);
+      border-radius: var(--onest-radius-lg);
+      box-shadow: var(--onest-shadow-sm);
+      transition: all 0.2s var(--onest-ease);
     }
     .card-onest:hover {
-      border-color: #CBD5E1;
-      box-shadow: 0 4px 12px -2px rgba(0, 62, 117, 0.06);
+      border-color: var(--onest-blue-200);
+      box-shadow: var(--onest-shadow-md);
+      transform: translateY(-1px);
+    }
+    .dark .card-onest {
+      border-color: var(--border-color);
     }
     .dark .card-onest:hover {
-      border-color: #475569;
-      box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.3);
+      border-color: var(--onest-blue-500);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
     }
 
-    /* Ítem activo del Sidebar según especificación de Design System (borde verde de 3px) */
+    /* Sidebar ONEST con degradado vertical y acento azul */
+    .sidebar-onest {
+      background: linear-gradient(180deg, var(--onest-blue-900) 0%, var(--onest-blue-950) 100%);
+    }
+
     .sidebar-item-active {
       background-color: var(--onest-blue-700);
-      color: #FFFFFF;
-      border-left: 3px solid var(--onest-green-500);
+      color: #FFFFFF !important;
+      box-shadow: inset 3px 0 0 var(--onest-blue-300);
+      border-left: none;
       font-weight: 600;
     }
     .dark .sidebar-item-active {
-      background-color: #1E3A5F;
-      border-left: 3px solid var(--onest-green-500);
+      background-color: var(--onest-blue-700);
+      box-shadow: inset 3px 0 0 var(--onest-blue-300);
+      color: #FFFFFF !important;
+    }
+
+    /* Header Translúcido con Backdrop-Filter */
+    .header-onest {
+      background-color: rgba(255, 255, 255, 0.92);
+      backdrop-filter: saturate(180%) blur(8px);
+      border-bottom: 1px solid var(--onest-gray-200);
+    }
+    .dark .header-onest {
+      background-color: rgba(17, 29, 48, 0.92);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    /* Sistema de Identidad Fotográfica: Hero Band & Page Banner */
+    .hero-band {
+      position: relative;
+      min-height: 180px;
+      border-radius: var(--onest-radius-lg);
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+      background-size: cover;
+      background-position: center;
+      box-shadow: var(--onest-shadow-md);
+    }
+
+    .hero-band::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(100deg,
+          rgba(0, 20, 40, .93) 0%, rgba(0, 31, 61, .78) 34%,
+          rgba(0, 31, 61, .30) 68%, rgba(0, 31, 61, .05) 100%);
+      z-index: 1;
+    }
+
+    .hero-band-content {
+      position: relative;
+      z-index: 2;
+      padding: 1.75rem 2rem;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      color: var(--onest-blue-200);
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.4rem;
+    }
+
+    .hero-eyebrow .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: var(--onest-blue-300);
+    }
+
+    .hero-band-title {
       color: #FFFFFF;
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin: 0 0 0.4rem 0;
+      text-shadow: 0 2px 12px rgba(0, 10, 20, .35);
+    }
+
+    .hero-band-desc {
+      color: #E2E8F0;
+      font-size: 0.85rem;
+      max-width: 680px;
+      margin-bottom: 1rem;
+      line-height: 1.4;
+    }
+
+    .hero-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+
+    .hero-stat {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 6px;
+      padding: 0.35rem 0.75rem;
+      color: #FFFFFF;
+      font-size: 0.75rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .hero-stat strong {
+      color: #FFFFFF;
+      font-weight: 700;
     }
 
     /* Scrollbar personalizada sobria */
@@ -264,13 +416,13 @@
 
       const worstStatus = useMemo(() => {
         if (!healthSummary || healthSummary.length === 0) {
-          return { color: "green", text: "Todo operativo", dotClass: "bg-[#39B54A]" };
+          return { color: "blue", text: "Todo operativo", dotClass: "bg-[#0A6CBE]" };
         }
         const hasRed = healthSummary.some(s => s.status === "red");
         if (hasRed) return { color: "red", text: "Falla detectada", dotClass: "bg-red-500" };
         const hasYellow = healthSummary.some(s => s.status === "yellow");
         if (hasYellow) return { color: "amber", text: "Atención requerida", dotClass: "bg-amber-500" };
-        return { color: "green", text: "Todo operativo", dotClass: "bg-[#39B54A]" };
+        return { color: "blue", text: "Todo operativo", dotClass: "bg-[#0A6CBE]" };
       }, [healthSummary]);
 
       const services = [
@@ -278,13 +430,13 @@
           name: "Collector Service",
           endpoint: "FastAPI :8000",
           statusLabel: "Ingesta Edge (0 dropped)",
-          color: "bg-[#39B54A]"
+          color: "bg-[#0A6CBE]"
         },
         {
           name: "Message Queue",
           endpoint: "RabbitMQ :5672",
           statusLabel: "0 lag de mensajes",
-          color: "bg-[#39B54A]"
+          color: "bg-[#0A6CBE]"
         },
         {
           name: "Analytics Engine",
@@ -301,7 +453,7 @@
           onMouseEnter: () => setIsOpen(true),
           className: "flex items-center space-x-2 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 px-3 py-1.5 rounded-full border border-gray-200 dark:border-gray-700 text-xs transition cursor-pointer shadow-sm"
         },
-          e("span", { className: `w-2 h-2 rounded-full ${worstStatus.dotClass} ${worstStatus.color === 'green' ? 'pulse-dot' : ''}` }),
+          e("span", { className: `w-2 h-2 rounded-full ${worstStatus.dotClass} ${worstStatus.color === "blue" || worstStatus.color === "green" ? 'pulse-dot' : ''}` }),
           e("span", { className: "font-semibold text-gray-700 dark:text-gray-200" }, worstStatus.text),
           e("svg", { className: "w-3 h-3 text-gray-400 ml-0.5", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" },
             e("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M19 9l-7 7-7-7" })
@@ -332,7 +484,7 @@
           ),
           e("div", { className: "mt-3 pt-2 border-t border-gray-100 dark:border-gray-700 flex justify-between items-center text-[10px] text-gray-400" },
             e("span", null, "Portales Web Monitoreados:"),
-            e("span", { className: "font-bold text-[#39B54A]" }, `${(healthSummary || []).filter(h => h.status === 'green').length} Saludables`)
+            e("span", { className: "font-bold text-[#0A6CBE]" }, `${(healthSummary || []).filter(h => h.status === 'green').length} Saludables`)
           )
         )
       );
@@ -601,7 +753,7 @@
               {
                 label: "Sesiones Registradas",
                 data: sessionsData,
-                borderColor: "#39B54A",
+                borderColor: "#0A6CBE",
                 backgroundColor: "rgba(57, 181, 74, 0.04)",
                 borderWidth: 2,
                 fill: false,
@@ -672,7 +824,7 @@
               labels: ["Desktop PC / Laptop", "Smartphone / Móvil", "Tablet Web"],
               datasets: [{
                 data: [dev.desktop || 0, dev.mobile || 0, dev.tablet || 0],
-                backgroundColor: ["#003E75", "#39B54A", "#1677BD"],
+                backgroundColor: ["#003E75", "#0A6CBE", "#1677BD"],
                 borderWidth: 2,
                 borderColor: isDarkMode ? "#1B2A41" : "#FFFFFF"
               }]
@@ -700,7 +852,7 @@
               datasets: [{
                 label: "% de usuarios",
                 data: values,
-                backgroundColor: ["#00549E", "#1677BD", "#39B54A", "#64748B"],
+                backgroundColor: ["#00549E", "#1677BD", "#0A6CBE", "#64748B"],
                 borderRadius: 6,
                 barThickness: 16,
               }]
@@ -788,21 +940,21 @@
       // VISTA AUTENTICADA: SIDEBAR VERTICAL (240px) + HEADER (64px)
       // =========================================================
       return e("div", { className: "min-h-screen flex bg-[var(--bg-canvas)] text-[var(--text-primary)] w-full" },
-        // 1. SIDEBAR VERTICAL CORPORATIVO (Ancho fijo 240px)
-        e("aside", { className: "w-60 bg-[#003E75] dark:bg-[#09101B] text-white flex flex-col flex-shrink-0 min-h-screen sticky top-0 h-screen z-40 border-r border-[#002B52] dark:border-[#1E293B]" },
-          // Header del Sidebar: Logo y Marca ONEST
-          e("div", { className: "h-16 flex items-center px-5 border-b border-white/10 space-x-3 flex-shrink-0" },
-            e("div", { className: "w-9 h-9 bg-white text-[#003E75] font-black rounded-lg flex items-center justify-center text-lg shadow tracking-wider font-heading" }, "O"),
-            e("div", null,
+        // 1. SIDEBAR VERTICAL CORPORATIVO (Ancho fijo 240px, degradado 180deg)
+        e("aside", { className: "w-60 sidebar-onest text-white flex flex-col flex-shrink-0 min-h-screen sticky top-0 h-screen z-40 border-r border-[#001F3D]" },
+          // Header del Sidebar: Logo y Marca ONEST (Fondo blanco corporativo para logo)
+          e("div", { className: "h-16 flex items-center px-4 border-b border-white/10 space-x-3 flex-shrink-0" },
+            e("div", { className: "w-9 h-9 bg-white text-[#00549E] font-black rounded-lg flex items-center justify-center text-lg shadow tracking-wider font-heading flex-shrink-0" }, "O"),
+            e("div", { className: "truncate" },
               e("div", { className: "flex items-center space-x-1.5" },
                 e("span", { className: "font-heading font-bold text-base tracking-tight text-white" }, "ONEST"),
-                e("span", { className: "text-[#39B54A] text-xs font-bold uppercase tracking-wider" }, "Digital")
+                e("span", { className: "text-[#A9D3EF] text-xs font-bold uppercase tracking-wider" }, "Digital")
               ),
-              e("p", { className: "text-[10px] text-blue-200 dark:text-gray-400 font-mono leading-tight" }, "Sistemas & TI v1.1")
+              e("p", { className: "text-[10px] text-[#A9D3EF]/70 font-mono leading-tight" }, "Design System v1.0")
             )
           ),
 
-          // Navegación Vertical
+          // Navegación Vertical con barra de acento inset 3px en activo
           e("nav", { className: "flex-1 py-4 px-3 space-y-1.5 overflow-y-auto" },
             [
               { id: "overview", label: "Dashboard", icon: Icons.LayoutDashboard },
@@ -815,7 +967,7 @@
               return e("button", {
                 key: item.id,
                 onClick: () => setActiveTab(item.id),
-                className: `w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-lg text-xs font-semibold transition-all ${
+                className: `w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-[var(--onest-radius-md)] text-xs font-semibold transition-all ${
                   isActive
                     ? "sidebar-item-active shadow-sm"
                     : "text-blue-100 hover:text-white hover:bg-white/10 dark:text-gray-300 dark:hover:bg-white/5"
@@ -827,39 +979,39 @@
             })
           ),
 
-          // Panel Inferior del Sidebar: Estado NOC y Cumplimiento
+          // Panel Inferior del Sidebar: Estado y Cumplimiento
           e("div", { className: "p-4 border-t border-white/10 space-y-2 text-[11px] text-blue-200 dark:text-gray-400 flex-shrink-0" },
             isDarkMode && e("div", { className: "flex items-center space-x-2 bg-white/10 dark:bg-gray-800/80 px-2.5 py-1.5 rounded-md text-[10px] font-mono text-amber-300" },
               e("span", { className: "w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping" }),
-              e("span", null, "Turno NOC Activo (Noche)")
+              e("span", null, "Turno NOC Activo")
             ),
             e("div", { className: "flex items-center justify-between font-mono text-[10px]" },
-              e("span", null, "k-Anonymity"),
-              e("span", { className: "text-[#39B54A] font-bold" }, "k ≥ 5 OK")
+              e("span", null, "Privacidad k-Anonymity"),
+              e("span", { className: "text-[#A9D3EF] font-bold" }, "k ≥ 5 OK")
             ),
             e("div", { className: "text-[10px] text-blue-300/70 dark:text-gray-500 font-sans" },
-              "ONEST Digital Design System v1.0"
+              "ONEST Design System v1.0"
             )
           )
         ),
 
         // 2. CONTENEDOR PRINCIPAL: HEADER HORIZONTAL (64px) + MAIN CANVAS
         e("div", { className: "flex-1 flex flex-col min-w-0" },
-          // Header Horizontal Persistente (64px de alto, blanco / oscuro con borde #E1E6EB)
-          e("header", { className: "h-16 bg-white dark:bg-[#1B2A41] border-b border-[#E1E6EB] dark:border-[#2D3E59] sticky top-0 z-30 px-6 flex items-center justify-between flex-shrink-0 shadow-sm transition-colors" },
+          // Header Horizontal Persistente con blur translúcido
+          e("header", { className: "h-16 header-onest sticky top-0 z-30 px-6 flex items-center justify-between flex-shrink-0 shadow-sm transition-colors" },
             // Breadcrumb Dinámico
             e("div", { className: "flex items-center space-x-2 text-xs" },
-              e("span", { className: "text-gray-500 dark:text-gray-400 font-medium" }, "Plataforma de Telemetría"),
+              e("span", { className: "text-gray-500 dark:text-gray-400 font-medium" }, "Portal de Monitoreo"),
               e("span", { className: "text-gray-300 dark:text-gray-600" }, "/"),
               e("span", { className: "font-heading font-bold text-gray-900 dark:text-white" }, tabLabels[activeTab] || "Dashboard")
             ),
 
             // Controles del Header: Pulse Técnico + Periodo + CSV + Perfil
             e("div", { className: "flex items-center space-x-3" },
-              // Pulse de Salud Técnica Compacto con Popover
+              // Pulse de Salud Técnica Compacto
               e(TechnicalHealthPulse, { healthSummary }),
 
-              // Selector de Periodo (Pill Group Mejorado con Alto Contraste)
+              // Selector de Periodo
               e("div", { className: "hidden md:flex items-center bg-gray-100 dark:bg-[#132034] p-0.5 rounded-lg border border-gray-200 dark:border-gray-700 text-xs" },
                 [7, 14, 30, 90].map(d =>
                   e("button", {
@@ -878,21 +1030,21 @@
               e("button", {
                 onClick: handleExportCSV,
                 title: "Descargar reporte analítico CSV",
-                className: "hidden sm:flex items-center space-x-1.5 px-3 py-1.5 bg-[#00549E] hover:bg-[#003E75] text-white text-xs font-semibold rounded-lg shadow-sm transition"
+                className: "hidden sm:flex items-center space-x-1.5 px-3 py-1.5 bg-[#00549E] hover:bg-[#1677BD] active:bg-[#003E75] text-white text-xs font-semibold rounded-[var(--onest-radius-md)] shadow-sm transition"
               },
                 e(Icons.Download),
                 e("span", null, "CSV")
               ),
 
-              // Perfil de Usuario Administrador de Sistemas
+              // Perfil de Usuario Administrador
               e("div", { className: "flex items-center space-x-2.5 pl-3 border-l border-gray-200 dark:border-gray-700" },
                 e("div", { className: "text-right hidden lg:block" },
                   e("div", { className: "text-xs font-bold text-gray-900 dark:text-white leading-tight" }, currentUser.name),
                   e("div", { className: "flex items-center justify-end space-x-1 mt-0.5" },
-                    currentUser.area && e("span", { className: "text-[9px] px-1.5 py-0.2 rounded font-semibold bg-blue-50 dark:bg-blue-900/40 text-[#00549E] dark:text-blue-300 border border-blue-200 dark:border-blue-800 uppercase" },
+                    currentUser.area && e("span", { className: "text-[9px] px-1.5 py-0.2 rounded font-semibold bg-[#EAF3FA] text-[#00549E] border border-[#A9D3EF] uppercase" },
                       currentUser.area
                     ),
-                    e("span", { className: "text-[9px] px-1.5 py-0.2 rounded font-bold uppercase bg-[#EAF7EC] dark:bg-green-950/40 text-[#2B9138] dark:text-green-300 border border-[#BBF7D0] dark:border-green-800" },
+                    e("span", { className: "text-[9px] px-1.5 py-0.2 rounded font-bold uppercase bg-[#EAF3FA] text-[#0A6CBE] border border-[#A9D3EF]" },
                       "ADMINISTRADOR"
                     )
                   )
@@ -911,8 +1063,43 @@
             )
           ),
 
-          // Main Canvas Dinámico
+          // Main Canvas Dinámico con Hero-Band Fotográfico Integrado
           e("main", { className: "flex-1 max-w-7xl w-full mx-auto p-6 space-y-6" },
+            // Sistema de Identidad Fotográfica: Hero Band con Scrim
+            e("div", {
+              className: "hero-band",
+              style: { backgroundImage: "url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1600&q=78')" }
+            },
+              e("div", { className: "hero-band-content" },
+                e("div", { className: "hero-eyebrow" },
+                  e("span", { className: "dot" }),
+                  e("span", null, "ONEST SMARTLOGISTICS • PLATAFORMA DE TELEMETRÍA")
+                ),
+                e("h2", { className: "hero-band-title" }, "Consola Central de Telemetría & Adopción"),
+                e("p", { className: "hero-band-desc" },
+                  "Observabilidad en tiempo real, KPIs de rendimiento técnico y gobernanza de privacidad sobre portales B2B e internos."
+                ),
+                e("div", { className: "hero-stats" },
+                  e("div", { className: "hero-stat" },
+                    e("span", null, "DAU Hoy:"),
+                    e("strong", null, summary?.dau_today ? summary.dau_today.toLocaleString() : "1,240")
+                  ),
+                  e("div", { className: "hero-stat" },
+                    e("span", null, "SLA Disponibilidad:"),
+                    e("strong", null, "99.96%")
+                  ),
+                  e("div", { className: "hero-stat" },
+                    e("span", null, "Retención TTL:"),
+                    e("strong", null, "90 Días")
+                  ),
+                  e("div", { className: "hero-stat" },
+                    e("span", null, "Privacidad:"),
+                    e("strong", null, "k ≥ 5 Estricto")
+                  )
+                )
+              )
+            ),
+
             isLoading && e("div", { className: "text-center py-2 text-xs text-[#00549E] dark:text-blue-400 font-medium animate-pulse" }, "Actualizando métricas en tiempo real..."),
 
             activeTab === "overview" && e(OverviewTab, {
@@ -1016,7 +1203,7 @@
           e("div", { className: "w-14 h-14 bg-[#003E75] text-white text-2xl font-black rounded-2xl mx-auto flex items-center justify-center shadow-lg mb-3 font-heading" }, "O"),
           e("h2", { className: "text-2xl font-bold text-[#003E75] dark:text-blue-400 tracking-tight font-heading" }, "ONEST Digital"),
           e("p", { className: "mt-1 text-sm font-semibold text-[#00549E] dark:text-blue-300" }, "Consola de Monitoreo & Telemetría de Sistemas (TI)"),
-          e("div", { className: "mt-2 inline-flex items-center space-x-1.5 bg-[#EAF7EC] dark:bg-green-950/40 text-[#2B9138] dark:text-green-300 border border-[#BBF7D0] dark:border-green-800 px-3 py-1 rounded-full text-xs font-bold" },
+          e("div", { className: "mt-2 inline-flex items-center space-x-1.5 bg-[#EAF3FA] dark:bg-blue-950/40 text-[#00549E] dark:text-[#A9D3EF] border border-[#A9D3EF] dark:border-blue-800 px-3 py-1 rounded-full text-xs font-bold" },
             e("span", { className: "pulse-dot" }),
             e("span", null, "ACCESO EXCLUSIVO: EQUIPO DE SISTEMAS (TODOS ADMINISTRADORES)")
           )
@@ -1093,7 +1280,7 @@
                         e("span", { className: "text-[9px] font-semibold px-1.5 py-0.5 rounded bg-blue-50 dark:bg-blue-900/40 text-[#00549E] dark:text-blue-300 border border-blue-200 dark:border-blue-800 uppercase truncate" },
                           user.area || "Sistemas"
                         ),
-                        e("span", { className: "text-[9px] font-bold px-1.5 py-0.5 rounded bg-[#EAF7EC] dark:bg-green-950/40 text-[#2B9138] dark:text-green-300 border border-[#BBF7D0] dark:border-green-800 uppercase flex-shrink-0" },
+                        e("span", { className: "text-[9px] font-bold px-1.5 py-0.5 rounded bg-[#EAF3FA] dark:bg-blue-950/40 text-[#00549E] dark:text-[#A9D3EF] border border-[#A9D3EF] dark:border-blue-800 uppercase flex-shrink-0" },
                           "ADMINISTRADOR"
                         )
                       )
@@ -1128,7 +1315,7 @@
           e("div", { className: "card-onest p-5" },
             e("div", { className: "flex justify-between items-start" },
               e("span", { className: "text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider font-heading" }, "Usuarios Activos (DAU)"),
-              e("span", { className: "text-xs font-bold text-[#2B9138] bg-[#EAF7EC] dark:bg-green-950/40 px-2 py-0.5 rounded-full" }, "+12.4% vs ayer")
+              e("span", { className: "text-xs font-bold text-[#00549E] bg-[#EAF3FA] dark:bg-blue-950/40 px-2 py-0.5 rounded-full" }, "+12.4% vs ayer")
             ),
             e("div", { className: "mt-2 text-3xl font-extrabold text-[#003E75] dark:text-blue-400 font-heading tabular-nums" }, s.dau_today.toLocaleString()),
             e("div", { className: "mt-2 text-xs text-gray-500 dark:text-gray-400 flex items-center justify-between" },
@@ -1141,14 +1328,14 @@
           e("div", { className: "card-onest p-5" },
             e("div", { className: "flex justify-between items-start" },
               e("span", { className: "text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider font-heading" }, "Tasa Global de Error"),
-              e("span", { className: `text-xs font-bold px-2 py-0.5 rounded-full ${s.overall_error_rate_pct < 1.0 ? 'bg-[#EAF7EC] text-[#2B9138] dark:bg-green-950/40 dark:text-green-300' : 'bg-red-100 text-red-800'}` },
+              e("span", { className: `text-xs font-bold px-2 py-0.5 rounded-full ${s.overall_error_rate_pct < 1.0 ? 'bg-[#EAF3FA] text-[#00549E] dark:bg-blue-950/40 dark:text-[#A9D3EF]' : 'bg-red-100 text-red-800'}` },
                 s.overall_error_rate_pct < 1.0 ? "Saludable" : "Atención"
               )
             ),
             e("div", { className: "mt-2 text-3xl font-extrabold text-gray-900 dark:text-white font-heading tabular-nums" }, `${s.overall_error_rate_pct}%`),
             e("div", { className: "mt-2 text-xs text-gray-500 dark:text-gray-400 flex items-center justify-between" },
               e("span", null, "Objetivo SLA: < 1.0%"),
-              e("span", { className: "text-green-700 dark:text-green-400 font-semibold" }, "Uptime: 99.96%")
+              e("span", { className: "text-[#0A6CBE] dark:text-[#3893D2] font-semibold" }, "Uptime: 99.96%")
             )
           ),
 
@@ -1174,7 +1361,7 @@
             e("div", { className: "mt-2 text-3xl font-extrabold text-gray-900 dark:text-white font-heading tabular-nums" }, s.active_apps_count),
             e("div", { className: "mt-2 text-xs text-gray-500 dark:text-gray-400 flex items-center justify-between" },
               e("span", null, "Gobernanza: Activa"),
-              e("span", { className: "text-green-700 dark:text-green-400 font-mono" }, "100% compliant")
+              e("span", { className: "text-[#0A6CBE] dark:text-[#3893D2] font-mono" }, "100% compliant")
             )
           )
         ),
@@ -1227,7 +1414,7 @@
                   },
                     e("td", { className: "px-6 py-4 font-semibold text-[#003E75] dark:text-blue-300 font-heading" },
                       e("div", { className: "flex items-center space-x-2" },
-                        e("div", { className: `w-2.5 h-2.5 rounded-full ${isSuppressed ? 'bg-amber-500' : 'bg-[#39B54A]'}` }),
+                        e("div", { className: `w-2.5 h-2.5 rounded-full ${isSuppressed ? 'bg-amber-500' : 'bg-[#0A6CBE]'}` }),
                         e("span", null, portal.app_id)
                       )
                     ),
@@ -1243,12 +1430,12 @@
                       isSuppressed ? "-" : portal.total_page_views?.toLocaleString()
                     ),
                     e("td", { className: "px-6 py-4 text-xs font-semibold" },
-                      isSuppressed ? "-" : e("span", { className: "text-green-700 dark:text-green-400" }, "0.45%")
+                      isSuppressed ? "-" : e("span", { className: "text-[#0A6CBE] dark:text-[#3893D2]" }, "0.45%")
                     ),
                     e("td", { className: "px-6 py-4 text-xs" },
                       isSuppressed
                         ? e("span", { className: "font-semibold text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950/40 px-2 py-0.5 rounded-full" }, "k < 5 Protegido")
-                        : e("span", { className: "font-semibold text-green-700 dark:text-green-300 bg-green-50 dark:bg-green-950/40 px-2 py-0.5 rounded-full" }, "k ≥ 5 Conforme")
+                        : e("span", { className: "font-semibold text-[#0A6CBE] dark:text-[#A9D3EF] bg-[#EAF3FA] dark:bg-blue-950/40 px-2 py-0.5 rounded-full" }, "k ≥ 5 Conforme")
                     ),
                     e("td", { className: "px-6 py-4 text-right" },
                       e("button", {
@@ -1530,7 +1717,7 @@
               "Telemetría seudónima procesada en borde con HMAC-SHA256 sin exposición de PII."
             )
           ),
-          e("span", { className: "font-mono font-bold text-[#2B9138] dark:text-green-400 bg-white dark:bg-black/20 px-2 py-0.5 rounded border border-green-200 dark:border-green-800 text-[10px]" },
+          e("span", { className: "font-mono font-bold text-[#00549E] dark:text-[#3893D2] bg-white dark:bg-black/20 px-2 py-0.5 rounded border border-[#A9D3EF] dark:border-blue-800 text-[10px]" },
             "k ≥ 5 CONFORME"
           )
         ),
@@ -1608,7 +1795,7 @@
                         e("td", { className: "px-4 py-3" },
                           e("span", { className: `inline-flex items-center space-x-1 px-2 py-0.5 rounded text-[11px] font-mono font-semibold ${
                             u.trend_direction === 'up'
-                              ? 'bg-green-100 text-green-800 dark:bg-green-950/40 dark:text-green-300'
+                              ? 'bg-[#EAF3FA] text-[#00549E] dark:bg-blue-950/40 dark:text-[#A9D3EF]'
                               : (u.trend_direction === 'down'
                                   ? 'bg-red-100 text-red-800 dark:bg-red-950/40 dark:text-red-300'
                                   : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300')
@@ -1655,7 +1842,7 @@
                 )
               ),
               e("div", { className: "flex items-center space-x-2" },
-                e("span", { className: "bg-[#EAF7EC] text-[#2B9138] dark:bg-green-950/40 dark:text-green-300 text-[10px] font-mono font-bold px-2 py-1 rounded-full border border-[#BBF7D0] dark:border-green-800" },
+                e("span", { className: "bg-[#EAF3FA] text-[#00549E] dark:bg-blue-950/40 dark:text-[#A9D3EF] text-[10px] font-mono font-bold px-2 py-1 rounded-full border border-[#A9D3EF] dark:border-blue-800" },
                   "k-Anonymity Verified"
                 ),
                 e("button", {
@@ -1678,7 +1865,7 @@
               ),
               e("div", { className: "p-3 bg-[#F8FAFC] dark:bg-[#132034] rounded-xl border border-gray-200 dark:border-gray-700" },
                 e("div", { className: "text-[11px] text-gray-500 dark:text-gray-400 font-medium" }, "Págs / Sesión"),
-                e("div", { className: "text-xl font-black text-[#2B9138] dark:text-green-400 mt-1 font-heading tabular-nums" },
+                e("div", { className: "text-xl font-black text-[#00549E] dark:text-[#3893D2] mt-1 font-heading tabular-nums" },
                   (selectedUser.page_views / Math.max(1, selectedUser.sessions)).toFixed(1)
                 )
               ),
@@ -1789,12 +1976,12 @@
             },
               e("span", null, "Actividad por Usuario (Seudónima)"),
               e("span", { className: `text-[10px] font-mono px-1.5 py-0.5 rounded font-bold ${
-                subView === "users" ? "bg-white/20 text-white" : "bg-[#EAF7EC] text-[#2B9138] dark:bg-green-950/40 dark:text-green-300"
+                subView === "users" ? "bg-white/20 text-white" : "bg-[#EAF3FA] text-[#00549E] dark:bg-blue-950/40 dark:text-[#A9D3EF]"
               }` }, "k ≥ 5")
             )
           ),
           e("div", { className: "flex items-center space-x-2 text-xs text-gray-500 dark:text-gray-400 font-mono" },
-            e("span", { className: "w-2 h-2 rounded-full bg-[#39B54A]" }),
+            e("span", { className: "w-2 h-2 rounded-full bg-[#0A6CBE]" }),
             e("span", null, "Gobernanza k-Anonymity activa • Cero PII")
           )
         ),
@@ -1827,7 +2014,7 @@
                   e("div", { className: "flex items-center space-x-3" },
                     e("h2", { className: "text-2xl font-black text-[#003E75] dark:text-blue-300 font-heading" }, p.name),
                     e("span", { className: "bg-[#EAF3FA] dark:bg-blue-900/40 text-[#00549E] dark:text-blue-300 text-xs font-mono font-bold px-2 py-0.5 rounded" }, p.version),
-                    e("span", { className: "bg-[#EAF7EC] dark:bg-green-950/40 text-[#2B9138] dark:text-green-300 text-xs font-bold px-2 py-0.5 rounded-full" }, `Uptime: ${p.uptime}`)
+                    e("span", { className: "bg-[#EAF3FA] dark:bg-blue-950/40 text-[#00549E] dark:text-[#A9D3EF] text-xs font-bold px-2 py-0.5 rounded-full" }, `Uptime: ${p.uptime}`)
                   ),
                   e("p", { className: "text-xs text-gray-500 dark:text-gray-400 mt-1" }, `Departamento Responsable: ${p.department} • Objetivo SLA: ${p.sla_target}`)
                 ),
@@ -1861,7 +2048,7 @@
                           e("div", { className: "text-[11px] text-gray-500 dark:text-gray-400" }, `${route.hits?.toLocaleString()} visitas • Error: ${route.error_pct}%`)
                         ),
                         e("div", { className: "text-right" },
-                          e("span", { className: `text-xs font-mono font-bold px-2 py-0.5 rounded ${route.avg_latency_ms > 400 ? 'bg-amber-100 text-amber-800 dark:bg-amber-950/40 dark:text-amber-300' : 'bg-green-100 text-green-800 dark:bg-green-950/40 dark:text-green-300'}` },
+                          e("span", { className: `text-xs font-mono font-bold px-2 py-0.5 rounded ${route.avg_latency_ms > 400 ? 'bg-amber-100 text-amber-800 dark:bg-amber-950/40 dark:text-amber-300' : 'bg-[#EAF3FA] text-[#00549E] dark:bg-blue-950/40 dark:text-[#A9D3EF]'}` },
                             `${route.avg_latency_ms} ms`
                           )
                         )
@@ -1939,7 +2126,7 @@
             e("button", {
               onClick: onToggleStream,
               className: `text-xs px-3 py-1.5 rounded-lg font-bold transition ${
-                isLiveStreaming ? "bg-amber-100 text-amber-800 dark:bg-amber-950/40 dark:text-amber-300 border border-amber-200" : "bg-green-100 text-green-800 dark:bg-green-950/40 dark:text-green-300 border border-green-200"
+                isLiveStreaming ? "bg-amber-100 text-amber-800 dark:bg-amber-950/40 dark:text-amber-300 border border-amber-200" : "bg-[#EAF3FA] text-[#00549E] dark:bg-blue-950/40 dark:text-[#A9D3EF] border border-[#A9D3EF]"
               }`
             }, isLiveStreaming ? "Pausar Feed" : "Reanudar Feed"),
             e("button", {
@@ -1980,7 +2167,7 @@
                     e("td", { className: "px-4 py-2.5 font-sans text-gray-600 dark:text-gray-400" }, evt.device),
                     e("td", { className: "px-4 py-2.5 text-gray-700 dark:text-gray-300" }, `${evt.latency_ms} ms`),
                     e("td", { className: "px-4 py-2.5 text-right font-bold" },
-                      e("span", { className: evt.status_code === 200 ? 'text-green-600 dark:text-green-400' : 'text-red-600' }, evt.status_code)
+                      e("span", { className: evt.status_code === 200 ? 'text-[#0A6CBE] dark:text-[#3893D2]' : 'text-red-600' }, evt.status_code)
                     )
                   )
                 )
@@ -2010,12 +2197,12 @@
       return e("div", { className: "space-y-6" },
         // SLA y Percentiles de Latencia
         e("div", { className: "grid grid-cols-1 md:grid-cols-3 gap-4" },
-          e("div", { className: "card-onest p-5 border-l-4 border-l-[#39B54A]" },
+          e("div", { className: "card-onest p-5 border-l-4 border-l-[#0A6CBE]" },
             e("div", { className: "text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider font-heading" }, "Disponibilidad Mensual (SLA)"),
-            e("div", { className: "text-3xl font-black text-[#2B9138] dark:text-green-400 mt-2 font-heading tabular-nums" }, `${p.sla_availability?.current_month_pct}%`),
+            e("div", { className: "text-3xl font-black text-[#00549E] dark:text-[#3893D2] mt-2 font-heading tabular-nums" }, `${p.sla_availability?.current_month_pct}%`),
             e("div", { className: "text-xs text-gray-500 dark:text-gray-400 mt-2 flex justify-between" },
               e("span", null, `Objetivo: ${p.sla_availability?.target_pct}%`),
-              e("span", { className: "font-semibold text-green-700 dark:text-green-400" }, "Cumpliendo SLA")
+              e("span", { className: "font-semibold text-[#0A6CBE] dark:text-[#3893D2]" }, "Cumpliendo SLA")
             )
           ),
           e("div", { className: "card-onest p-5" },
@@ -2031,7 +2218,7 @@
             e("div", { className: "text-3xl font-black text-gray-900 dark:text-white mt-2 font-heading tabular-nums" }, `${p.infrastructure?.ingestion_rate_events_per_sec}`),
             e("div", { className: "text-xs text-gray-500 dark:text-gray-400 mt-2 flex justify-between font-mono" },
               e("span", null, "eventos/segundo"),
-              e("span", { className: "text-[#39B54A] font-bold" }, `0 lag cola`)
+              e("span", { className: "text-[#0A6CBE] font-bold" }, `0 lag cola`)
             )
           )
         ),
@@ -2045,7 +2232,7 @@
               e("div", { key, className: "p-4 bg-[#F8FAFC] dark:bg-[#132034] border border-[#E1E6EB] dark:border-[#2D3E59] rounded-xl text-center" },
                 e("span", { className: "text-xs font-bold text-gray-500 dark:text-gray-400 uppercase font-mono" }, key),
                 e("div", { className: "text-2xl font-black text-[#003E75] dark:text-blue-300 mt-1 font-heading tabular-nums" }, item.value),
-                e("span", { className: "inline-block mt-2 text-[10px] font-bold px-2 py-0.5 rounded bg-green-100 dark:bg-green-950/40 text-green-800 dark:text-green-300" }, item.rating),
+                e("span", { className: "inline-block mt-2 text-[10px] font-bold px-2 py-0.5 rounded bg-[#EAF3FA] dark:bg-blue-950/40 text-[#00549E] dark:text-[#A9D3EF]" }, item.rating),
                 e("div", { className: "text-[10px] text-gray-400 mt-1 font-mono" }, `Meta: ${item.target}`)
               )
             )
@@ -2063,7 +2250,7 @@
                   e("div", null,
                     e("h4", { className: "text-sm font-bold text-[#003E75] dark:text-blue-300 font-heading" }, funnel.title),
                     e("span", { className: "text-xs text-gray-500 dark:text-gray-400" }, `${funnel.system} • Conversión Global: `),
-                    e("span", { className: "text-xs font-bold text-green-700 dark:text-green-400" }, `${funnel.overall_conversion_pct}%`)
+                    e("span", { className: "text-xs font-bold text-[#0A6CBE] dark:text-[#3893D2]" }, `${funnel.overall_conversion_pct}%`)
                   ),
                   e("span", { className: "text-xs font-mono text-gray-400" }, `${funnel.total_completed?.toLocaleString()} / ${funnel.total_started?.toLocaleString()} completados`)
                 ),
@@ -2100,9 +2287,9 @@
 
       return e("div", { className: "space-y-6" },
         // Encabezado de Cumplimiento
-        e("div", { className: "card-onest p-6 border-l-4 border-l-[#39B54A]" },
+        e("div", { className: "card-onest p-6 border-l-4 border-l-[#0A6CBE]" },
           e("div", { className: "flex items-center space-x-3" },
-            e("div", { className: "p-2 bg-green-100 dark:bg-green-950/40 rounded-lg text-green-700 dark:text-green-400" }, e(Icons.ShieldCheck)),
+            e("div", { className: "p-2 bg-[#EAF3FA] dark:bg-blue-950/40 rounded-lg text-[#0A6CBE] dark:text-[#3893D2]" }, e(Icons.ShieldCheck)),
             e("div", null,
               e("h3", { className: "text-base font-bold text-[#003E75] dark:text-blue-300 font-heading" }, "Gobernanza de Privacidad y Cumplimiento Normativo"),
               e("p", { className: "text-xs text-gray-500 dark:text-gray-400 mt-0.5" }, "Verificación activa de Privacy by Design y control del umbral k-anonymity (k ≥ 5)")
@@ -2125,7 +2312,7 @@
               ),
               e("div", { className: "flex justify-between py-1 border-b border-gray-100 dark:border-gray-700" },
                 e("span", { className: "text-gray-600 dark:text-gray-400" }, "Umbral Mínimo de k-anonimato:"),
-                e("span", { className: "font-mono font-bold text-green-700 dark:text-green-400" }, `k ≥ ${gov.minimum_k_threshold} usuarios`)
+                e("span", { className: "font-mono font-bold text-[#0A6CBE] dark:text-[#3893D2]" }, `k ≥ ${gov.minimum_k_threshold} usuarios`)
               ),
               e("div", { className: "flex justify-between py-1" },
                 e("span", { className: "text-gray-600 dark:text-gray-400" }, "Retención de Eventos (TTL ClickHouse):"),
@@ -2171,12 +2358,12 @@
                 ),
                 e("div", { className: "text-[11px] text-gray-400 mt-0.5 font-mono" }, "usuarios únicos")
               ),
-              e("div", { className: "bg-[#EAF7EC] dark:bg-green-950/30 p-4 rounded-xl border border-[#BBF7D0] dark:border-green-800" },
-                e("div", { className: "text-xs text-green-800 dark:text-green-300 font-semibold" }, "Cuentas en Activo"),
-                e("div", { className: "text-2xl font-black text-[#2B9138] dark:text-green-400 mt-1 font-heading tabular-nums" },
+              e("div", { className: "bg-[#EAF3FA] dark:bg-blue-950/30 p-4 rounded-xl border border-[#A9D3EF] dark:border-blue-800" },
+                e("div", { className: "text-xs text-[#00549E] dark:text-[#A9D3EF] font-semibold" }, "Cuentas en Activo"),
+                e("div", { className: "text-2xl font-black text-[#00549E] dark:text-[#3893D2] mt-1 font-heading tabular-nums" },
                   `${idleMetrics.active_percentage}%`
                 ),
-                e("div", { className: "text-[11px] text-green-700 dark:text-green-300 mt-0.5 font-mono" },
+                e("div", { className: "text-[11px] text-[#0A6CBE] dark:text-[#A9D3EF] mt-0.5 font-mono" },
                   `${idleMetrics.active_users_count?.toLocaleString()} usuarios activos`
                 )
               ),

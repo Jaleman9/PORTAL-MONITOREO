@@ -1,38 +1,50 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-brand="onest">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ONEST Digital - Portal Piloto (CRM Ventas)</title>
   
-  <!-- Google Fonts: Montserrat & Inter -->
+  <!-- Google Fonts: Montserrat (600/700) & Inter (400/500/600) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
+      darkMode: 'class',
       theme: {
         extend: {
           colors: {
             onest: {
               blue: {
+                950: "#001F3D",
                 900: "#003E75",
+                800: "#004686",
                 700: "#00549E",
+                600: "#0A6CBE",
                 500: "#1677BD",
+                400: "#3893D2",
+                300: "#4FA8E0",
+                200: "#A9D3EF",
                 100: "#EAF3FA",
+                50:  "#F5FAFD",
               },
-              green: {
-                700: "#2B9138",
-                500: "#39B54A",
-                100: "#EAF7EC",
-              },
+              gray: {
+                950: "#20252B",
+                700: "#475467",
+                500: "#667085",
+                300: "#D0D5DD",
+                200: "#E1E6EB",
+                100: "#F2F4F7",
+                50:  "#F8FAFC",
+              }
             }
           },
           fontFamily: {
-            sans: ['Inter', 'Arial', 'sans-serif'],
+            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
             heading: ['Montserrat', 'Arial', 'sans-serif'],
           }
         }
@@ -44,95 +56,222 @@
   <script src="/sdk/telemetry.js"></script>
 
   <style>
+    /* ========================================================
+       ONEST DIGITAL DESIGN SYSTEM v1.0 - TOKENS
+       ======================================================== */
+    html[data-brand="onest"], :root {
+      --onest-blue-950: #001F3D;
+      --onest-blue-900: #003E75;
+      --onest-blue-800: #004686;
+      --onest-blue-700: #00549E;
+      --onest-blue-600: #0A6CBE;
+      --onest-blue-500: #1677BD;
+      --onest-blue-400: #3893D2;
+      --onest-blue-300: #4FA8E0;
+      --onest-blue-200: #A9D3EF;
+      --onest-blue-100: #EAF3FA;
+      --onest-blue-50:  #F5FAFD;
+
+      --onest-gray-950: #20252B;
+      --onest-gray-700: #475467;
+      --onest-gray-500: #667085;
+      --onest-gray-300: #D0D5DD;
+      --onest-gray-200: #E1E6EB;
+      --onest-gray-100: #F2F4F7;
+      --onest-gray-50:  #F8FAFC;
+
+      --onest-radius-sm: 6px;
+      --onest-radius-md: 8px;
+      --onest-radius-lg: 12px;
+      --onest-radius-xl: 18px;
+
+      --onest-shadow-sm: 0 1px 2px rgba(16, 24, 40, .06);
+      --onest-shadow-md: 0 6px 16px rgba(0, 62, 117, .10);
+      --onest-shadow-lg: 0 16px 40px rgba(0, 62, 117, .18);
+
+      --onest-ease: cubic-bezier(.2, .7, .3, 1);
+    }
+
     body {
-      font-family: "Inter", "Arial", sans-serif;
-      background-color: #F5F7F9;
-      color: #20252B;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--onest-gray-50);
+      color: var(--onest-gray-950);
+      margin: 0;
+      padding: 0;
     }
+
     h1, h2, h3, .font-heading {
-      font-family: "Montserrat", "Arial", sans-serif;
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-weight: 700;
     }
-    .card {
+
+    .card-onest {
       background: #FFFFFF;
-      border: 1px solid #E1E6EB;
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      border: 1px solid var(--onest-gray-200);
+      border-radius: var(--onest-radius-lg);
+      padding: 24px;
+      box-shadow: var(--onest-shadow-sm);
+      transition: all 0.2s var(--onest-ease);
     }
+    .card-onest:hover {
+      border-color: var(--onest-blue-200);
+      box-shadow: var(--onest-shadow-md);
+    }
+
     .input-onest {
-      height: 44px;
-      padding: 0 12px;
+      height: 42px;
+      padding: 0 14px;
       background: #FFFFFF;
-      border: 1px solid #D0D5DD;
-      border-radius: 8px;
+      border: 1px solid var(--onest-gray-300);
+      border-radius: var(--onest-radius-md);
       font-size: 13px;
       transition: border-color 0.2s, box-shadow 0.2s;
     }
     .input-onest:focus {
       outline: none;
-      border-color: #00549E;
-      box-shadow: 0 0 0 3px rgba(0, 84, 158, 0.12);
+      border-color: var(--onest-blue-600);
+      box-shadow: 0 0 0 3px rgba(10, 108, 190, 0.15);
     }
+
     .btn-primary {
-      height: 44px;
+      height: 42px;
       padding: 0 20px;
-      background: #00549E;
+      background: var(--onest-blue-600);
       color: #FFFFFF;
       border: none;
-      border-radius: 8px;
+      border-radius: var(--onest-radius-md);
       font-weight: 600;
       font-size: 13px;
       cursor: pointer;
-      transition: background-color 0.2s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: background-color 0.2s var(--onest-ease);
     }
     .btn-primary:hover {
-      background: #003E75;
+      background: var(--onest-blue-700);
     }
+
     .btn-secondary {
       height: 40px;
       padding: 0 16px;
       background: #FFFFFF;
-      color: #00549E;
-      border: 1px solid #00549E;
-      border-radius: 8px;
+      color: var(--onest-blue-700);
+      border: 1px solid var(--onest-blue-200);
+      border-radius: var(--onest-radius-md);
       font-weight: 600;
       font-size: 13px;
       cursor: pointer;
-      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s var(--onest-ease);
     }
     .btn-secondary:hover {
-      background: #EAF3FA;
+      background: var(--onest-blue-100);
+      border-color: var(--onest-blue-600);
     }
-    .btn-success {
+
+    .btn-action {
       height: 40px;
       padding: 0 16px;
-      background: #39B54A;
+      background: var(--onest-blue-900);
       color: #FFFFFF;
       border: none;
-      border-radius: 8px;
+      border-radius: var(--onest-radius-md);
       font-weight: 600;
       font-size: 13px;
       cursor: pointer;
-      transition: background-color 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background-color 0.2s var(--onest-ease);
     }
-    .btn-success:hover {
-      background: #2B9138;
+    .btn-action:hover {
+      background: var(--onest-blue-950);
+    }
+
+    /* Page Banner con Identidad Fotográfica */
+    .page-banner {
+      position: relative;
+      min-height: 168px;
+      border-radius: var(--onest-radius-lg);
+      overflow: hidden;
+      background-size: cover;
+      background-position: center;
+      box-shadow: var(--onest-shadow-md);
+    }
+
+    .page-banner::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(100deg,
+          rgba(0, 20, 40, .93) 0%, rgba(0, 31, 61, .78) 34%,
+          rgba(0, 31, 61, .30) 68%, rgba(0, 31, 61, .05) 100%);
+      z-index: 1;
+    }
+
+    .page-banner-content {
+      position: relative;
+      z-index: 2;
+      padding: 1.5rem 2rem;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .page-banner-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      color: var(--onest-blue-200);
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.35rem;
+    }
+
+    .page-banner-eyebrow .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: var(--onest-blue-300);
+    }
+
+    .page-banner-title {
+      color: #FFFFFF;
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin: 0 0 0.35rem 0;
+      text-shadow: 0 2px 10px rgba(0, 10, 20, .3);
+    }
+
+    .page-banner-desc {
+      color: #E2E8F0;
+      font-size: 0.85rem;
+      max-width: 650px;
+      line-height: 1.4;
+      margin: 0;
     }
   </style>
 </head>
 <body class="min-h-screen flex flex-col">
 
-  <!-- Header ONEST (Sección 19) -->
+  <!-- Header ONEST Homologado -->
   <header class="h-16 bg-white border-b border-[#E1E6EB] px-6 flex items-center justify-between sticky top-0 z-30 shadow-sm">
     <div class="flex items-center gap-4">
       <div class="flex items-center gap-2">
-        <span class="font-heading font-black text-2xl tracking-tighter text-[#00549E]">ONEST</span>
-        <span class="text-xs font-semibold px-2 py-0.5 rounded bg-[#EAF7EC] text-[#2B9138] border border-[#39B54A]/30">DIGITAL</span>
+        <span class="font-heading font-black text-2xl tracking-tighter text-[#003E75]">ONEST</span>
+        <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-[#EAF3FA] text-[#0A6CBE] border border-[#A9D3EF]">SMARTLOGISTICS</span>
       </div>
       <span class="h-5 w-px bg-[#E1E6EB]"></span>
       <div>
         <h1 class="font-heading text-sm font-bold text-[#20252B]">Portal Piloto CRM Ventas (App ID: crm-ventas)</h1>
-        <p class="text-[11px] text-[#667085]">Instrumentación activa con el SDK de telemetría corporativa</p>
+        <p class="text-[11px] text-[#667085]">Instrumentación activa con el SDK de telemetría corporativa v1.0</p>
       </div>
     </div>
     <div class="flex items-center gap-3">
@@ -145,37 +284,31 @@
     </div>
   </header>
 
-  <!-- Contenido -->
+  <!-- Contenido Principal -->
   <main class="flex-1 max-w-5xl mx-auto w-full p-6 lg:p-8 space-y-6">
     
-    <!-- Breadcrumb -->
-    <div class="flex items-center gap-2 text-xs text-[#667085]">
-      <a href="/" class="text-[#00549E] font-medium hover:underline">Inicio</a>
-      <span>/</span>
-      <span class="text-[#00549E] font-medium">Portales Piloto</span>
-      <span>/</span>
-      <span class="font-semibold text-[#20252B]">CRM Ventas</span>
-    </div>
-
-    <!-- Banner Info -->
-    <div class="bg-white border-l-4 border-l-[#00549E] border-y border-r border-[#E1E6EB] rounded-lg p-4 shadow-sm flex items-center justify-between">
-      <div>
-        <div class="text-xs font-bold text-[#20252B]">Entorno de Pruebas en Vivo para Telemetría</div>
-        <div class="text-[12px] text-[#667085] mt-0.5">
-          Interactúa con los controles inferiores para generar tráfico real. Los eventos viajarán automáticamente al Collector (:8000), RabbitMQ (:5672) y ClickHouse (:8123).
+    <!-- Banner de Identidad Fotográfica Homologado -->
+    <div class="page-banner" style="background-image: url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1600&q=80');">
+      <div class="page-banner-content">
+        <div class="page-banner-eyebrow">
+          <span class="dot"></span>
+          <span>ONEST SmartLogistics · Ambiente Piloto</span>
         </div>
+        <h2 class="page-banner-title">CRM Ventas Corporativo</h2>
+        <p class="page-banner-desc">
+          Entorno de pruebas y telemetría en vivo. Interactúa con los módulos para generar eventos automáticos hacia el Collector (:8000), RabbitMQ (:5672) y ClickHouse (:8123).
+        </p>
       </div>
-      <span class="text-xs font-bold text-[#00549E] bg-[#EAF3FA] px-2.5 py-1 rounded">SDK v1.0.0</span>
     </div>
 
     <!-- 1. Identidad de Usuario (Simulación SSO) -->
-    <div class="card space-y-4">
+    <div class="card-onest space-y-4">
       <div class="border-b border-[#E1E6EB] pb-3 flex items-center justify-between">
         <div>
           <h2 class="font-heading text-sm font-bold text-[#20252B]">1. Identidad de Usuario (Simulación SSO)</h2>
           <p class="text-xs text-[#667085]">Simula el inicio de sesión de un colaborador corporativo</p>
         </div>
-        <span class="text-xs text-[#2B9138] font-semibold bg-[#EAF7EC] px-2 py-0.5 rounded">HMAC-SHA256</span>
+        <span class="text-xs text-[#0A6CBE] font-semibold bg-[#EAF3FA] px-2.5 py-1 rounded border border-[#A9D3EF]">HMAC-SHA256</span>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -197,19 +330,19 @@
           </button>
         </div>
       </div>
-      <p class="text-[11px] text-[#2B9138] font-medium flex items-center gap-1.5">
-        <span>🔒</span> El Collector pseudonimiza este correo con sal secreta. El correo en texto plano nunca se persiste en la base de datos analítica.
+      <p class="text-[11px] text-[#0A6CBE] font-medium flex items-center gap-1.5">
+        <span>🔒</span> El Collector pseudonimiza este correo con sal secreta corporativa. El correo en texto plano nunca se persiste en la base de datos analítica.
       </p>
     </div>
 
     <!-- 2. Navegación SPA e Interacción -->
-    <div class="card space-y-4">
+    <div class="card-onest space-y-4">
       <div class="border-b border-[#E1E6EB] pb-3 flex items-center justify-between">
         <div>
           <h2 class="font-heading text-sm font-bold text-[#20252B]">2. Interacción y Navegación SPA</h2>
           <p class="text-xs text-[#667085]">Dispara eventos automáticos de navegación y captura de tiempos de carga</p>
         </div>
-        <div class="text-xs text-[#667085]">Ruta actual: <span id="current-path" class="font-bold text-[#00549E] bg-[#EAF3FA] px-2 py-0.5 rounded">/</span></div>
+        <div class="text-xs text-[#667085]">Ruta actual: <span id="current-path" class="font-bold text-[#003E75] bg-[#EAF3FA] px-2 py-0.5 rounded">/</span></div>
       </div>
 
       <div class="flex flex-wrap gap-3">
@@ -225,14 +358,14 @@
         <button onclick="triggerUncaughtError()" class="h-10 px-4 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-300 rounded-lg text-xs font-semibold transition">
           ⚠️ Simular Error JS
         </button>
-        <button onclick="forceFlush()" class="btn-success">
+        <button onclick="forceFlush()" class="btn-action">
           🚀 Enviar Lote Inmediato (Flush)
         </button>
       </div>
     </div>
 
     <!-- 3. Minimización de Datos -->
-    <div class="card space-y-3">
+    <div class="card-onest space-y-3">
       <div class="border-b border-[#E1E6EB] pb-3">
         <h2 class="font-heading text-sm font-bold text-[#20252B]">3. Verificación de Minimización de Datos</h2>
         <p class="text-xs text-[#667085]">Garantía de que valores de formularios o datos sensibles nunca son capturados</p>
@@ -253,7 +386,7 @@
     </div>
 
     <!-- 4. Consola de Eventos en Tiempo Real -->
-    <div class="card space-y-3">
+    <div class="card-onest space-y-3">
       <div class="flex items-center justify-between pb-2 border-b border-[#E1E6EB]">
         <h2 class="font-heading text-xs font-bold uppercase tracking-wider text-[#475467]">
           4. Registro de Eventos en Vivo (Buffer del SDK)
@@ -270,7 +403,7 @@
   </main>
 
   <!-- Footer ONEST -->
-  <footer class="bg-[#003E75] text-white/70 py-4 px-6 text-xs flex flex-col sm:flex-row items-center justify-between border-t border-white/10 gap-2 mt-8">
+  <footer class="bg-[#001F3D] text-white/70 py-4 px-6 text-xs flex flex-col sm:flex-row items-center justify-between border-t border-white/10 gap-2 mt-8">
     <div class="flex items-center gap-2">
       <span class="font-heading font-black text-sm text-white tracking-wider">ONEST</span>
       <span>•</span>
@@ -287,7 +420,7 @@
       const line = document.createElement('div');
       const time = new Date().toLocaleTimeString();
       let color = 'text-[#475467]';
-      if (type === 'success') color = 'text-[#2B9138] font-medium';
+      if (type === 'success') color = 'text-[#0A6CBE] font-semibold';
       if (type === 'warn') color = 'text-amber-600 font-medium';
       if (type === 'error') color = 'text-rose-600 font-medium';
 
@@ -314,7 +447,7 @@
         Telemetry.identify('carlos.mendoza@corporativo.com', 'ejecutivo', 'ventas');
         const badge = document.getElementById('sdk-status');
         badge.textContent = '● SDK Activo (Buffer 3s)';
-        badge.className = 'text-xs font-semibold px-3 py-1 rounded-full bg-[#EAF7EC] text-[#2B9138] border border-[#39B54A]/30';
+        badge.className = 'text-xs font-semibold px-3 py-1 rounded-full bg-[#EAF3FA] text-[#0A6CBE] border border-[#A9D3EF]';
         logEvent('SDK inicializado exitosamente para app_id: crm-ventas', 'success');
         logEvent('session_start y page_view capturados automáticamente', 'info');
       } catch (e) {

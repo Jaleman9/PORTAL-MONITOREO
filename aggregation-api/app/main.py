@@ -54,11 +54,18 @@ SDK_PATH = os.environ.get(
 )
 
 
+NO_CACHE_HEADERS = {
+    "Cache-Control": "no-cache, no-store, must-revalidate, max-age=0",
+    "Pragma": "no-cache",
+    "Expires": "0",
+}
+
+
 @app.get("/", response_class=HTMLResponse, tags=["Dashboard UI"])
 async def serve_dashboard():
     """Sirve la interfaz web interactiva del Dashboard Ejecutivo."""
     if os.path.exists(DASHBOARD_PATH):
-        return FileResponse(DASHBOARD_PATH)
+        return FileResponse(DASHBOARD_PATH, headers=NO_CACHE_HEADERS)
     return HTMLResponse("<h1>Dashboard Ejecutivo cargando...</h1>")
 
 
@@ -66,7 +73,7 @@ async def serve_dashboard():
 async def serve_demo():
     """Sirve el portal web piloto mock para interactuar en vivo con la telemetría."""
     if os.path.exists(DEMO_PATH):
-        return FileResponse(DEMO_PATH)
+        return FileResponse(DEMO_PATH, headers=NO_CACHE_HEADERS)
     return HTMLResponse("<h1>Portal Demo cargando...</h1>")
 
 
@@ -74,7 +81,7 @@ async def serve_demo():
 async def serve_sdk():
     """Sirve el archivo JavaScript del SDK para portales web."""
     if os.path.exists(SDK_PATH):
-        return FileResponse(SDK_PATH, media_type="application/javascript")
+        return FileResponse(SDK_PATH, media_type="application/javascript", headers=NO_CACHE_HEADERS)
     return HTMLResponse("// SDK no encontrado", status_code=404)
 
 
