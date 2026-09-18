@@ -581,49 +581,56 @@
       }, [currentUser, isLiveStreaming, activeTab]);
 
       useEffect(() => {
-        if (activeTab !== "overview" || !trendChartRef.current || trendData.length === 0) return;
-        if (trendChartInstance.current) trendChartInstance.current.destroy();
+        if (activeTab !== "overview" || !trendChartRef.current || trendData.length === 0 || typeof Chart === "undefined") return;
+        if (trendChartInstance.current) {
+          trendChartInstance.current.destroy();
+          trendChartInstance.current = null;
+        }
 
-        const ctx = trendChartRef.current.getContext("2d");
-        const labels = trendData.map(d => d.date);
-        const dauData = trendData.map(d => d.dau || 0);
-        const sessionsData = trendData.map(d => d.sessions || 0);
+        try {
+          const ctx = trendChartRef.current.getContext("2d");
+          const labels = trendData.map(d => d.date);
+          const dauData = trendData.map(d => d.dau || 0);
+          const sessionsData = trendData.map(d => d.sessions || 0);
 
-        trendChartInstance.current = new Chart(ctx, {
-          type: "line",
-          data: {
-            labels: labels,
-            datasets: [
-              {
-                label: "Usuarios Activos (DAU)",
-                data: dauData,
-                borderColor: "#00549E",
-                backgroundColor: "rgba(0, 84, 158, 0.08)",
-                borderWidth: 2.5,
-                fill: true,
-                tension: 0.35,
-                pointRadius: 3,
-              },
-              {
-                label: "Sesiones Registradas",
-                data: sessionsData,
-                borderColor: "#0A6CBE",
-                backgroundColor: "rgba(10, 108, 190, 0.03)",
-                borderWidth: 2,
-                borderDash: [4, 4],
-                fill: false,
-                tension: 0.3,
-                pointRadius: 2,
-              }
-            ]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { position: "top" } },
-            scales: { y: { beginAtZero: true }, x: { grid: { display: false } } }
-          }
-        });
+          trendChartInstance.current = new Chart(ctx, {
+            type: "line",
+            data: {
+              labels: labels,
+              datasets: [
+                {
+                  label: "Usuarios Activos (DAU)",
+                  data: dauData,
+                  borderColor: "#00549E",
+                  backgroundColor: "rgba(0, 84, 158, 0.08)",
+                  borderWidth: 2.5,
+                  fill: true,
+                  tension: 0.35,
+                  pointRadius: 3,
+                },
+                {
+                  label: "Sesiones Registradas",
+                  data: sessionsData,
+                  borderColor: "#0A6CBE",
+                  backgroundColor: "rgba(10, 108, 190, 0.03)",
+                  borderWidth: 2,
+                  borderDash: [4, 4],
+                  fill: false,
+                  tension: 0.3,
+                  pointRadius: 2,
+                }
+              ]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: { legend: { position: "top" } },
+              scales: { y: { beginAtZero: true }, x: { grid: { display: false } } }
+            }
+          });
+        } catch (e) {
+          console.warn("Trend chart render skipped:", e);
+        }
       }, [activeTab, trendData]);
 
       const handleExportCSV = async () => {
@@ -919,36 +926,40 @@
 
       // Gráfica de Drill-down del usuario seleccionado
       useEffect(() => {
-        if (!selectedUser || !userTrendChartRef.current) return;
+        if (!selectedUser || !userTrendChartRef.current || typeof Chart === "undefined") return;
         if (userTrendChartInstance.current) {
           userTrendChartInstance.current.destroy();
           userTrendChartInstance.current = null;
         }
-        const ctx = userTrendChartRef.current.getContext("2d");
-        userTrendChartInstance.current = new Chart(ctx, {
-          type: "line",
-          data: {
-            labels: (selectedUser.timeline || []).map(t => t.day),
-            datasets: [
-              {
-                label: "Sesiones",
-                data: (selectedUser.timeline || []).map(t => t.sessions),
-                borderColor: "#00549E",
-                backgroundColor: "rgba(0, 84, 158, 0.12)",
-                borderWidth: 2,
-                fill: true,
-                tension: 0.35,
-                pointRadius: 3
-              }
-            ]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
-            scales: { y: { beginAtZero: true }, x: { grid: { display: false } } }
-          }
-        });
+        try {
+          const ctx = userTrendChartRef.current.getContext("2d");
+          userTrendChartInstance.current = new Chart(ctx, {
+            type: "line",
+            data: {
+              labels: (selectedUser.timeline || []).map(t => t.day),
+              datasets: [
+                {
+                  label: "Sesiones",
+                  data: (selectedUser.timeline || []).map(t => t.sessions),
+                  borderColor: "#00549E",
+                  backgroundColor: "rgba(0, 84, 158, 0.12)",
+                  borderWidth: 2,
+                  fill: true,
+                  tension: 0.35,
+                  pointRadius: 3
+                }
+              ]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: { legend: { display: false } },
+              scales: { y: { beginAtZero: true }, x: { grid: { display: false } } }
+            }
+          });
+        } catch (e) {
+          console.warn("User trend chart skipped:", e);
+        }
       }, [selectedUser]);
 
       const sortedUsers = useMemo(() => {
@@ -1466,8 +1477,37 @@
       );
     }
 
+    class ErrorBoundary extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = { hasError: false, error: null };
+      }
+      static getDerivedStateFromError(error) {
+        return { hasError: true, error };
+      }
+      componentDidCatch(error, errorInfo) {
+        console.error("Dashboard Error:", error, errorInfo);
+      }
+      render() {
+        if (this.state.hasError) {
+          return e("div", { className: "min-h-screen w-full flex items-center justify-center p-6 bg-[#F8FAFC] font-sans text-center" },
+            e("div", { className: "max-w-md p-8 bg-white rounded-2xl shadow-xl border border-gray-200 space-y-4" },
+              e("div", { className: "w-12 h-12 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto text-xl font-bold" }, "!"),
+              e("h2", { className: "text-lg font-bold text-[#003E75] font-heading" }, "ONEST Digital - Error de Inicialización"),
+              e("p", { className: "text-xs text-gray-500" }, String(this.state.error?.message || "Ocurrió un error al cargar el componente.")),
+              e("button", {
+                onClick: () => { localStorage.clear(); window.location.reload(); },
+                className: "px-4 py-2 bg-[#00549E] text-white text-xs font-bold rounded-lg shadow hover:bg-[#0A6CBE] transition"
+              }, "Limpiar Caché y Recargar")
+            )
+          );
+        }
+        return this.props.children;
+      }
+    }
+
     const root = ReactDOM.createRoot(document.getElementById("root"));
-    root.render(e(App));
+    root.render(e(ErrorBoundary, null, e(App)));
   </script>
 </body>
 </html>
