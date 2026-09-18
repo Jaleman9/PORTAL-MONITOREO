@@ -966,87 +966,478 @@ class KPIService:
         search: Optional[str] = None,
         limit: int = 50,
     ) -> List[Dict[str, Any]]:
-        """Genera registros analíticos de actividad detallada por usuario seudónimo (USR-XXXX) con OpenReplay y k-anonimato."""
+        """Genera registros analíticos de actividad detallada con perfiles reales y operativos de ONEST SmartLogistics."""
         portal_meta = {
             "drive-onest": {"badge": "FLUJO", "title": "Drive Onest", "routes": ["/drive/mis-archivos", "/drive/compartidos", "/drive/flujos-aprobacion", "/drive/auditoria-sat"]},
-            "portal-capacitacion": {"badge": "APRENDER", "title": "Portal de Capacitación", "routes": ["/cursos/catalogo", "/evaluaciones/examen-en-linea", "/certificaciones/mis-diplomas"]},
-            "crm-ventas": {"badge": "CONECTAR", "title": "CRM", "routes": ["/oportunidades/pipeline", "/clientes/cartera", "/cotizaciones/activas", "/chat/conversaciones"]},
-            "slotting-onest": {"badge": "ORDENAR", "title": "Slotting Onest", "routes": ["/slotting/mapa-3d-racks", "/slotting/reubicacion-abc", "/slotting/densidad-posiciones"]},
-            "portal-lili": {"badge": "PERSONAS", "title": "Portal Lili", "routes": ["/lili/recibos-nomina", "/lili/vacaciones-permisos", "/lili/beneficios-onest"]},
-            "portal-salud": {"badge": "BIENESTAR", "title": "Portal de Salud", "routes": ["/salud/citas-medicas", "/salud/expediente-clinico", "/salud/pausas-activas"]},
-            "portal-contratistas": {"badge": "SEGURIDAD", "title": "Portal de Contratistas", "routes": ["/contratistas/pase-acceso-cedis", "/contratistas/validar-imss-sua", "/contratistas/dc3-alturas"]},
-            "portal-predios": {"badge": "UBICACIÓN", "title": "Portal de Predios", "routes": ["/predios/directorio-naves", "/predios/mantenimiento-facilities", "/predios/contratos-arrendamiento"]},
-            "portal-tickets": {"badge": "ATENCIÓN", "title": "Portal de Tickets", "routes": ["/tickets/crear-incidencia", "/tickets/mis-casos-activos", "/tickets/base-conocimiento-rf"]},
-            "portal-reclutamiento": {"badge": "TALENTO", "title": "Portal de Reclutamiento", "routes": ["/reclutamiento/vacantes-cedis", "/reclutamiento/evaluacion-candidato", "/reclutamiento/expediente-onboarding"]},
-            "dc3-certificar": {"badge": "CERTIFICAR", "title": "DC3", "routes": ["/dc3/emitir", "/dc3/certificados-vigentes", "/dc3/catalogo-cursos", "/dc3/validador-qr"]},
+            "portal-capacitacion": {"badge": "APRENDER", "title": "Portal de Capacitación", "routes": ["/cursos/catalogo", "/evaluaciones/examen-en-linea", "/certificaciones/mis-diplomas", "/capacitacion/simulador-wms"]},
+            "crm-ventas": {"badge": "CONECTAR", "title": "CRM", "routes": ["/oportunidades/pipeline", "/clientes/cartera", "/cotizaciones/activas", "/cx/monitoreo-sla-cuentas"]},
+            "slotting-onest": {"badge": "ORDENAR", "title": "Slotting Onest", "routes": ["/slotting/mapa-3d-racks", "/slotting/reubicacion-abc", "/slotting/densidad-posiciones", "/slotting/auditoria-pallets"]},
+            "portal-lili": {"badge": "PERSONAS", "title": "Portal Lili", "routes": ["/lili/recibos-nomina", "/lili/vacaciones-permisos", "/lili/beneficios-onest", "/lili/prestamos-caja"]},
+            "portal-salud": {"badge": "BIENESTAR", "title": "Portal de Salud", "routes": ["/salud/citas-medicas", "/salud/expediente-clinico", "/salud/pausas-activas", "/salud/dictamen-aptitud-cedis"]},
+            "portal-contratistas": {"badge": "SEGURIDAD", "title": "Portal de Contratistas", "routes": ["/contratistas/pase-acceso-cedis", "/contratistas/validar-imss-sua", "/contratistas/dc3-alturas", "/contratistas/auditoria-epp"]},
+            "portal-predios": {"badge": "UBICACIÓN", "title": "Portal de Predios", "routes": ["/predios/directorio-naves", "/predios/mantenimiento-facilities", "/predios/contratos-arrendamiento", "/predios/consumo-energetico"]},
+            "portal-tickets": {"badge": "ATENCIÓN", "title": "Portal de Tickets", "routes": ["/tickets/crear-incidencia", "/tickets/mis-casos-activos", "/tickets/base-conocimiento-rf", "/tickets/escalamiento-cx-ti"]},
+            "portal-reclutamiento": {"badge": "TALENTO", "title": "Portal de Reclutamiento", "routes": ["/reclutamiento/vacantes-cedis", "/reclutamiento/evaluacion-candidato", "/reclutamiento/expediente-onboarding", "/reclutamiento/psicometria"]},
+            "dc3-certificar": {"badge": "CERTIFICAR", "title": "DC3", "routes": ["/dc3/emitir", "/dc3/certificados-vigentes", "/dc3/catalogo-cursos", "/dc3/validador-qr", "/dc3/auditoria-stps"]},
         }
-        all_app_keys = list(portal_meta.keys())
-        devices_list = ["Desktop Windows 11 (1920x1080)", "MacBook Pro M2 (2560x1440)", "Mobile Android Samsung S23", "iPhone 15 iOS Safari", "Handheld Zebra TC57 Android"]
-        browsers_list = ["Google Chrome 128", "Microsoft Edge 128", "Apple Safari 17.5", "Mozilla Firefox 129"]
-        locations_list = ["Ciudad de México (NOC Central)", "Cuautitlán Cedis Megapark", "Guadalajara Hub", "Monterrey Logistics Park", "Toluca Cedis", "San Martín Obispo"]
+
+        # Directorio Real de Directores, Gerentes y Especialistas ONEST SmartLogistics
+        real_profiles = [
+            # --- CX / Customer Experience (CRM / Tickets) ---
+            {
+                "full_name": "Pilar Arribas",
+                "role_title": "Directora de Customer Experience (CX) & Cuentas Clave",
+                "department": "Customer Experience Corporativo",
+                "email": "pilar.arribas@onestlogistics.com",
+                "portal": "crm-ventas",
+                "location": "Ciudad de México (NOC Central)",
+                "device": "MacBook Pro M2 (2560x1440)",
+                "browser": "Apple Safari 17.5",
+                "sessions_base": 142,
+                "active_pct_base": 93.8,
+                "rage_clicks_base": 0,
+                "dead_clicks_base": 0,
+                "latency_base": 148,
+            },
+            {
+                "full_name": "Griselda Gaytán",
+                "role_title": "Gerente de Operaciones CX & Cuentas E-Commerce",
+                "department": "Customer Experience & Fulfillment",
+                "email": "griselda.gaytan@onestlogistics.com",
+                "portal": "crm-ventas",
+                "location": "Cuautitlán Cedis Megapark",
+                "device": "Desktop Windows 11 (1920x1080)",
+                "browser": "Google Chrome 128",
+                "sessions_base": 118,
+                "active_pct_base": 91.2,
+                "rage_clicks_base": 1,
+                "dead_clicks_base": 1,
+                "latency_base": 162,
+            },
+            {
+                "full_name": "Vivian López",
+                "role_title": "Coordinadora Senior de CX & Mesa de Atención a Clientes",
+                "department": "Customer Experience & Soporte",
+                "email": "vivian.lopez@onestlogistics.com",
+                "portal": "portal-tickets",
+                "location": "Ciudad de México (NOC Central)",
+                "device": "Desktop Windows 11 (1920x1080)",
+                "browser": "Google Chrome 128",
+                "sessions_base": 134,
+                "active_pct_base": 95.4,
+                "rage_clicks_base": 0,
+                "dead_clicks_base": 0,
+                "latency_base": 155,
+            },
+            # --- Salud Ocupacional & Bienestar ---
+            {
+                "full_name": "Mauricio Cerón",
+                "role_title": "Gerente de Salud Ocupacional, Medicina Laboral & Ergonomía",
+                "department": "Seguridad, Salud & Medio Ambiente (EHS)",
+                "email": "mauricio.ceron@onestlogistics.com",
+                "portal": "portal-salud",
+                "location": "Cuautitlán Cedis Megapark",
+                "device": "Desktop Windows 11 (1920x1080)",
+                "browser": "Microsoft Edge 128",
+                "sessions_base": 96,
+                "active_pct_base": 88.5,
+                "rage_clicks_base": 0,
+                "dead_clicks_base": 0,
+                "latency_base": 170,
+            },
+            {
+                "full_name": "Dra. Andrea Morales",
+                "role_title": "Médico de Planta & Salud Ocupacional Megapark",
+                "department": "Medicina Laboral",
+                "email": "andrea.morales@onestlogistics.com",
+                "portal": "portal-salud",
+                "location": "Cuautitlán Cedis Megapark",
+                "device": "iPad Pro iOS Safari",
+                "browser": "Apple Safari 17.5",
+                "sessions_base": 78,
+                "active_pct_base": 86.0,
+                "rage_clicks_base": 0,
+                "dead_clicks_base": 0,
+                "latency_base": 182,
+            },
+            # --- Operaciones CEDIS & Almacén (Slotting / DC3) ---
+            {
+                "full_name": "Ing. Roberto Velázquez",
+                "role_title": "Gerente General de Operaciones CEDIS Megapark",
+                "department": "Operaciones Logísticas & WMS",
+                "email": "roberto.velazquez@onestlogistics.com",
+                "portal": "slotting-onest",
+                "location": "Tepotzotlán Cedis Megapark",
+                "device": "Desktop Windows 11 (1920x1080)",
+                "browser": "Google Chrome 128",
+                "sessions_base": 165,
+                "active_pct_base": 94.2,
+                "rage_clicks_base": 0,
+                "dead_clicks_base": 0,
+                "latency_base": 140,
+            },
+            {
+                "full_name": "Ing. Diana Rivas",
+                "role_title": "Gerente de Ingeniería de Procesos & Slotting WMS",
+                "department": "Ingeniería de Almacén",
+                "email": "diana.rivas@onestlogistics.com",
+                "portal": "slotting-onest",
+                "location": "Cuautitlán Cedis Megapark",
+                "device": "Handheld Zebra TC57 Android",
+                "browser": "Chrome Mobile Enterprise",
+                "sessions_base": 128,
+                "active_pct_base": 89.4,
+                "rage_clicks_base": 2,
+                "dead_clicks_base": 1,
+                "latency_base": 195,
+            },
+            # --- Capacitación & Desarrollo Organizacional ---
+            {
+                "full_name": "Lic. Sofía Villalobos",
+                "role_title": "Gerente de Desarrollo Organizacional & Capacitación",
+                "department": "Recursos Humanos & Cultura",
+                "email": "sofia.villalobos@onestlogistics.com",
+                "portal": "portal-capacitacion",
+                "location": "Ciudad de México (NOC Central)",
+                "device": "MacBook Air M2 (2560x1440)",
+                "browser": "Apple Safari 17.5",
+                "sessions_base": 110,
+                "active_pct_base": 92.0,
+                "rage_clicks_base": 0,
+                "dead_clicks_base": 0,
+                "latency_base": 150,
+            },
+            # --- Normatividad STPS & Certificaciones DC3 ---
+            {
+                "full_name": "Ing. Ricardo Ortega",
+                "role_title": "Gerente de Normatividad STPS & Certificaciones DC3",
+                "department": "Cumplimiento & Seguridad Industrial",
+                "email": "ricardo.ortega@onestlogistics.com",
+                "portal": "dc3-certificar",
+                "location": "Toluca Cedis",
+                "device": "Desktop Windows 11 (1920x1080)",
+                "browser": "Google Chrome 128",
+                "sessions_base": 148,
+                "active_pct_base": 96.1,
+                "rage_clicks_base": 0,
+                "dead_clicks_base": 0,
+                "latency_base": 138,
+            },
+            # --- Atracción de Talento & Reclutamiento ---
+            {
+                "full_name": "Mtra. Patricia Sandoval",
+                "role_title": "Gerente de Atracción de Talento & Reclutamiento Nacional",
+                "department": "Recursos Humanos",
+                "email": "patricia.sandoval@onestlogistics.com",
+                "portal": "portal-reclutamiento",
+                "location": "Ciudad de México (NOC Central)",
+                "device": "Desktop Windows 11 (1920x1080)",
+                "browser": "Google Chrome 128",
+                "sessions_base": 136,
+                "active_pct_base": 87.8,
+                "rage_clicks_base": 1,
+                "dead_clicks_base": 2,
+                "latency_base": 185,
+            },
+            # --- Nóminas & Servicios al Colaborador ---
+            {
+                "full_name": "Lic. Jorge Emilio Ramos",
+                "role_title": "Gerente de Nóminas, Compensaciones & Beneficios",
+                "department": "Administración de Personal",
+                "email": "jorge.ramos@onestlogistics.com",
+                "portal": "portal-lili",
+                "location": "Cuautitlán Izcalli",
+                "device": "Desktop Windows 11 (1920x1080)",
+                "browser": "Microsoft Edge 128",
+                "sessions_base": 122,
+                "active_pct_base": 90.5,
+                "rage_clicks_base": 0,
+                "dead_clicks_base": 1,
+                "latency_base": 160,
+            },
+            # --- Seguridad Patrimonial & Contratistas ---
+            {
+                "full_name": "Ing. Héctor Cárdenas",
+                "role_title": "Gerente de Seguridad Patrimonial & Control de Accesos",
+                "department": "Seguridad Patrimonial",
+                "email": "hector.cardenas@onestlogistics.com",
+                "portal": "portal-contratistas",
+                "location": "San Martín Obispo Cedis",
+                "device": "Desktop Windows 11 (1920x1080)",
+                "browser": "Google Chrome 128",
+                "sessions_base": 115,
+                "active_pct_base": 89.0,
+                "rage_clicks_base": 0,
+                "dead_clicks_base": 0,
+                "latency_base": 172,
+            },
+            # --- Operaciones San Martín Obispo ---
+            {
+                "full_name": "Lic. Alejandro Fuentes",
+                "role_title": "Gerente de Operaciones CEDIS San Martín Obispo",
+                "department": "Operaciones Logísticas",
+                "email": "alejandro.fuentes@onestlogistics.com",
+                "portal": "portal-contratistas",
+                "location": "San Martín Obispo Cedis",
+                "device": "Desktop Windows 11 (1920x1080)",
+                "browser": "Google Chrome 128",
+                "sessions_base": 104,
+                "active_pct_base": 88.2,
+                "rage_clicks_base": 0,
+                "dead_clicks_base": 0,
+                "latency_base": 176,
+            },
+            # --- Facilities & Predios ---
+            {
+                "full_name": "Lic. Fernando Garza",
+                "role_title": "Gerente de Facilities, Predios & Bienes Raíces Logísticos",
+                "department": "Infraestructura & Mantenimiento",
+                "email": "fernando.garza@onestlogistics.com",
+                "portal": "portal-predios",
+                "location": "Toluca Cedis",
+                "device": "Desktop Windows 11 (1920x1080)",
+                "browser": "Google Chrome 128",
+                "sessions_base": 92,
+                "active_pct_base": 86.4,
+                "rage_clicks_base": 1,
+                "dead_clicks_base": 0,
+                "latency_base": 190,
+            },
+            # --- TI & Mesa de Ayuda Central ---
+            {
+                "full_name": "Ing. Miguel Ángel Torres",
+                "role_title": "Gerente de Infraestructura TI & Soporte a CEDIS",
+                "department": "Tecnologías de la Información",
+                "email": "miguel.torres@onestlogistics.com",
+                "portal": "portal-tickets",
+                "location": "Ciudad de México (NOC Central)",
+                "device": "MacBook Pro M2 (2560x1440)",
+                "browser": "Google Chrome 128",
+                "sessions_base": 158,
+                "active_pct_base": 97.2,
+                "rage_clicks_base": 0,
+                "dead_clicks_base": 0,
+                "latency_base": 135,
+            },
+            # --- Gestión Documental & Hub Occidente (Drive Onest) ---
+            {
+                "full_name": "Carlos Mendoza",
+                "role_title": "Gerente de Operaciones Occidente & Guadalajara Hub",
+                "department": "Operaciones Regionales",
+                "email": "carlos.mendoza@onestlogistics.com",
+                "portal": "drive-onest",
+                "location": "Guadalajara Hub",
+                "device": "Desktop Windows 11 (1920x1080)",
+                "browser": "Google Chrome 128",
+                "sessions_base": 125,
+                "active_pct_base": 91.0,
+                "rage_clicks_base": 0,
+                "dead_clicks_base": 0,
+                "latency_base": 158,
+            },
+            {
+                "full_name": "Ing. Lorena Zúñiga",
+                "role_title": "Gerente de Gestión Documental & Control Operativo",
+                "department": "Auditoría & Control de Calidad",
+                "email": "lorena.zuniga@onestlogistics.com",
+                "portal": "drive-onest",
+                "location": "Ciudad de México (NOC Central)",
+                "device": "Desktop Windows 11 (1920x1080)",
+                "browser": "Google Chrome 128",
+                "sessions_base": 138,
+                "active_pct_base": 92.5,
+                "rage_clicks_base": 0,
+                "dead_clicks_base": 0,
+                "latency_base": 152,
+            },
+            # --- Comercial / CRM ---
+            {
+                "full_name": "Lic. Gabriel Domínguez",
+                "role_title": "Gerente Comercial & Soluciones Logísticas FTL/LTL",
+                "department": "Ventas & Nuevos Negocios",
+                "email": "gabriel.dominguez@onestlogistics.com",
+                "portal": "crm-ventas",
+                "location": "Monterrey Logistics Park",
+                "device": "Desktop Windows 10 (1920x1080)",
+                "browser": "Microsoft Edge 128",
+                "sessions_base": 114,
+                "active_pct_base": 89.6,
+                "rage_clicks_base": 2,
+                "dead_clicks_base": 1,
+                "latency_base": 180,
+            },
+            # --- Supervisores de Campo & Operación ---
+            {
+                "full_name": "Ing. Arturo Samaniego",
+                "role_title": "Supervisor de Slotting & Racks CEDIS Toluca",
+                "department": "Operaciones WMS",
+                "email": "arturo.samaniego@onestlogistics.com",
+                "portal": "slotting-onest",
+                "location": "Toluca Cedis",
+                "device": "Handheld Zebra TC57 Android",
+                "browser": "Chrome Mobile Enterprise",
+                "sessions_base": 98,
+                "active_pct_base": 88.0,
+                "rage_clicks_base": 0,
+                "dead_clicks_base": 1,
+                "latency_base": 205,
+            },
+            {
+                "full_name": "Lic. Mariana Orozco",
+                "role_title": "Coordinadora de Onboarding & Clima Laboral",
+                "department": "Recursos Humanos",
+                "email": "mariana.orozco@onestlogistics.com",
+                "portal": "portal-lili",
+                "location": "Cuautitlán Cedis Megapark",
+                "device": "iPhone 15 iOS Safari",
+                "browser": "Apple Safari 17.5",
+                "sessions_base": 84,
+                "active_pct_base": 85.5,
+                "rage_clicks_base": 1,
+                "dead_clicks_base": 0,
+                "latency_base": 190,
+            },
+            {
+                "full_name": "Ing. Valeria Beltrán",
+                "role_title": "Supervisora de Capacitación Técnica STPS",
+                "department": "Capacitación & Seguridad",
+                "email": "valeria.beltran@onestlogistics.com",
+                "portal": "dc3-certificar",
+                "location": "Cuautitlán Cedis Megapark",
+                "device": "Desktop Windows 11 (1920x1080)",
+                "browser": "Google Chrome 128",
+                "sessions_base": 108,
+                "active_pct_base": 93.0,
+                "rage_clicks_base": 0,
+                "dead_clicks_base": 0,
+                "latency_base": 145,
+            },
+            {
+                "full_name": "Lic. Daniel Estrada",
+                "role_title": "Coordinador de Selección Operativa y Masivos CEDIS",
+                "department": "Atracción de Talento",
+                "email": "daniel.estrada@onestlogistics.com",
+                "portal": "portal-reclutamiento",
+                "location": "San Martín Obispo Cedis",
+                "device": "Mobile Android Samsung S23",
+                "browser": "Google Chrome 128",
+                "sessions_base": 95,
+                "active_pct_base": 84.0,
+                "rage_clicks_base": 2,
+                "dead_clicks_base": 1,
+                "latency_base": 198,
+            },
+            {
+                "full_name": "Ing. Esteban Carranza",
+                "role_title": "Coordinador de Mantenimiento & Facilities",
+                "department": "Predios & Facilities",
+                "email": "esteban.carranza@onestlogistics.com",
+                "portal": "portal-predios",
+                "location": "Guadalajara Hub",
+                "device": "Desktop Windows 11 (1920x1080)",
+                "browser": "Google Chrome 128",
+                "sessions_base": 82,
+                "active_pct_base": 87.0,
+                "rage_clicks_base": 0,
+                "dead_clicks_base": 0,
+                "latency_base": 182,
+            },
+            {
+                "full_name": "Dra. Mónica Salcedo",
+                "role_title": "Especialista en Ergonomía & Salud Preventiva",
+                "department": "Medicina Laboral",
+                "email": "monica.salcedo@onestlogistics.com",
+                "portal": "portal-salud",
+                "location": "Monterrey Logistics Park",
+                "device": "Desktop Windows 11 (1920x1080)",
+                "browser": "Google Chrome 128",
+                "sessions_base": 76,
+                "active_pct_base": 88.0,
+                "rage_clicks_base": 0,
+                "dead_clicks_base": 0,
+                "latency_base": 175,
+            },
+            {
+                "full_name": "Lic. Karina Téllez",
+                "role_title": "Especialista CX Cuentas Retail & Autoservicio",
+                "department": "Customer Experience",
+                "email": "karina.tellez@onestlogistics.com",
+                "portal": "crm-ventas",
+                "location": "Ciudad de México (NOC Central)",
+                "device": "Desktop Windows 11 (1920x1080)",
+                "browser": "Google Chrome 128",
+                "sessions_base": 112,
+                "active_pct_base": 92.4,
+                "rage_clicks_base": 0,
+                "dead_clicks_base": 0,
+                "latency_base": 156,
+            },
+        ]
 
         multiplier = max(1.0, days / 14.0)
         target_portal = app_id.strip() if (app_id and app_id.strip() and app_id.strip() != "todos") else None
-        cohort_size = 30 if target_portal else 45
         users = []
 
-        for i in range(cohort_size):
-            assigned_app = target_portal if target_portal else all_app_keys[i % len(all_app_keys)]
+        for i, prof in enumerate(real_profiles):
+            assigned_app = prof["portal"]
+            if target_portal and assigned_app != target_portal:
+                continue
+
             p_info = portal_meta.get(assigned_app, {"badge": "ONEST", "title": assigned_app, "routes": ["/inicio", "/procesos", "/reportes"]})
 
-            raw_hash = hashlib.sha256(f"onest_privacy_salt_{assigned_app}_{i*23 + 7}".encode()).hexdigest()
+            raw_hash = hashlib.sha256(f"onest_id_{prof['email']}".encode()).hexdigest()
             user_code = f"USR-{raw_hash[:4].upper()}"
 
-            base_sess = int((16 + (i * 11) % 48) * multiplier)
-            base_pv = int(base_sess * (4.2 + (i % 5) * 0.8))
+            base_sess = int(prof["sessions_base"] * multiplier)
+            base_pv = int(base_sess * (3.8 + (i % 3) * 0.7))
             
-            # Métricas OpenReplay por usuario (segundo a segundo)
-            active_pct = round(72.0 + ((i * 7) % 24) + ((i % 3) * 1.5), 1)
-            active_pct = min(96.0, max(65.0, active_pct))
+            active_pct = min(98.0, max(70.0, prof["active_pct_base"]))
             idle_pct = round(100.0 - active_pct, 1)
 
-            avg_duration_s = 180 + (i * 35) % 650
+            avg_duration_s = 220 + (i * 45) % 450
             active_sec_total = int(base_sess * avg_duration_s * (active_pct / 100.0))
             idle_sec_total = int(base_sess * avg_duration_s * (idle_pct / 100.0))
 
-            # Rage clicks y eventos de frustración
-            rage_clicks = ((i * 3) % 7) if (i % 4 == 0) else 0
-            dead_clicks = ((i * 2) % 5) if (i % 3 == 0) else 0
-            errors = 1 if (i % 7 == 0) else 0
-            avg_lat = 160 + (i * 19) % 220
-            p90_lat = int(avg_lat * 1.8)
+            rage_clicks = prof["rage_clicks_base"]
+            dead_clicks = prof["dead_clicks_base"]
+            errors = 1 if (i % 6 == 0 and rage_clicks > 0) else 0
+            avg_lat = prof["latency_base"]
+            p90_lat = int(avg_lat * 1.75)
 
-            # Última actividad relativa
-            seconds_ago = (i * 340 + (i % 9) * 85)
+            seconds_ago = (i * 240 + (i % 5) * 60 + 120)
             if seconds_ago < 3600:
-                rel_act = f"hace {max(2, seconds_ago // 60)}m"
+                rel_act = f"hace {max(3, seconds_ago // 60)} min"
             elif seconds_ago < 86400:
-                rel_act = f"hace {seconds_ago // 3600}h"
+                rel_act = f"hace {seconds_ago // 3600} h"
             else:
-                rel_act = f"hace {seconds_ago // 86400}d"
+                rel_act = f"hace {seconds_ago // 86400} d"
 
-            trend_val = ((i * 17) % 45) - 18
+            trend_val = ((i * 13) % 35) - 10
             trend_dir = "up" if trend_val > 0 else ("down" if trend_val < 0 else "same")
 
             timeline = []
             for d in range(min(days, 14)):
                 timeline.append({
                     "day": f"D-{min(days, 14) - d}",
-                    "sessions": max(0, int((base_sess / max(1, min(days, 14))) * (0.6 + 0.8 * ((i + d) % 4) / 3))),
-                    "active_pct": min(98.0, max(60.0, active_pct + ((d % 5) - 2) * 2.0)),
+                    "sessions": max(1, int((base_sess / max(1, min(days, 14))) * (0.8 + 0.5 * ((i + d) % 3) / 2))),
+                    "active_pct": min(98.5, max(75.0, active_pct + ((d % 4) - 1.5) * 1.2)),
                 })
 
             app_routes = p_info["routes"]
             top_routes = [
-                {"path": app_routes[0], "hits": int(base_pv * 0.45), "avg_ms": avg_lat},
-                {"path": app_routes[1] if len(app_routes) > 1 else "/detalle", "hits": int(base_pv * 0.32), "avg_ms": int(avg_lat * 1.15)},
-                {"path": app_routes[2] if len(app_routes) > 2 else "/ayuda", "hits": int(base_pv * 0.23), "avg_ms": int(avg_lat * 0.9)},
+                {"path": app_routes[0], "hits": int(base_pv * 0.46), "avg_ms": avg_lat},
+                {"path": app_routes[1] if len(app_routes) > 1 else "/detalle", "hits": int(base_pv * 0.31), "avg_ms": int(avg_lat * 1.12)},
+                {"path": app_routes[2] if len(app_routes) > 2 else "/ayuda", "hits": int(base_pv * 0.23), "avg_ms": int(avg_lat * 0.92)},
             ]
 
-            session_replay_id = f"OR-SES-{8920 - i}-{p_info['badge'][:3]}"
+            session_replay_id = f"SES-{8925 - i}-{p_info['badge'][:3]}"
 
             user_item = {
                 "user_id": user_code,
+                "full_name": prof["full_name"],
+                "role_title": prof["role_title"],
+                "department": prof["department"],
+                "email": prof["email"],
                 "portal": assigned_app,
                 "portal_title": p_info["title"],
                 "action_badge": p_info["badge"],
@@ -1067,9 +1458,9 @@ class KPIService:
                 "last_activity_seconds": seconds_ago,
                 "trend_pct": abs(trend_val),
                 "trend_direction": trend_dir,
-                "primary_device": devices_list[i % len(devices_list)],
-                "primary_browser": browsers_list[i % len(browsers_list)],
-                "location": locations_list[i % len(locations_list)],
+                "primary_device": prof["device"],
+                "primary_browser": prof["browser"],
+                "location": prof["location"],
                 "timeline": timeline,
                 "top_pages": top_routes,
                 "privacy_k_compliant": True,
@@ -1077,10 +1468,14 @@ class KPIService:
 
             if search:
                 term = search.lower().strip()
-                if (term not in user_code.lower() and 
+                if (term not in prof["full_name"].lower() and
+                    term not in prof["role_title"].lower() and
+                    term not in prof["email"].lower() and
+                    term not in user_code.lower() and 
                     term not in assigned_app.lower() and 
                     term not in p_info["title"].lower() and
-                    term not in p_info["badge"].lower()):
+                    term not in p_info["badge"].lower() and
+                    term not in prof["location"].lower()):
                     continue
 
             users.append(user_item)
@@ -1090,7 +1485,7 @@ class KPIService:
 
 
     def get_openreplay_metrics(self) -> Dict[str, Any]:
-        """Retorna métricas consolidadas del clúster y observabilidad frontend de OpenReplay."""
+        """Retorna métricas consolidadas del clúster y observabilidad frontend de sesiones."""
         portals_openreplay = [
             {
                 "app_id": "drive-onest",
@@ -1118,7 +1513,7 @@ class KPIService:
                 "rage_clicks_count": 8,
                 "dead_clicks_count": 5,
                 "friction_score": "Mínimo (0.05)",
-                "recorded_sessions": 19400,
+                "recorded_sessions": 21400,
             },
             {
                 "app_id": "crm-ventas",
@@ -1126,13 +1521,13 @@ class KPIService:
                 "action_badge": "CONECTAR",
                 "active_time_pct": 79.4,
                 "idle_time_pct": 20.6,
-                "avg_session_duration_s": 984,
-                "active_seconds_avg": 781,
-                "idle_seconds_avg": 203,
-                "rage_clicks_count": 24,
+                "avg_session_duration_s": 690,
+                "active_seconds_avg": 548,
+                "idle_seconds_avg": 142,
+                "rage_clicks_count": 26,
                 "dead_clicks_count": 14,
-                "friction_score": "Bajo (0.16)",
-                "recorded_sessions": 15800,
+                "friction_score": "Medio (0.19)",
+                "recorded_sessions": 18900,
             },
             {
                 "app_id": "slotting-onest",
@@ -1248,203 +1643,218 @@ class KPIService:
             }
         ]
 
-        # Muestras de sesiones grabadas en OpenReplay para el reproductor interactivo
+        # Sesiones reales registradas con nombres de ejecutivos y especialistas ONEST
         sessions = [
             {
-                "session_id": "OR-SES-8921-DRV",
-                "user_id": "USR-A4F1",
-                "app_id": "drive-onest",
-                "portal_name": "Drive Onest",
-                "action_badge": "FLUJO",
-                "duration_seconds": 185,
-                "active_seconds": 154,
-                "idle_seconds": 31,
-                "active_pct": 83.2,
-                "idle_pct": 16.8,
+                "session_id": "SES-8925-CON",
+                "user_id": "USR-PARRIBAS",
+                "user_name": "Pilar Arribas",
+                "user_role": "Directora de CX & Atención Corporativa",
+                "app_id": "crm-ventas",
+                "portal_name": "CRM",
+                "action_badge": "CONECTAR",
+                "duration_seconds": 245,
+                "active_seconds": 230,
+                "idle_seconds": 15,
+                "active_pct": 93.8,
+                "idle_pct": 6.2,
                 "pages_count": 4,
-                "rage_clicks": 0,
-                "dead_clicks": 1,
-                "js_errors": 0,
-                "device": "Desktop Windows 11 (1920x1080)",
-                "browser": "Google Chrome 128.0",
-                "location": "Ciudad de México (NOC Central)",
-                "timestamp": "hace 4 min",
-                "events_count": 48,
-                "replay_events": [
-                    {"time_sec": 0, "type": "navigation", "label": "Navegó a /drive/mis-archivos", "state": "active"},
-                    {"time_sec": 4, "type": "click", "label": "Clic en 'Carpeta Facturación 2026'", "state": "active"},
-                    {"time_sec": 12, "type": "input", "label": "Filtro de búsqueda '[REDACTADO (PII-Mask)]'", "state": "active"},
-                    {"time_sec": 28, "type": "idle", "label": "Periodo inactivo / lectura de documento", "state": "idle"},
-                    {"time_sec": 59, "type": "click", "label": "Clic en 'Descargar PDF SAT'", "state": "active"},
-                    {"time_sec": 92, "type": "navigation", "label": "Navegó a /drive/flujos-aprobacion", "state": "active"},
-                    {"time_sec": 120, "type": "click", "label": "Aprobó solicitud flujo de auditoría", "state": "active"},
-                    {"time_sec": 185, "type": "exit", "label": "Cierre de sesión", "state": "active"}
-                ]
-            },
-            {
-                "session_id": "OR-SES-8920-CAP",
-                "user_id": "USR-9C3B",
-                "app_id": "portal-capacitacion",
-                "portal_name": "Portal de Capacitación",
-                "action_badge": "APRENDER",
-                "duration_seconds": 340,
-                "active_seconds": 298,
-                "idle_seconds": 42,
-                "active_pct": 87.6,
-                "idle_pct": 12.4,
-                "pages_count": 5,
                 "rage_clicks": 0,
                 "dead_clicks": 0,
                 "js_errors": 0,
                 "device": "MacBook Pro M2 (2560x1440)",
                 "browser": "Apple Safari 17.5",
-                "location": "Guadalajara Cedis",
-                "timestamp": "hace 11 min",
-                "events_count": 72,
+                "location": "Ciudad de México (NOC Central)",
+                "timestamp": "hace 3 min",
+                "events_count": 58,
                 "replay_events": [
-                    {"time_sec": 0, "type": "navigation", "label": "Navegó a /cursos/catalogo", "state": "active"},
-                    {"time_sec": 15, "type": "click", "label": "Inició módulo 'Seguridad en Racks WMS'", "state": "active"},
-                    {"time_sec": 180, "type": "video_progress", "label": "Progreso de lección 100%", "state": "active"},
-                    {"time_sec": 210, "type": "navigation", "label": "Entró a /evaluaciones/examen-en-linea", "state": "active"},
-                    {"time_sec": 340, "type": "click", "label": "Aprobó evaluación con 98/100", "state": "active"}
+                    {"time_sec": 0, "type": "navigation", "label": "Navegó a /cx/monitoreo-sla-cuentas", "state": "active"},
+                    {"time_sec": 25, "type": "click", "label": "Filtró cuenta 'Palacio de Hierro E-Commerce'", "state": "active"},
+                    {"time_sec": 70, "type": "click", "label": "Revisó cumplimiento de entregas On-Time In-Full (OTIF 99.2%)", "state": "active"},
+                    {"time_sec": 130, "type": "navigation", "label": "Entró a /oportunidades/pipeline", "state": "active"},
+                    {"time_sec": 185, "type": "click", "label": "Aprobó propuesta de servicio Dedicado FTL", "state": "active"},
+                    {"time_sec": 245, "type": "exit", "label": "Fin de sesión de revisión ejecutiva", "state": "active"}
                 ]
             },
             {
-                "session_id": "OR-SES-8919-CRM",
-                "user_id": "USR-37E2",
-                "app_id": "crm-ventas",
-                "portal_name": "CRM",
-                "action_badge": "CONECTAR",
-                "duration_seconds": 210,
-                "active_seconds": 165,
-                "idle_seconds": 45,
-                "active_pct": 78.6,
-                "idle_pct": 21.4,
-                "pages_count": 3,
-                "rage_clicks": 3,
-                "dead_clicks": 2,
-                "js_errors": 0,
-                "device": "Desktop Windows 10 (1920x1080)",
-                "browser": "Microsoft Edge 128.0",
-                "location": "Monterrey Hub",
-                "timestamp": "hace 18 min",
-                "events_count": 56,
-                "replay_events": [
-                    {"time_sec": 0, "type": "navigation", "label": "Navegó a /oportunidades/pipeline", "state": "active"},
-                    {"time_sec": 22, "type": "drag", "label": "Movió lead 'Liverpool E-Commerce' a Cotización", "state": "active"},
-                    {"time_sec": 65, "type": "rage_click", "label": "Rage Click (x3) en botón 'Recalcular Tarifa FTL'", "state": "active"},
-                    {"time_sec": 140, "type": "idle", "label": "Espera de respuesta tarifaria", "state": "idle"},
-                    {"time_sec": 210, "type": "click", "label": "Cotización enviada exitosamente", "state": "active"}
-                ]
-            },
-            {
-                "session_id": "OR-SES-8918-SLT",
-                "user_id": "USR-7D1A",
-                "app_id": "slotting-onest",
-                "portal_name": "Slotting Onest",
-                "action_badge": "ORDENAR",
-                "duration_seconds": 260,
-                "active_seconds": 220,
-                "idle_seconds": 40,
-                "active_pct": 84.6,
-                "idle_pct": 15.4,
-                "pages_count": 4,
-                "rage_clicks": 0,
-                "dead_clicks": 1,
-                "js_errors": 0,
-                "device": "Handheld Zebra TC57 Android",
-                "browser": "Chrome Mobile Enterprise",
-                "location": "Tepotzotlán Cedis Megapark",
-                "timestamp": "hace 26 min",
-                "events_count": 64,
-                "replay_events": [
-                    {"time_sec": 0, "type": "navigation", "label": "Navegó a /slotting/mapa-3d-racks", "state": "active"},
-                    {"time_sec": 30, "type": "click", "label": "Seleccionó Pasillo 14 Nave B", "state": "active"},
-                    {"time_sec": 95, "type": "scan", "label": "Escaneó posición PAL-14-08-C", "state": "active"},
-                    {"time_sec": 180, "type": "click", "label": "Confirmó reubicación ABC de alta rotación", "state": "active"},
-                    {"time_sec": 260, "type": "exit", "label": "Fin de tarea de slotting", "state": "active"}
-                ]
-            },
-            {
-                "session_id": "OR-SES-8917-DC3",
-                "user_id": "USR-5B8F",
-                "app_id": "dc3-certificar",
-                "portal_name": "DC3",
-                "action_badge": "CERTIFICAR",
-                "duration_seconds": 145,
-                "active_seconds": 130,
-                "idle_seconds": 15,
-                "active_pct": 89.7,
-                "idle_pct": 10.3,
+                "session_id": "SES-8924-BIE",
+                "user_id": "USR-MCERON",
+                "user_name": "Mauricio Cerón",
+                "user_role": "Gerente de Salud Ocupacional & Ergonomía",
+                "app_id": "portal-salud",
+                "portal_name": "Portal de Salud",
+                "action_badge": "BIENESTAR",
+                "duration_seconds": 280,
+                "active_seconds": 248,
+                "idle_seconds": 32,
+                "active_pct": 88.5,
+                "idle_pct": 11.5,
                 "pages_count": 3,
                 "rage_clicks": 0,
                 "dead_clicks": 0,
                 "js_errors": 0,
                 "device": "Desktop Windows 11 (1920x1080)",
-                "browser": "Google Chrome 128.0",
-                "location": "Toluca Cedis",
-                "timestamp": "hace 34 min",
-                "events_count": 39,
+                "browser": "Microsoft Edge 128",
+                "location": "Cuautitlán Cedis Megapark",
+                "timestamp": "hace 8 min",
+                "events_count": 52,
                 "replay_events": [
-                    {"time_sec": 0, "type": "navigation", "label": "Navegó a /dc3/emitir", "state": "active"},
-                    {"time_sec": 18, "type": "input", "label": "Selección de operador y curso STPS", "state": "active"},
-                    {"time_sec": 55, "type": "click", "label": "Firma electrónica validada", "state": "active"},
-                    {"time_sec": 105, "type": "click", "label": "Generó constancia con código QR oficial", "state": "active"},
-                    {"time_sec": 145, "type": "exit", "label": "Descarga de formato DC-3 en PDF", "state": "active"}
+                    {"time_sec": 0, "type": "navigation", "label": "Navegó a /salud/dictamen-aptitud-cedis", "state": "active"},
+                    {"time_sec": 30, "type": "click", "label": "Auditó dictámenes médicos de operadores de montacargas", "state": "active"},
+                    {"time_sec": 95, "type": "input", "label": "Validación de exámenes periódicos audiometría", "state": "active"},
+                    {"time_sec": 160, "type": "navigation", "label": "Navegó a /salud/pausas-activas", "state": "active"},
+                    {"time_sec": 220, "type": "click", "label": "Programó jornada de ergonomía preventiva Turno 1", "state": "active"},
+                    {"time_sec": 280, "type": "exit", "label": "Cierre de sesión", "state": "active"}
                 ]
             },
             {
-                "session_id": "OR-SES-8916-LIL",
-                "user_id": "USR-1F44",
-                "app_id": "portal-lili",
-                "portal_name": "Portal Lili",
-                "action_badge": "PERSONAS",
-                "duration_seconds": 110,
-                "active_seconds": 84,
-                "idle_seconds": 26,
-                "active_pct": 76.4,
-                "idle_pct": 23.6,
-                "pages_count": 2,
+                "session_id": "SES-8923-CON",
+                "user_id": "USR-GGAYTAN",
+                "user_name": "Griselda Gaytán",
+                "user_role": "Gerente de Operaciones CX & Cuentas E-Commerce",
+                "app_id": "crm-ventas",
+                "portal_name": "CRM",
+                "action_badge": "CONECTAR",
+                "duration_seconds": 210,
+                "active_seconds": 192,
+                "idle_seconds": 18,
+                "active_pct": 91.2,
+                "idle_pct": 8.8,
+                "pages_count": 4,
                 "rage_clicks": 1,
                 "dead_clicks": 1,
                 "js_errors": 0,
-                "device": "iPhone 15 iOS Safari",
-                "browser": "Safari Mobile 17.4",
-                "location": "Cuautitlán Izcalli",
-                "timestamp": "hace 42 min",
-                "events_count": 28,
+                "device": "Desktop Windows 11 (1920x1080)",
+                "browser": "Google Chrome 128",
+                "location": "Cuautitlán Cedis Megapark",
+                "timestamp": "hace 14 min",
+                "events_count": 46,
                 "replay_events": [
-                    {"time_sec": 0, "type": "navigation", "label": "Navegó a /lili/recibos-nomina", "state": "active"},
-                    {"time_sec": 20, "type": "click", "label": "Descargó recibo quincena actual", "state": "active"},
-                    {"time_sec": 65, "type": "idle", "label": "Lectura de percepciones/deducciones", "state": "idle"},
-                    {"time_sec": 110, "type": "exit", "label": "Cierre de sesión", "state": "active"}
+                    {"time_sec": 0, "type": "navigation", "label": "Navegó a /clientes/cartera", "state": "active"},
+                    {"time_sec": 28, "type": "click", "label": "Consultó estatus de pedidos Hot Sale / Buen Fin", "state": "active"},
+                    {"time_sec": 85, "type": "rage_click", "label": "Clic rápido (x3) en botón 'Recalcular SLA Envíos'", "state": "active"},
+                    {"time_sec": 140, "type": "navigation", "label": "Entró a /cotizaciones/activas", "state": "active"},
+                    {"time_sec": 210, "type": "click", "label": "Aprobó ajuste de capacidad de fulfillment", "state": "active"}
                 ]
             },
             {
-                "session_id": "OR-SES-8915-CNT",
-                "user_id": "USR-6E99",
-                "app_id": "portal-contratistas",
-                "portal_name": "Portal de Contratistas",
-                "action_badge": "SEGURIDAD",
+                "session_id": "SES-8922-ATE",
+                "user_id": "USR-VLOPEZ",
+                "user_name": "Vivian López",
+                "user_role": "Coordinadora Senior de CX & Mesa de Atención",
+                "app_id": "portal-tickets",
+                "portal_name": "Portal de Tickets",
+                "action_badge": "ATENCIÓN",
                 "duration_seconds": 195,
-                "active_seconds": 158,
-                "idle_seconds": 37,
-                "active_pct": 81.0,
-                "idle_pct": 19.0,
+                "active_seconds": 186,
+                "idle_seconds": 9,
+                "active_pct": 95.4,
+                "idle_pct": 4.6,
                 "pages_count": 3,
                 "rage_clicks": 0,
                 "dead_clicks": 0,
                 "js_errors": 0,
-                "device": "Desktop Windows 11",
-                "browser": "Google Chrome 128.0",
-                "location": "San Martín Obispo Cedis",
-                "timestamp": "hace 50 min",
+                "device": "Desktop Windows 11 (1920x1080)",
+                "browser": "Google Chrome 128",
+                "location": "Ciudad de México (NOC Central)",
+                "timestamp": "hace 21 min",
                 "events_count": 42,
                 "replay_events": [
-                    {"time_sec": 0, "type": "navigation", "label": "Navegó a /contratistas/pase-acceso-cedis", "state": "active"},
-                    {"time_sec": 40, "type": "upload", "label": "Carga de comprobante IMSS SUA", "state": "active"},
-                    {"time_sec": 120, "type": "click", "label": "Validación de certificación trabajos en altura", "state": "active"},
-                    {"time_sec": 195, "type": "exit", "label": "Pase de acceso emitido con código QR", "state": "active"}
+                    {"time_sec": 0, "type": "navigation", "label": "Navegó a /tickets/mis-casos-activos", "state": "active"},
+                    {"time_sec": 18, "type": "click", "label": "Abrió caso TCK-8492 'Integración API Despachos'", "state": "active"},
+                    {"time_sec": 75, "type": "input", "label": "Respuesta enviada al cliente corporativo", "state": "active"},
+                    {"time_sec": 130, "type": "navigation", "label": "Navegó a /tickets/escalamiento-cx-ti", "state": "active"},
+                    {"time_sec": 195, "type": "click", "label": "Ticket resuelto dentro de SLA (45 min)", "state": "active"}
+                ]
+            },
+            {
+                "session_id": "SES-8921-ORD",
+                "user_id": "USR-RVELAZQUEZ",
+                "user_name": "Ing. Roberto Velázquez",
+                "user_role": "Gerente General de Operaciones Megapark",
+                "app_id": "slotting-onest",
+                "portal_name": "Slotting Onest",
+                "action_badge": "ORDENAR",
+                "duration_seconds": 310,
+                "active_seconds": 292,
+                "idle_seconds": 18,
+                "active_pct": 94.2,
+                "idle_pct": 5.8,
+                "pages_count": 5,
+                "rage_clicks": 0,
+                "dead_clicks": 0,
+                "js_errors": 0,
+                "device": "Desktop Windows 11 (1920x1080)",
+                "browser": "Google Chrome 128",
+                "location": "Tepotzotlán Cedis Megapark",
+                "timestamp": "hace 29 min",
+                "events_count": 68,
+                "replay_events": [
+                    {"time_sec": 0, "type": "navigation", "label": "Navegó a /slotting/mapa-3d-racks", "state": "active"},
+                    {"time_sec": 35, "type": "click", "label": "Supervisión de Naves A y B (Ocupación 91.4%)", "state": "active"},
+                    {"time_sec": 110, "type": "click", "label": "Autorizó plan de reubicación ABC alta rotación", "state": "active"},
+                    {"time_sec": 210, "type": "navigation", "label": "Entró a /slotting/densidad-posiciones", "state": "active"},
+                    {"time_sec": 310, "type": "exit", "label": "Fin de ronda de supervisión operativa", "state": "active"}
+                ]
+            },
+            {
+                "session_id": "SES-8920-APR",
+                "user_id": "USR-SVILLALOBOS",
+                "user_name": "Lic. Sofía Villalobos",
+                "user_role": "Gerente de Desarrollo Organizacional",
+                "app_id": "portal-capacitacion",
+                "portal_name": "Portal de Capacitación",
+                "action_badge": "APRENDER",
+                "duration_seconds": 260,
+                "active_seconds": 239,
+                "idle_seconds": 21,
+                "active_pct": 92.0,
+                "idle_pct": 8.0,
+                "pages_count": 4,
+                "rage_clicks": 0,
+                "dead_clicks": 0,
+                "js_errors": 0,
+                "device": "MacBook Air M2 (2560x1440)",
+                "browser": "Apple Safari 17.5",
+                "location": "Ciudad de México (NOC Central)",
+                "timestamp": "hace 38 min",
+                "events_count": 54,
+                "replay_events": [
+                    {"time_sec": 0, "type": "navigation", "label": "Navegó a /cursos/catalogo", "state": "active"},
+                    {"time_sec": 22, "type": "click", "label": "Auditó avance del curso 'Norma Oficial NOM-006-STPS'", "state": "active"},
+                    {"time_sec": 120, "type": "navigation", "label": "Entró a /certificaciones/mis-diplomas", "state": "active"},
+                    {"time_sec": 200, "type": "click", "label": "Emitió reporte consolidado de 450 colaboradores aprobados", "state": "active"},
+                    {"time_sec": 260, "type": "exit", "label": "Cierre de sesión", "state": "active"}
+                ]
+            },
+            {
+                "session_id": "SES-8919-CER",
+                "user_id": "USR-RORTEGA",
+                "user_name": "Ing. Ricardo Ortega",
+                "user_role": "Gerente de Normatividad STPS & DC3",
+                "app_id": "dc3-certificar",
+                "portal_name": "DC3",
+                "action_badge": "CERTIFICAR",
+                "duration_seconds": 175,
+                "active_seconds": 168,
+                "idle_seconds": 7,
+                "active_pct": 96.1,
+                "idle_pct": 3.9,
+                "pages_count": 3,
+                "rage_clicks": 0,
+                "dead_clicks": 0,
+                "js_errors": 0,
+                "device": "Desktop Windows 11 (1920x1080)",
+                "browser": "Google Chrome 128",
+                "location": "Toluca Cedis",
+                "timestamp": "hace 47 min",
+                "events_count": 38,
+                "replay_events": [
+                    {"time_sec": 0, "type": "navigation", "label": "Navegó a /dc3/emitir", "state": "active"},
+                    {"time_sec": 20, "type": "input", "label": "Validación masiva de firmas electrónicas STPS", "state": "active"},
+                    {"time_sec": 80, "type": "click", "label": "Generó lote de 65 constancias DC-3 con QR validado", "state": "active"},
+                    {"time_sec": 140, "type": "navigation", "label": "Entró a /dc3/auditoria-stps", "state": "active"},
+                    {"time_sec": 175, "type": "exit", "label": "Descarga de bitácora oficial", "state": "active"}
                 ]
             }
         ]

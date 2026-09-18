@@ -1041,43 +1041,66 @@
           )
         ),
 
-        // Tabla Detallada de Métricas por Usuario
+        // Tabla Detallada de Métricas por Usuario con Nombres y Roles Reales
         e("div", { className: "card-onest overflow-hidden" },
           e("div", { className: "overflow-x-auto" },
             e("table", { className: "w-full text-left text-xs" },
               e("thead", { className: "bg-[#F8FAFC] dark:bg-[#132034] font-bold text-[#475467] dark:text-gray-300 border-b border-[#E1E6EB] dark:border-[#2D3E59] select-none" },
                 e("tr", null,
-                  e("th", { onClick: () => handleSort("user_id"), className: "px-5 py-3 font-heading cursor-pointer hover:text-[#00549E]" }, "Usuario Seudónimo ⇅"),
-                  e("th", { onClick: () => handleSort("portal_title"), className: "px-4 py-3 font-heading cursor-pointer hover:text-[#00549E]" }, "Portal & Insignia ⇅"),
-                  e("th", { onClick: () => handleSort("sessions"), className: "px-4 py-3 font-heading cursor-pointer hover:text-[#00549E]" }, "Sesiones ⇅"),
-                  e("th", { onClick: () => handleSort("active_time_pct"), className: "px-6 py-3 font-heading cursor-pointer hover:text-[#00549E]" }, "Tiempo Activo (Telemetría) ⇅"),
-                  e("th", { onClick: () => handleSort("rage_clicks_count"), className: "px-4 py-3 font-heading cursor-pointer hover:text-[#00549E]" }, "Rage Clicks ⇅"),
-                  e("th", { onClick: () => handleSort("avg_latency_ms"), className: "px-4 py-3 font-heading cursor-pointer hover:text-[#00549E]" }, "Latencia P90 ⇅"),
-                  e("th", { className: "px-4 py-3 font-heading" }, "Última Actividad"),
-                  e("th", { className: "px-5 py-3 text-right font-heading" }, "Auditar / Replay")
+                  e("th", { onClick: () => handleSort("full_name"), className: "px-5 py-3.5 font-heading cursor-pointer hover:text-[#00549E]" }, "Colaborador / Ejecutivo ONEST ⇅"),
+                  e("th", { onClick: () => handleSort("portal_title"), className: "px-4 py-3.5 font-heading cursor-pointer hover:text-[#00549E]" }, "Portal & Insignia ⇅"),
+                  e("th", { onClick: () => handleSort("sessions"), className: "px-4 py-3.5 font-heading cursor-pointer hover:text-[#00549E]" }, "Sesiones ⇅"),
+                  e("th", { onClick: () => handleSort("active_time_pct"), className: "px-6 py-3.5 font-heading cursor-pointer hover:text-[#00549E]" }, "Tiempo Activo (Telemetría) ⇅"),
+                  e("th", { onClick: () => handleSort("rage_clicks_count"), className: "px-4 py-3.5 font-heading cursor-pointer hover:text-[#00549E]" }, "Rage Clicks ⇅"),
+                  e("th", { onClick: () => handleSort("avg_latency_ms"), className: "px-4 py-3.5 font-heading cursor-pointer hover:text-[#00549E]" }, "Latencia P90 ⇅"),
+                  e("th", { className: "px-4 py-3.5 font-heading" }, "Última Actividad & Hub"),
+                  e("th", { className: "px-5 py-3.5 text-right font-heading" }, "Auditar / Replay")
                 )
               ),
               e("tbody", { className: "divide-y divide-[#E1E6EB] dark:divide-[#2D3E59]" },
-                sortedUsers.map(u =>
-                  e("tr", {
-                    key: u.user_id,
+                sortedUsers.map(u => {
+                  const initials = (u.full_name || "ON")
+                    .split(" ")
+                    .filter(w => !["Ing.", "Lic.", "Dra.", "Dr.", "Mtra.", "Mtro.", "de", "del", "la"].includes(w))
+                    .map(w => w[0])
+                    .slice(0, 2)
+                    .join("")
+                    .toUpperCase() || "US";
+
+                  return e("tr", {
+                    key: u.email || u.user_id,
                     onClick: () => setSelectedUser(u),
                     className: "hover:bg-blue-50/40 dark:hover:bg-white/5 cursor-pointer transition"
                   },
-                    e("td", { className: "px-5 py-3.5 font-mono font-bold" },
-                      e("span", { className: "bg-gray-100 dark:bg-gray-800 text-[#003E75] dark:text-blue-300 px-2 py-0.5 rounded border border-gray-200 dark:border-gray-700 tracking-wider" },
-                        u.user_id
+                    // Colaborador / Nombre / Rol
+                    e("td", { className: "px-5 py-3.5" },
+                      e("div", { className: "flex items-center space-x-3" },
+                        e("div", { className: "w-8 h-8 rounded-full bg-gradient-to-br from-[#003E75] to-[#0A6CBE] text-white flex items-center justify-center font-bold text-xs shadow-xs font-heading flex-shrink-0" },
+                          initials
+                        ),
+                        e("div", { className: "min-w-0" },
+                          e("div", { className: "font-bold text-gray-900 dark:text-white truncate flex items-center gap-1.5" },
+                            e("span", { className: "hover:text-[#00549E] transition" }, u.full_name || u.user_id),
+                            e("span", { className: "text-[9px] font-mono px-1.5 py-0.2 rounded bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700" }, u.user_id)
+                          ),
+                          e("div", { className: "text-[11px] text-gray-500 dark:text-gray-400 truncate max-w-[240px]" },
+                            u.role_title || u.department || "Colaborador Operativo"
+                          )
+                        )
                       )
                     ),
+                    // Portal & Insignia
                     e("td", { className: "px-4 py-3.5" },
                       e("div", { className: "flex items-center space-x-1.5" },
                         e("span", { className: "font-semibold text-gray-900 dark:text-white" }, u.portal_title || u.portal),
                         e("span", { className: "text-[9px] font-bold px-1.5 py-0.2 rounded bg-blue-50 text-[#00549E] border border-blue-200 font-mono" }, u.action_badge || "ONEST")
                       )
                     ),
+                    // Sesiones
                     e("td", { className: "px-4 py-3.5 font-mono font-bold text-gray-900 dark:text-white tabular-nums" },
                       u.sessions?.toLocaleString()
                     ),
+                    // Tiempo Activo / Inactivo Barra Visual
                     e("td", { className: "px-6 py-3.5" },
                       e("div", { className: "space-y-1" },
                         e("div", { className: "flex justify-between text-[11px] font-mono" },
@@ -1090,31 +1113,36 @@
                         )
                       )
                     ),
+                    // Rage Clicks
                     e("td", { className: "px-4 py-3.5 font-mono" },
                       u.rage_clicks_count > 0
                         ? e("span", { className: "px-2 py-0.5 rounded bg-red-100 text-red-800 font-bold" }, `⚠️ ${u.rage_clicks_count}`)
                         : e("span", { className: "text-gray-400" }, "0")
                     ),
+                    // Latencia P90
                     e("td", { className: "px-4 py-3.5 font-mono" },
                       e("span", { className: "font-semibold text-gray-700 dark:text-gray-300" }, `${u.p90_latency_ms || 320}ms`)
                     ),
-                    e("td", { className: "px-4 py-3.5 font-mono text-gray-500 dark:text-gray-400" },
-                      u.last_activity
+                    // Última Actividad & Ubicación
+                    e("td", { className: "px-4 py-3.5 text-xs text-gray-600 dark:text-gray-300" },
+                      e("div", { className: "font-semibold text-gray-900 dark:text-white font-mono text-[11px]" }, u.last_activity),
+                      e("div", { className: "text-[10px] text-gray-400 truncate max-w-[140px]" }, u.location)
                     ),
+                    // Botón Detalle
                     e("td", { className: "px-5 py-3.5 text-right" },
                       e("button", {
                         onClick: (ev) => { ev.stopPropagation(); setSelectedUser(u); },
                         className: "px-2.5 py-1 bg-[#00549E] hover:bg-[#0A6CBE] text-white rounded text-xs font-semibold shadow-xs transition"
                       }, "Ver Métricas →")
                     )
-                  )
-                )
+                  );
+                })
               )
             )
           )
         ),
 
-        // Modal de Drill-down del Usuario con Métricas y Acceso a Session Replay
+        // Modal de Drill-down del Usuario con Perfil Completo y Acceso a Session Replay
         selectedUser && e("div", {
           className: "fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs",
           onClick: () => setSelectedUser(null)
@@ -1123,17 +1151,28 @@
             className: "bg-white dark:bg-[#1B2A41] rounded-2xl shadow-2xl border border-gray-200 dark:border-[#2D3E59] max-w-3xl w-full p-6 space-y-5 animate-in fade-in zoom-in-95 duration-150 max-h-[90vh] overflow-y-auto",
             onClick: (ev) => ev.stopPropagation()
           },
-            // Header del Drill-down
+            // Header del Drill-down con Nombre Real y Datos Corporativos
             e("div", { className: "flex justify-between items-start pb-4 border-b border-gray-100 dark:border-gray-700" },
-              e("div", { className: "flex items-center space-x-3" },
-                e("div", { className: "w-10 h-10 rounded-xl bg-[#003E75] text-white flex items-center justify-center font-mono font-bold text-sm shadow" }, "USR"),
+              e("div", { className: "flex items-center space-x-3.5" },
+                e("div", { className: "w-12 h-12 rounded-2xl bg-gradient-to-br from-[#003E75] to-[#0A6CBE] text-white flex items-center justify-center font-heading font-black text-base shadow-md" },
+                  (selectedUser.full_name || "ON")
+                    .split(" ")
+                    .filter(w => !["Ing.", "Lic.", "Dra.", "Dr.", "Mtra.", "Mtro.", "de", "del", "la"].includes(w))
+                    .map(w => w[0])
+                    .slice(0, 2)
+                    .join("")
+                    .toUpperCase() || "US"
+                ),
                 e("div", null,
                   e("div", { className: "flex items-center space-x-2" },
-                    e("h3", { className: "text-lg font-black font-mono text-[#003E75] dark:text-blue-300 tracking-wider" }, selectedUser.user_id),
+                    e("h3", { className: "text-xl font-black text-[#003E75] dark:text-blue-300 font-heading" }, selectedUser.full_name || selectedUser.user_id),
                     e("span", { className: "text-xs font-bold px-2 py-0.5 rounded bg-[#EAF3FA] text-[#00549E] border border-[#A9D3EF]" }, selectedUser.action_badge)
                   ),
-                  e("p", { className: "text-xs text-gray-500 dark:text-gray-400 mt-0.5" },
-                    `${selectedUser.portal_title} • ${selectedUser.location}`
+                  e("p", { className: "text-xs text-gray-600 dark:text-gray-300 font-medium mt-0.5" },
+                    `${selectedUser.role_title} • ${selectedUser.department}`
+                  ),
+                  e("p", { className: "text-[11px] text-gray-400 font-mono mt-0.5" },
+                    `📧 ${selectedUser.email || 'usuario@onestlogistics.com'} • 📍 ${selectedUser.location} • ID: ${selectedUser.user_id}`
                   )
                 )
               ),
@@ -1166,7 +1205,7 @@
             // Gráfico Histórico de Sesiones
             e("div", { className: "p-4 bg-[#F8FAFC] dark:bg-[#132034] rounded-xl border border-gray-200 dark:border-gray-700 space-y-2" },
               e("div", { className: "flex justify-between items-center" },
-                e("h4", { className: "text-xs font-bold text-[#003E75] dark:text-blue-300 font-heading" }, "Actividad Diaria del Usuario"),
+                e("h4", { className: "text-xs font-bold text-[#003E75] dark:text-blue-300 font-heading" }, `Actividad Diaria de ${selectedUser.full_name || 'Usuario'}`),
                 e("span", { className: "text-[10px] font-mono text-gray-400" }, `Ventana: ${timeRange} días`)
               ),
               e("div", { className: "h-36 w-full" },
@@ -1192,7 +1231,16 @@
                 e("div", { className: "space-y-1 text-gray-600 dark:text-gray-300" },
                   e("div", null, e("strong", null, "Dispositivo: "), selectedUser.primary_device),
                   e("div", null, e("strong", null, "Navegador: "), selectedUser.primary_browser),
-                  e("div", null, e("strong", null, "Replay ID: "), e("span", { className: "font-mono font-bold text-[#00549E]" }, selectedUser.session_replay_id))
+                  e("div", null, e("strong", null, "Replay ID: "), e("span", { className: "font-mono font-bold text-[#00549E]" }, selectedUser.session_replay_id)),
+                  e("div", { className: "pt-2" },
+                    e("button", {
+                      onClick: () => { setSelectedUser(null); onOpenReplaySession(selectedUser.session_replay_id); },
+                      className: "w-full py-1.5 bg-[#00549E] hover:bg-[#0A6CBE] text-white rounded text-xs font-bold transition flex items-center justify-center gap-1.5"
+                    },
+                      e(Icons.Video),
+                      e("span", null, "Reproducir Sesión UX →")
+                    )
+                  )
                 )
               )
             ),
@@ -1206,6 +1254,7 @@
             )
           )
         )
+      );
       );
     }
 
