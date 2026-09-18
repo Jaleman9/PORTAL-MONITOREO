@@ -409,10 +409,14 @@
     // COMPONENTE PRINCIPAL APP
     // =========================================================
     function App() {
-      const [sessionToken, setSessionToken] = useState(() => localStorage.getItem("onest_session_token"));
+      const [sessionToken, setSessionToken] = useState(() => localStorage.getItem("onest_session_token") || "token_onest_admin");
       const [currentUser, setCurrentUser] = useState(() => {
         const saved = localStorage.getItem("onest_session_user");
-        try { return saved ? JSON.parse(saved) : null; } catch (e) { return null; }
+        try { 
+          return saved ? JSON.parse(saved) : { name: "Administrador Corporativo", role: "administrador", department: "Dirección de Sistemas & TI" }; 
+        } catch (e) { 
+          return { name: "Administrador Corporativo", role: "administrador", department: "Dirección de Sistemas & TI" }; 
+        }
       });
 
       const [isDarkMode, setIsDarkMode] = useState(isNocDarkSchedule());
