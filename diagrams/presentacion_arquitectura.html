@@ -1,0 +1,407 @@
+<!doctype html>
+<title>Arquitectura ONEST</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f4f6f4;
+    --surface: #ffffff;
+    --surface-2: #eaf0ec;
+    --ink: #142019;
+    --ink-soft: #4a564e;
+    --ink-mute: #7c8a80;
+    --line: #d7e2db;
+    --line-soft: #e6ede9;
+    --blue: #00549e;
+    --blue-dark: #003e75;
+    --blue-soft: #e3eef7;
+    --green: #2b9138;
+    --green-soft: #e3f3e6;
+    --amber: #b8860b;
+    --shadow: 0 1px 2px rgba(20,32,25,0.04), 0 10px 28px rgba(20,32,25,0.07);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0f1612;
+      --surface: #161f19;
+      --surface-2: #1d2a22;
+      --ink: #eaf1ec;
+      --ink-soft: #b7c4bb;
+      --ink-mute: #7e8d82;
+      --line: #27362d;
+      --line-soft: #202c25;
+      --blue: #5b9fd8;
+      --blue-dark: #8dc0ea;
+      --blue-soft: #1a2a38;
+      --green: #6fcb7f;
+      --green-soft: #16301c;
+      --amber: #d9ae56;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 28px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0f1612; --surface: #161f19; --surface-2: #1d2a22;
+    --ink: #eaf1ec; --ink-soft: #b7c4bb; --ink-mute: #7e8d82;
+    --line: #27362d; --line-soft: #202c25;
+    --blue: #5b9fd8; --blue-dark: #8dc0ea; --blue-soft: #1a2a38;
+    --green: #6fcb7f; --green-soft: #16301c; --amber: #d9ae56;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 28px rgba(0,0,0,0.35);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', -apple-system, sans-serif;
+    padding-inline: 24px;
+    padding-block: 44px 64px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; }
+  code, .mono { font-family: 'IBM Plex Mono', ui-monospace, monospace; }
+
+  header.page-head { max-width: 780px; margin-bottom: 40px; }
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--blue); margin: 0 0 14px 0;
+  }
+  h1 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600;
+    font-size: clamp(28px, 4vw, 42px);
+    line-height: 1.1; letter-spacing: -0.01em;
+    margin: 0 0 14px 0; text-wrap: balance;
+  }
+  .dek { font-size: 16.5px; line-height: 1.6; color: var(--ink-soft); margin: 0; max-width: 64ch; }
+
+  h2 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600; font-size: 22px;
+    margin: 0 0 6px 0; color: var(--ink);
+  }
+  .section-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--ink-mute); margin: 0 0 4px 0;
+  }
+  section { margin-top: 56px; }
+  .section-dek { color: var(--ink-soft); font-size: 14.5px; max-width: 70ch; margin: 0 0 22px 0; line-height: 1.55; }
+
+  /* ---- Pipeline diagram ---- */
+  .pipeline {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    padding: 28px 26px;
+  }
+  .pipe-row {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    flex-wrap: wrap;
+  }
+  .pipe-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--ink-mute); margin-bottom: 10px;
+  }
+  .node {
+    background: var(--surface-2);
+    border: 1.5px solid var(--line);
+    border-radius: 10px;
+    padding: 12px 14px;
+    min-width: 120px;
+    flex: 1;
+  }
+  .node .nn { font-weight: 700; font-size: 13.5px; margin-bottom: 2px; }
+  .node .ns { font-size: 11px; color: var(--ink-mute); font-family: 'IBM Plex Mono', monospace; }
+  .node.security { background: var(--blue-soft); border-color: var(--blue); }
+  .node.security .nn { color: var(--blue-dark); }
+  .node.external { background: transparent; border-style: dashed; }
+
+  .arrow {
+    display: flex; align-items: center; justify-content: center;
+    color: var(--ink-mute); font-size: 16px; padding: 0 8px;
+    flex: 0 0 auto;
+  }
+  @media (max-width: 760px) {
+    .pipe-row { flex-direction: column; }
+    .arrow { transform: rotate(90deg); padding: 4px 0; }
+  }
+
+  .pipe-gov {
+    margin-top: 10px;
+    display: flex; gap: 0; flex-wrap: wrap;
+  }
+  .pipe-divider {
+    height: 1px; background: var(--line); margin: 22px 0;
+  }
+
+  /* ---- Component cards ---- */
+  .comp-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 14px;
+  }
+  .comp-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 20px;
+    box-shadow: var(--shadow);
+  }
+  .comp-card .ck { display: flex; align-items: baseline; gap: 8px; margin-bottom: 6px; }
+  .comp-card .ck .idx {
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink-mute);
+  }
+  .comp-card h3 { margin: 0; font-size: 15.5px; font-weight: 700; }
+  .comp-card .port { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--blue); margin-bottom: 8px; }
+  .comp-card p { margin: 0; font-size: 13.5px; line-height: 1.55; color: var(--ink-soft); }
+
+  /* ---- Sequence ---- */
+  .seq { display: flex; flex-direction: column; gap: 0; }
+  .seq-step {
+    display: grid;
+    grid-template-columns: 34px 1fr;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .seq-step:last-child { border-bottom: none; }
+  .seq-num {
+    width: 30px; height: 30px; border-radius: 50%;
+    background: var(--blue-soft); color: var(--blue-dark);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'IBM Plex Mono', monospace; font-weight: 600; font-size: 13px;
+  }
+  .seq-step.gov .seq-num { background: var(--green-soft); color: var(--green); }
+  .seq-title { font-weight: 600; font-size: 14.5px; margin-bottom: 3px; }
+  .seq-detail { font-size: 13.5px; color: var(--ink-soft); line-height: 1.5; }
+  .seq-detail code { font-size: 12.5px; }
+
+  /* ---- Governance strip ---- */
+  .gov-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+  }
+  .gov-card {
+    background: var(--green-soft);
+    border: 1px solid var(--green);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .gov-card .gk { font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: var(--green); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 5px; }
+  .gov-card p { margin: 0; font-size: 13px; color: var(--ink); line-height: 1.5; }
+
+  footer.note {
+    margin-top: 48px; font-size: 12px; color: var(--ink-mute);
+    line-height: 1.6; max-width: 72ch; border-top: 1px solid var(--line); padding-top: 16px;
+  }
+  ::selection { background: var(--blue-soft); color: var(--blue-dark); }
+</style>
+
+<div class="wrap">
+
+  <header class="page-head">
+    <p class="eyebrow">ONEST Logistics · Plataforma de Telemetría Web</p>
+    <h1>Arquitectura del sistema, cómo funciona</h1>
+    <p class="dek">
+      De un clic en un portal interno a un reporte que ve un administrador: el recorrido completo,
+      los componentes que participan, y dónde se aplican los controles de privacidad.
+    </p>
+  </header>
+
+  <!-- 1. MAPA GENERAL -->
+  <section>
+    <p class="section-tag">01 · Mapa general</p>
+    <h2>Dos caminos que nunca se cruzan directamente</h2>
+    <p class="section-dek">El sistema tiene una ruta de <strong>ingesta</strong> (de abajo) donde entran los datos, y una ruta de <strong>consulta</strong> (de arriba) donde se leen. Ambas pasan siempre por un control antes de tocar los datos crudos.</p>
+
+    <div class="pipeline">
+      <div class="pipe-label">0 · Entrega del script al portal (antes de que haya datos)</div>
+      <div class="pipe-row">
+        <div class="node"><div class="nn">Aggregation API</div><div class="ns">GET /sdk/telemetry.js</div></div>
+        <div class="arrow">→</div>
+        <div class="node external"><div class="nn">Portal interno</div><div class="ns">carga el script</div></div>
+      </div>
+
+      <div class="pipe-divider"></div>
+
+      <div class="pipe-label">Consulta — arriba</div>
+      <div class="pipe-row">
+        <div class="node external"><div class="nn">Administrador</div><div class="ns">6 perfiles TI</div></div>
+        <div class="arrow">→</div>
+        <div class="node"><div class="nn">Aggregation API</div><div class="ns">FastAPI :8001</div></div>
+        <div class="arrow">→</div>
+        <div class="node security"><div class="nn">RBAC</div><div class="ns">ejecutivo / administrador</div></div>
+        <div class="arrow">→</div>
+        <div class="node security"><div class="nn">Privacy Guard</div><div class="ns">k-anonymity ≥ 5</div></div>
+        <div class="arrow">→</div>
+        <div class="node"><div class="nn">ClickHouse</div><div class="ns">lee vía clickhouse_connect</div></div>
+      </div>
+
+      <div class="pipe-divider"></div>
+
+      <div class="pipe-label">Ingesta — abajo</div>
+      <div class="pipe-row">
+        <div class="node external"><div class="nn">Usuario final</div><div class="ns">20+ portales</div></div>
+        <div class="arrow">→</div>
+        <div class="node"><div class="nn">SDK</div><div class="ns">telemetry.js</div></div>
+        <div class="arrow">→</div>
+        <div class="node"><div class="nn">Collector</div><div class="ns">FastAPI :8000</div></div>
+        <div class="arrow">→</div>
+        <div class="node"><div class="nn">RabbitMQ</div><div class="ns">exchange + queue</div></div>
+        <div class="arrow">→</div>
+        <div class="node"><div class="nn">Consumer</div><div class="ns">batch writer</div></div>
+        <div class="arrow">→</div>
+        <div class="node"><div class="nn">ClickHouse</div><div class="ns">escribe en lote</div></div>
+      </div>
+      <p style="margin:14px 0 0 0; font-size:12.5px; color:var(--ink-mute);">ClickHouse es el mismo almacén en ambas filas: el Consumer <em>escribe</em> eventos crudos, la Aggregation API los <em>lee</em> ya agregados.</p>
+    </div>
+  </section>
+
+  <!-- 2. COMPONENTES -->
+  <section>
+    <p class="section-tag">02 · Componentes</p>
+    <h2>Qué hace cada pieza</h2>
+    <p class="section-dek">Seis servicios, cada uno con una única responsabilidad — ninguno hace el trabajo de otro.</p>
+
+    <div class="comp-grid">
+      <div class="comp-card">
+        <div class="ck"><span class="idx">01</span><h3>SDK Web</h3></div>
+        <div class="port">telemetry.js · servido en /sdk/telemetry.js</div>
+        <p>El portal lo descarga de la Aggregation API y lo ejecuta en el navegador del usuario. Registra clics y vistas de página, nunca contraseñas ni contenido de formularios.</p>
+      </div>
+      <div class="comp-card">
+        <div class="ck"><span class="idx">02</span><h3>Collector</h3></div>
+        <div class="port">FastAPI · puerto 8000</div>
+        <p>Recibe el evento, lo valida (rechaza campos no autorizados) y convierte el identificador del usuario en un hash irreversible antes de publicarlo.</p>
+      </div>
+      <div class="comp-card">
+        <div class="ck"><span class="idx">03</span><h3>RabbitMQ</h3></div>
+        <div class="port">exchange: telemetry.events</div>
+        <p>Cola de mensajes que desacopla la velocidad de ingesta de la de escritura — si hay un pico de tráfico, nada se pierde.</p>
+      </div>
+      <div class="comp-card">
+        <div class="ck"><span class="idx">04</span><h3>Consumer</h3></div>
+        <div class="port">batch: 100 eventos / 1.5s</div>
+        <p>Toma eventos de la cola y los inserta en la base de datos en lotes, en vez de uno por uno.</p>
+      </div>
+      <div class="comp-card">
+        <div class="ck"><span class="idx">05</span><h3>ClickHouse</h3></div>
+        <div class="port">tabla analytics.events · TTL 90d</div>
+        <p>Base de datos columnar especializada en sumar millones de eventos rápido. Purga automáticamente datos con más de 90 días.</p>
+      </div>
+      <div class="comp-card">
+        <div class="ck"><span class="idx">06</span><h3>Aggregation API</h3></div>
+        <div class="port">FastAPI · puerto 8001</div>
+        <p>Se conecta directo a ClickHouse (vía <code>clickhouse_connect</code>) para calcular los KPIs, sirve el dashboard y el script del SDK, y es el único punto donde RBAC y Privacy Guard se aplican antes de responder.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. FLUJO DE UN EVENTO -->
+  <section>
+    <p class="section-tag">03 · Flujo paso a paso</p>
+    <h2>De un clic a un reporte</h2>
+    <p class="section-dek">Ningún paso espera al siguiente más de lo necesario — el usuario recibe respuesta antes de que el dato quede guardado de forma permanente.</p>
+
+    <div class="pipeline">
+      <div class="seq">
+        <div class="seq-step">
+          <div class="seq-num">1</div>
+          <div>
+            <div class="seq-title">Usuario hace clic en un portal</div>
+            <div class="seq-detail">El SDK captura el evento (vista de página, clic, error de consola).</div>
+          </div>
+        </div>
+        <div class="seq-step">
+          <div class="seq-num">2</div>
+          <div>
+            <div class="seq-title">SDK envía el evento al Collector</div>
+            <div class="seq-detail"><code>POST /api/v1/events</code> — el Collector responde de inmediato, sin esperar a que el dato se guarde.</div>
+          </div>
+        </div>
+        <div class="seq-step gov">
+          <div class="seq-num">3</div>
+          <div>
+            <div class="seq-title">El Collector anonimiza el identificador</div>
+            <div class="seq-detail">HMAC-SHA256 + salt convierte el <code>user_id</code> en un código irreversible. No existe forma de revertirlo.</div>
+          </div>
+        </div>
+        <div class="seq-step">
+          <div class="seq-num">4</div>
+          <div>
+            <div class="seq-title">Se publica en la cola y se guarda en lote</div>
+            <div class="seq-detail">RabbitMQ recibe el evento; el Consumer lo inserta en ClickHouse junto con otros 99 eventos o cada 1.5 segundos.</div>
+          </div>
+        </div>
+        <div class="seq-step">
+          <div class="seq-num">5</div>
+          <div>
+            <div class="seq-title">Un administrador inicia sesión</div>
+            <div class="seq-detail">Recibe un token de acceso válido por 24 horas — no vuelve a loguearse en cada consulta.</div>
+          </div>
+        </div>
+        <div class="seq-step gov">
+          <div class="seq-num">6</div>
+          <div>
+            <div class="seq-title">La consulta pasa por RBAC</div>
+            <div class="seq-detail">El sistema verifica que el rol del administrador tenga permiso para ese reporte específico.</div>
+          </div>
+        </div>
+        <div class="seq-step gov">
+          <div class="seq-num">7</div>
+          <div>
+            <div class="seq-title">Se aplica el filtro de privacidad</div>
+            <div class="seq-detail">Si un grupo tiene menos de 5 usuarios únicos, esos números se ocultan antes de responder.</div>
+          </div>
+        </div>
+        <div class="seq-step">
+          <div class="seq-num">8</div>
+          <div>
+            <div class="seq-title">El administrador recibe el reporte</div>
+            <div class="seq-detail">Solo datos ya validados y filtrados — nunca el evento crudo.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. GOBERNANZA -->
+  <section>
+    <p class="section-tag">04 · Gobernanza</p>
+    <h2>Lo que nunca cambia, pase lo que pase</h2>
+    <p class="section-dek">Cuatro reglas fijas, verificadas en el código — no son configuraciones opcionales.</p>
+
+    <div class="gov-grid">
+      <div class="gov-card">
+        <div class="gk">Anonimato</div>
+        <p>El identificador real del usuario nunca sale del Collector en texto plano.</p>
+      </div>
+      <div class="gov-card">
+        <div class="gk">Umbral mínimo</div>
+        <p>Ningún reporte expone un grupo de menos de 5 usuarios únicos (k-anonymity ≥ 5).</p>
+      </div>
+      <div class="gov-card">
+        <div class="gk">Retención limitada</div>
+        <p>Los eventos crudos se eliminan automáticamente a los 90 días, sin intervención manual.</p>
+      </div>
+      <div class="gov-card">
+        <div class="gk">Acceso por rol</div>
+        <p>Cada consulta exige un rol autorizado; sin el permiso correcto, el sistema responde 403.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="note">
+    Basado en el código fuente del proyecto (collector/, aggregation-api/, sdk-web/, docker-compose.yml) y en los diagramas de arquitectura validados de esta sesión.
+  </footer>
+
+</div>
